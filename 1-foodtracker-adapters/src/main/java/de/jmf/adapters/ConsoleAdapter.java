@@ -27,7 +27,7 @@ public class ConsoleAdapter {
                         running = false;
                         break;
                     case 1:
-                        createCustomer();
+                        createUser();
                         break;
                     default:
                         System.out.println("The number you entered was not a valid option");
@@ -39,16 +39,22 @@ public class ConsoleAdapter {
         }
     }
 
-    private void createCustomer() {
-        System.out.println("Create New User");
-        String mail = getString("Email: ");
-        String name = getString("Name: ");
-        int age = getInt("Age: ");
-        Weight weightC = new Weight(getDouble("Please enter you current weight: "));
-        String goalType = getString("Do you want to (gain|loose) weight: ");
-        Weight weightF = new Weight(getDouble("Please enter you target weight: "));
-        FitnessGoal goal = new FitnessGoal(goalType, weightF, weightC);
-        createUser.execute(mail,name,age,weightC,goal);
+    private void createUser() {
+        try {
+            System.out.println("Create New User");
+            String mail = getString("Email: ");
+            String name = getString("Name: ");
+            int age = getInt("Age: ");
+            Weight weightC = new Weight(getDouble("Please enter you current weight: "));
+            String goalType = getString("Do you want to (gain|loose) weight: ");
+            Weight weightF = new Weight(getDouble("Please enter you target weight: "));
+            FitnessGoal goal = new FitnessGoal(goalType, weightF, weightC);
+            createUser.execute(mail,name,age,weightC,goal);
+            System.out.println("You successfully created a new account");
+        } catch (Exception e) {
+            System.out.print("Something went wrong. "+e.getMessage());
+        }
+
     }
 
     private void printMenu() {

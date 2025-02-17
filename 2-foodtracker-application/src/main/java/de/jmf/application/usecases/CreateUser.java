@@ -13,7 +13,7 @@ public class CreateUser {
         this.userRepository = userRepository;
     }
 
-    public boolean execute(String email, String name, Integer age, Weight weight, FitnessGoal goal) {
+    public User execute(String email, String name, Integer age, Weight weight, FitnessGoal goal) {
         // probably should check if inputs are correct
         // check if email already exists
         if (!userRepository.checkIfEmailExists(email)) {
@@ -24,6 +24,6 @@ public class CreateUser {
         User user = new User(name, age, weight, email, goal);
         userRepository.userAdded(user);
 
-        return true;
+        return user;
     }
 }

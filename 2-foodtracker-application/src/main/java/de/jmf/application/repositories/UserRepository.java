@@ -6,10 +6,13 @@ import java.util.ArrayList;
 
 public class UserRepository {
     private ArrayList<User> users;
+    private String path;
 
-    public UserRepository() {}
+    public UserRepository(String path) {
+        this.path = path;
+    }
 
-    public void setup(ArrayList<User> users) {
+    public void loadUsers(ArrayList<User> users) {
         this.users = users;
     }
 
