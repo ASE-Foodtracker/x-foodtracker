@@ -1,25 +1,22 @@
 package de.jmf.adapters;
 
-import de.jmf.adapters.io.CSVReader;
+import de.jmf.adapters.handlers.UserHandler;
 import de.jmf.adapters.io.CSVWriter;
 import de.jmf.application.usecases.CreateUser;
+import de.jmf.application.usecases.LogUser;
 import de.jmf.application.usecases.RegisterUser;
-import de.jmf.domain.valueobjects.FitnessGoal;
-import de.jmf.domain.valueobjects.Weight;
-import de.jmf.application.exceptions.duplicateException;
+import de.jmf.application.usecases.SaveUser;
 
 import java.nio.file.Paths;
 import java.util.Scanner;
 
 public class ConsoleAdapter {
     private final Scanner scanner;
-    private final CreateUser createUser;
-    private final RegisterUser login;
+    private final UserHandler userHandler;
 
-    public ConsoleAdapter(CreateUser createUser, RegisterUser login) {
+    public ConsoleAdapter(CreateUser createUser, RegisterUser login, LogUser logUser, SaveUser saveUser) {
         this.scanner = new Scanner(System.in);
-        this.createUser = createUser;
-        this.login = login;
+        this.userHandler = new UserHandler(createUser, login, logUser, saveUser);
     }
 
     public void running() {
@@ -32,90 +29,20 @@ public class ConsoleAdapter {
                 int option = getInt("Please enter the number of the action you want to perform: ");
                 switch (option) {
                     case 0:
+                        this.userHandler.saveUser();
                         System.out.println("See you ^^");
                         running = false;
                         break;
                     case 1:
-                        createUser();
+                        this.userHandler.logUser();
                         break;
                     default:
                         System.out.println("The number you entered was not a valid option");
                         break;
                 }
             } catch (Exception e) {
-                System.out.println("A Error occurred" + e.getMessage());
+                System.out.println("An error occurred" + e.getMessage());
             }
-        }
-    }
-
-    private void startup() {
-        boolean running = true;
-        System.out.println("Welcome to foodtracker");
-        while (running) {
-            try {
-                System.out.println("Would you like to:");
-                System.out.println("1 - Log into your account");
-                System.out.println("2 - Create a new account");
-                int option = getInt("Please enter the number of the action you want to perform: ");
-                switch (option) {
-                    case 1:
-                        running = login();;
-                        break;
-                    case 2:
-                        running = createUser();
-                        break;
-                    default:
-                        System.out.println("The number you entered was not a valid option");
-                        break;
-                }
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        }
-    }
-
-    private boolean login() {
-        try {
-            System.out.println();
-            System.out.println("Registration");
-            String mail = getString("Please enter your email: ");
-            // load users.csv
-            String currentPath = Paths.get("").toAbsolutePath().toString() + "/data/output/users.csv";
-            CSVReader reader = new CSVReader(currentPath);
-            login.setup(reader.readAll());
-            // user login
-            login.execute();
-            System.out.println("You successfully logged into your account");
-            return false;
-        } catch (Exception e) {
-            System.out.print("Something went wrong. " + e.getMessage());
-            return true;
-        }
-    }
-
-    private boolean createUser() {
-        try {
-            System.out.println("Creating New Account");
-            String mail = getString("Email: ");
-            String name = getString("Name: ");
-            int age = getInt("Age: ");
-            Weight weightC = new Weight(getDouble("Please enter you current weight: "));
-            String goalType = getString("Do you want to (gain|loose) weight: ");
-            Weight weightF = new Weight(getDouble("Please enter you target weight: "));
-            FitnessGoal goal = new FitnessGoal(goalType, weightF, weightC);
-            // load user.csv
-            String currentPath = Paths.get("").toAbsolutePath().toString() + "/data/output/users.csv";
-            CSVReader reader = new CSVReader(currentPath);
-            createUser.setup(reader.readAll());
-            // create user
-            createUser.execute(mail, name, age, weightC, goal);
-            System.out.println("You successfully created a new account");
-            return false;
-        } catch (duplicateException e) {
-            return true;
-        } catch (Exception e) {
-            System.out.print("Something went wrong. " + e.getMessage());
-            return true;
         }
     }
 
@@ -132,9 +59,36 @@ public class ConsoleAdapter {
         usersWriter.createFile("name,age,currentWeight,mail,goalType,targetWeight");
     }
 
+    private void startup() {
+        boolean running = true;
+        System.out.println("Welcome to your favorite fitness app");
+        while (running) {
+            try {
+                System.out.println("Would you like to:");
+                System.out.println("1 - Log into your account");
+                System.out.println("2 - Create a new account");
+                int option = getInt("Please enter the number of the action you want to perform: ");
+                switch (option) {
+                    case 1:
+                        running = this.userHandler.login();
+                        break;
+                    case 2:
+                        running = this.userHandler.createUser();
+                        break;
+                    default:
+                        System.out.println("The number you entered was not a valid option");
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
     private void printMenu() {
         System.out.println();
-        System.out.println("Welcome to your favorite fitness app");
+        System.out.println("Main Menu");
+        System.out.println("1 - user details");
         System.out.println("0 - exit");
     }
 

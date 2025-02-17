@@ -6,9 +6,11 @@ import de.jmf.domain.valueobjects.Weight;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class UserRepository {
     private List<User> users;
+    private User user;
 
     public UserRepository() {
         this.users = new ArrayList<>();
@@ -29,35 +31,35 @@ public class UserRepository {
         System.out.println("");
     }
 
-    public boolean checkIfEmailExists(String email) {
+    public boolean checkIfEmailExists(String mail) {
         for (User user : this.users) {
-            if (user.getEmail().equals(email)) {
+            if (user.getEmail().equals(mail)) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean userAdded(User user) {
-        this.users.add(user);
-        return true;
+    public Optional<User> getUserByMail(String mail) {
+        return this.users.stream()
+                .filter(user -> user.getEmail().equals(mail))
+                .findFirst();
     }
 
-    public List<String[]> readUsers() {
+    public User getActiveUser() {
+        return this.user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void addUserToList(User user) {
+        this.users.add(user);
+    }
+
+    public List<User> readUsers() {
         // In Progress
-        List<String[]> csvData = new ArrayList<>();
-
-        for (User user : this.users) {
-            String[] line = new String[6];
-            line[0] = user.getName();
-            line[1] = String.valueOf(user.getAge());
-            line[2] = String.valueOf(user.getWeight().getValue());
-            line[3] = user.getEmail();
-            line[4] = user.getGoal().getGoalType();
-            line[5] = String.valueOf(user.getGoal().getTargetWeight());
-            csvData.add(line);
-        }
-
-        return csvData;
+        return this.users;
     }
 }
