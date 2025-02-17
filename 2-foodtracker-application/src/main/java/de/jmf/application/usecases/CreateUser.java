@@ -6,6 +6,8 @@ import de.jmf.domain.valueobjects.FitnessGoal;
 import de.jmf.domain.entities.User;
 import de.jmf.domain.valueobjects.Weight;
 
+import java.util.List;
+
 public class CreateUser {
     private UserRepository userRepository;
 
@@ -13,10 +15,14 @@ public class CreateUser {
         this.userRepository = userRepository;
     }
 
+    public void setup(List<String[]> users) {
+        userRepository.loadUsers(users);
+    }
+
     public User execute(String email, String name, Integer age, Weight weight, FitnessGoal goal) {
         // probably should check if inputs are correct
         // check if email already exists
-        if (!userRepository.checkIfEmailExists(email)) {
+        if (userRepository.checkIfEmailExists(email)) {
             // throw exception
             throw new duplicateException("User already exists");
         }

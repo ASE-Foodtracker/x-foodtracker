@@ -1,6 +1,8 @@
 package de.jmf.application.ports;
 
+import java.util.List;
+
 public interface DataReader {
     String read();
-    String readAll();
+    List<String[]> readAll();
 }
