@@ -9,7 +9,7 @@ import de.jmf.domain.valueobjects.Weight;
 import java.util.List;
 
 public class CreateUser {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public CreateUser(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -19,17 +19,15 @@ public class CreateUser {
         userRepository.loadUsers(users);
     }
 
-    public User execute(String email, String name, Integer age, Weight weight, FitnessGoal goal) {
+    public void execute(String mail, String name, Integer age, Weight weight, FitnessGoal goal) {
         // probably should check if inputs are correct
         // check if email already exists
-        if (userRepository.checkIfEmailExists(email)) {
+        if (userRepository.checkIfEmailExists(mail)) {
             // throw exception
-            throw new duplicateException("User already exists");
+            throw new duplicateException("A user with this mail already exists.");
         }
         // create user
-        User user = new User(name, age, weight, email, goal);
-        userRepository.userAdded(user);
-
-        return user;
+        User user = new User(name, age, weight, mail, goal);
+        userRepository.addUserToList(user);
     }
 }

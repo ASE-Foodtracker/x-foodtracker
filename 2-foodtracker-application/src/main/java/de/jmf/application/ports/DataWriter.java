@@ -1,8 +1,8 @@
 package de.jmf.application.ports;
 
+import java.util.List;
+
 public interface DataWriter {
-    boolean save();
-    boolean saveAll(String input);
-    boolean update();
-    boolean delete();
+    void saveAll(List<String[]> input);
+    void clear();
 }

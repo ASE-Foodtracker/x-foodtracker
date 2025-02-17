@@ -3,39 +3,38 @@ package de.jmf.adapters.io;
 import de.jmf.application.ports.DataWriter;
 
 import java.io.*;
+import java.util.List;
 
 public class CSVWriter implements DataWriter {
-    private String filePath;
-    private File file;
+    private final String filePath;
 
     public CSVWriter(String filePath) {
         this.filePath = filePath;
     };
 
     @Override
-    public boolean save() {
-        return false;
-    }
-
-    @Override
-    public boolean saveAll(String input) {
+    public void saveAll(List<String[]> input) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            writer.write(input.replace("\\n", System.lineSeparator()));
-            System.out.println("Plan wurde erfolgreich nach: " + filePath + " exportiert.");
+            for (String[] line: input) {
+                writer.write(line[0]+","+line[1]+","+line[2]+","+line[3]+","+line[4]+","+line[5]);
+                writer.newLine();
+            }
         } catch (IOException e) {
-            System.out.println("A Error occurred during saving the plan. " + e.getMessage());
+            System.out.println("An Error occurred during saving to a file: " + e.getMessage());
         }
-        return true;
     }
 
     @Override
-    public boolean update() {
-        return false;
-    }
-
-    @Override
-    public boolean delete() {
-        return false;
+    public void clear() {
+        try {
+            FileWriter fw = new FileWriter(this.filePath, false);
+            PrintWriter pw = new PrintWriter(fw, false);
+            pw.flush();
+            pw.close();
+            fw.close();
+        } catch (Exception e) {
+            System.out.println("Something went wrong during clearing the file: "+e.getMessage());
+        }
     }
 
     public void createFile(String input) {
