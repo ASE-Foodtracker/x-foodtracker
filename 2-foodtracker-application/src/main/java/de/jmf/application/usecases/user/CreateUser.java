@@ -1,4 +1,4 @@
-package de.jmf.application.usecases;
+package de.jmf.application.usecases.user;
 
 import de.jmf.application.exceptions.duplicateException;
 import de.jmf.application.repositories.UserRepository;
@@ -7,6 +7,7 @@ import de.jmf.domain.entities.User;
 import de.jmf.domain.valueobjects.Weight;
 
 import java.util.List;
+import java.util.Optional;
 
 public class CreateUser {
     private final UserRepository userRepository;
@@ -16,18 +17,17 @@ public class CreateUser {
     }
 
     public void setup(List<String[]> users) {
-        userRepository.loadUsers(users);
+        userRepository.setUserList(users);
     }
 
     public void execute(String mail, String name, Integer age, Weight weight, FitnessGoal goal) {
-        // probably should check if inputs are correct
-        // check if email already exists
-        if (userRepository.checkIfEmailExists(mail)) {
+        Optional<User> optionalUser = userRepository.getUserByMail(mail);
+        if (optionalUser.isPresent()) {
             // throw exception
             throw new duplicateException("A user with this mail already exists.");
+        } else {
+            User user = new User(name, age, weight, mail, goal);
+            userRepository.insertUserList(user);
         }
-        // create user
-        User user = new User(name, age, weight, mail, goal);
-        userRepository.addUserToList(user);
     }
 }

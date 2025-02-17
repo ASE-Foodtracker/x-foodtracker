@@ -9,35 +9,17 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserRepository {
-    private List<User> users;
+    private final List<User> users;
     private User user;
 
     public UserRepository() {
         this.users = new ArrayList<>();
     }
 
-    public void loadUsers(List<String[]> users) {
-        users.remove(0);
-        for (String[] line : users) {
-            String name = line[0];
-            int age = Integer.parseInt(line[1]);
-            Weight weight = new Weight(Double.parseDouble(line[2]));
-            Weight targetWeight = new Weight(Double.parseDouble(line[5]));
-            String mail = line[3];
-            FitnessGoal goal = new FitnessGoal(line[4], weight, targetWeight);
-            User user = new User(name, age, weight, mail, goal);
-            this.users.add(user);
-        }
-        System.out.println("");
-    }
+    // Single User
 
-    public boolean checkIfEmailExists(String mail) {
-        for (User user : this.users) {
-            if (user.getEmail().equals(mail)) {
-                return true;
-            }
-        }
-        return false;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Optional<User> getUserByMail(String mail) {
@@ -50,16 +32,27 @@ public class UserRepository {
         return this.user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    // ---- User List
+
+    public void setUserList(List<String[]> users) {
+        users.remove(0);
+        for (String[] line : users) {
+            String name = line[0];
+            int age = Integer.parseInt(line[1]);
+            Weight weight = new Weight(Double.parseDouble(line[2]));
+            Weight targetWeight = new Weight(Double.parseDouble(line[5]));
+            String mail = line[3];
+            FitnessGoal goal = new FitnessGoal(line[4], weight, targetWeight);
+            User user = new User(name, age, weight, mail, goal);
+            this.users.add(user);
+        }
     }
 
-    public void addUserToList(User user) {
+    public void insertUserList(User user) {
         this.users.add(user);
     }
 
-    public List<User> readUsers() {
-        // In Progress
+    public List<User> getUserList() {
         return this.users;
     }
 }

@@ -1,4 +1,4 @@
-package de.jmf.application.usecases;
+package de.jmf.application.usecases.user;
 
 import de.jmf.application.repositories.UserRepository;
 import de.jmf.domain.entities.User;

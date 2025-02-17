@@ -2,10 +2,10 @@ package de.jmf.adapters;
 
 import de.jmf.adapters.handlers.UserHandler;
 import de.jmf.adapters.io.CSVWriter;
-import de.jmf.application.usecases.CreateUser;
-import de.jmf.application.usecases.LogUser;
-import de.jmf.application.usecases.RegisterUser;
-import de.jmf.application.usecases.SaveUser;
+import de.jmf.application.usecases.user.CreateUser;
+import de.jmf.application.usecases.user.LogUser;
+import de.jmf.application.usecases.user.RegisterUser;
+import de.jmf.application.usecases.user.SaveUser;
 
 import java.nio.file.Paths;
 import java.util.Scanner;
