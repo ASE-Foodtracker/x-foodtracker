@@ -9,27 +9,27 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserRepository {
-    private final List<User> users;
-    private User user;
+    private final List<User> userList;
+    private User activeUser;
 
     public UserRepository() {
-        this.users = new ArrayList<>();
+        this.userList = new ArrayList<>();
     }
 
     // Single User
 
     public void setUser(User user) {
-        this.user = user;
+        this.activeUser = user;
     }
 
     public Optional<User> getUserByMail(String mail) {
-        return this.users.stream()
+        return this.userList.stream()
                 .filter(user -> user.getEmail().equals(mail))
                 .findFirst();
     }
 
     public User getActiveUser() {
-        return this.user;
+        return this.activeUser;
     }
 
     // ---- User List
@@ -44,15 +44,15 @@ public class UserRepository {
             String mail = line[3];
             FitnessGoal goal = new FitnessGoal(line[4], weight, targetWeight);
             User user = new User(name, age, weight, mail, goal);
-            this.users.add(user);
+            this.userList.add(user);
         }
     }
 
     public void insertUserList(User user) {
-        this.users.add(user);
+        this.userList.add(user);
     }
 
     public List<User> getUserList() {
-        return this.users;
+        return this.userList;
     }
 }
