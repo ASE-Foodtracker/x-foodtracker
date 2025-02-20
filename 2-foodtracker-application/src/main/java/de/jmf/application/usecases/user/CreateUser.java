@@ -28,6 +28,7 @@ public class CreateUser {
         } else {
             User user = new User(name, age, weight, mail, goal);
             userRepository.insertIntoUserList(user);
+            userRepository.setUser(user);
         }
     }
 }
