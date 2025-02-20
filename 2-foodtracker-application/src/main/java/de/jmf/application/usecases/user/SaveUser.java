@@ -1,4 +1,4 @@
-package de.jmf.application.usecases;
+package de.jmf.application.usecases.user;
 
 import de.jmf.application.repositories.UserRepository;
 import de.jmf.domain.entities.User;
@@ -15,7 +15,7 @@ public class SaveUser {
 
     public List<String[]> execute() {
         // fetch users
-        List<User> users = userRepository.readUsers();
+        List<User> users = userRepository.getUserList();
         List<String[]> csvData = new ArrayList<>();
 
         for (User user : users) {

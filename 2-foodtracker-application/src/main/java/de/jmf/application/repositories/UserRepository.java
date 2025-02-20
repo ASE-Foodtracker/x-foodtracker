@@ -9,14 +9,32 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserRepository {
-    private List<User> users;
-    private User user;
+    private final List<User> userList;
+    private User activeUser;
 
     public UserRepository() {
-        this.users = new ArrayList<>();
+        this.userList = new ArrayList<>();
     }
 
-    public void loadUsers(List<String[]> users) {
+    // Single User
+
+    public void setUser(User user) {
+        this.activeUser = user;
+    }
+
+    public Optional<User> getUserByMail(String mail) {
+        return this.userList.stream()
+                .filter(user -> user.getEmail().equals(mail))
+                .findFirst();
+    }
+
+    public User getActiveUser() {
+        return this.activeUser;
+    }
+
+    // ---- User List
+
+    public void setUserList(List<String[]> users) {
         users.remove(0);
         for (String[] line : users) {
             String name = line[0];
@@ -26,40 +44,15 @@ public class UserRepository {
             String mail = line[3];
             FitnessGoal goal = new FitnessGoal(line[4], weight, targetWeight);
             User user = new User(name, age, weight, mail, goal);
-            this.users.add(user);
+            this.userList.add(user);
         }
-        System.out.println("");
     }
 
-    public boolean checkIfEmailExists(String mail) {
-        for (User user : this.users) {
-            if (user.getEmail().equals(mail)) {
-                return true;
-            }
-        }
-        return false;
+    public void insertIntoUserList(User user) {
+        this.userList.add(user);
     }
 
-    public Optional<User> getUserByMail(String mail) {
-        return this.users.stream()
-                .filter(user -> user.getEmail().equals(mail))
-                .findFirst();
-    }
-
-    public User getActiveUser() {
-        return this.user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public void addUserToList(User user) {
-        this.users.add(user);
-    }
-
-    public List<User> readUsers() {
-        // In Progress
-        return this.users;
+    public List<User> getUserList() {
+        return this.userList;
     }
 }

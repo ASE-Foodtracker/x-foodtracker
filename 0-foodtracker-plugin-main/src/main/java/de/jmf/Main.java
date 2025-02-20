@@ -2,10 +2,10 @@ package de.jmf;
 
 import de.jmf.adapters.ConsoleAdapter;
 import de.jmf.application.repositories.UserRepository;
-import de.jmf.application.usecases.CreateUser;
-import de.jmf.application.usecases.LogUser;
-import de.jmf.application.usecases.RegisterUser;
-import de.jmf.application.usecases.SaveUser;
+import de.jmf.application.usecases.user.CreateUser;
+import de.jmf.application.usecases.user.LogUser;
+import de.jmf.application.usecases.user.RegisterUser;
+import de.jmf.application.usecases.user.SaveUser;
 
 public class Main {
     public static void main(String[] args) {

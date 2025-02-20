@@ -1,4 +1,4 @@
-package de.jmf.application.usecases;
+package de.jmf.application.usecases.user;
 
 import de.jmf.application.repositories.UserRepository;
 import de.jmf.domain.entities.User;
@@ -14,7 +14,7 @@ public class RegisterUser {
     }
 
     public void setup(List<String[]> users) {
-        userRepository.loadUsers(users);
+        userRepository.setUserList(users);
     }
 
     public void execute(String mail) {
