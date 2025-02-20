@@ -48,7 +48,7 @@ public class UserRepository {
         }
     }
 
-    public void insertUserList(User user) {
+    public void insertIntoUserList(User user) {
         this.userList.add(user);
     }
 

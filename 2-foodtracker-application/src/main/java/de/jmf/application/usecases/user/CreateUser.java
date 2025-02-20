@@ -27,7 +27,7 @@ public class CreateUser {
             throw new duplicateException("A user with this mail already exists.");
         } else {
             User user = new User(name, age, weight, mail, goal);
-            userRepository.insertUserList(user);
+            userRepository.insertIntoUserList(user);
         }
     }
 }
