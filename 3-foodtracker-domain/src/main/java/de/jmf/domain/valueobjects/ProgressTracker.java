@@ -10,13 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProgressTracker {
-    private int id;
-    private List<WeightLog> weightLogs;
-    private List<ExerciseLog> exerciseLogs;
-    private List<NutritionLog> nutritionLogs;
+    private String mail;
+    private final List<WeightLog> weightLogs;
+    private final List<ExerciseLog> exerciseLogs;
+    private final List<NutritionLog> nutritionLogs;
 
-    public ProgressTracker(int id) {
-        this.id = id;
+    public ProgressTracker() {
         this.weightLogs = new ArrayList<>();
         this.exerciseLogs = new ArrayList<>();
         this.nutritionLogs = new ArrayList<>();
@@ -34,10 +33,12 @@ public class ProgressTracker {
         this.nutritionLogs.add(log);
     }
 
-    // Getters and Setters
+    public String getMail() {
+        return mail;
+    }
 
-    public int getId() {
-        return id;
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
     public List<WeightLog> getWeightLogs() {

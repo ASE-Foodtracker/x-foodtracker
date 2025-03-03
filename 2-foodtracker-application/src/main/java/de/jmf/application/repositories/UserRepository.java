@@ -35,15 +35,13 @@ public class UserRepository {
     // ---- User List
 
     public void setUserList(List<String[]> users) {
-        users.remove(0);
         for (String[] line : users) {
             String name = line[0];
             int age = Integer.parseInt(line[1]);
-            Weight weight = new Weight(Double.parseDouble(line[2]));
-            Weight targetWeight = new Weight(Double.parseDouble(line[5]));
-            String mail = line[3];
-            FitnessGoal goal = new FitnessGoal(line[4], weight, targetWeight);
-            User user = new User(name, age, weight, mail, goal);
+            Weight targetWeight = new Weight(Double.parseDouble(line[4]));
+            String mail = line[2];
+            FitnessGoal goal = new FitnessGoal(line[3], targetWeight);
+            User user = new User(name, age, mail, goal);
             this.userList.add(user);
         }
     }

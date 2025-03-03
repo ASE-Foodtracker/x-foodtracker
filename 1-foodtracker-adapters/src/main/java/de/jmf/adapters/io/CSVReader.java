@@ -2,16 +2,17 @@ package de.jmf.adapters.io;
 
 import de.jmf.application.ports.DataReader;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CSVReader implements DataReader {
-    private final String filePath;
+    private final Path filePath;
 
-    public CSVReader(String filePath) {
+    public CSVReader(Path filePath) {
         this.filePath = filePath;
     }
 
@@ -22,16 +23,17 @@ public class CSVReader implements DataReader {
 
     @Override
     public List<String[]> readAll() {
-        List<String[]> data = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] values = line.split(",");
-                data.add(values);
+        if (Files.exists(filePath)) {
+            try {
+                return Files.lines(filePath)
+                        .map(line -> line.split(","))
+                        .collect(Collectors.toList());
+            } catch (IOException e) {
+                System.out.println("An error occurred while reading the file: "+e);
             }
-        } catch (IOException e) {
-            System.out.println("An error occurred during reading the plan. " + e.getMessage());
+        } else {
+            System.out.println("File doesn't exist");
         }
-        return data;
+        return new ArrayList<>();
     }
 }
