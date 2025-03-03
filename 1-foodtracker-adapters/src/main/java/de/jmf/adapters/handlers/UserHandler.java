@@ -35,7 +35,7 @@ public class UserHandler {
 
     public void saveUser() {
         List<String[]> users = saveUser.execute();
-        String[] head = new String[6];
+        String[] head = new String[5];
         head[0] = "name";
         head[1] = "age";
         head[2] = "mail";
@@ -76,9 +76,14 @@ public class UserHandler {
             Path currentPath = Paths.get("").resolve("data").resolve("output").resolve("users.csv");
             login.setup(new CSVReader(currentPath).readAll());
             // user login
-            login.execute(mail);
-            System.out.println("You successfully logged into your account");
-            return false;
+            boolean success = login.execute(mail);
+            if (success) {
+                System.out.println("You successfully logged into your account");
+                return false;
+            } else {
+                System.out.println("This user doesn't exist. Please try again.");
+                return true;
+            }
         } catch (Exception e) {
             System.out.print("Something went wrong. " + e.getMessage());
             return true;

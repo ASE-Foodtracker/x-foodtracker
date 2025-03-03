@@ -19,7 +19,7 @@ public class SaveUser {
         List<String[]> csvData = new ArrayList<>();
 
         for (User user : users) {
-            String[] line = new String[6];
+            String[] line = new String[5];
             line[0] = user.getName();
             line[1] = String.valueOf(user.getAge());
             line[2] = user.getEmail();
