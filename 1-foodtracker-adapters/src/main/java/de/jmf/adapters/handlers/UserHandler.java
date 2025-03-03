@@ -90,12 +90,14 @@ public class UserHandler {
             }
         } catch (Exception e) {
             System.out.print("Something went wrong. " + e.getMessage());
+            System.out.println();
             return true;
         }
     }
 
     public boolean createUser() {
         try {
+            System.out.println();
             System.out.println("Creating New Account");
             String mail = getString("Email: ");
             String name = getString("Name: ");

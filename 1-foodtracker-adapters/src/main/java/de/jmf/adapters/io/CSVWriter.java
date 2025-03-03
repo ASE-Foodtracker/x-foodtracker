@@ -49,11 +49,7 @@ public class CSVWriter implements DataWriter {
     public void createDirectory(Path path) {
         File file = new File(path.toString());
         if (!file.exists()) {
-            if (file.mkdir()) {
-                System.out.println("Directory is created!");
-            } else {
-                System.out.println("Failed to create directory!");
-            }
+            file.mkdir();
         }
     }
 

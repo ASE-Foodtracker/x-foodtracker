@@ -31,8 +31,6 @@ public class CSVReader implements DataReader {
             } catch (IOException e) {
                 System.out.println("An error occurred while reading the file: "+e);
             }
-        } else {
-            System.out.println("File doesn't exist");
         }
         return new ArrayList<>();
     }
