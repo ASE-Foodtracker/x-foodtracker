@@ -22,10 +22,9 @@ public class SaveUser {
             String[] line = new String[6];
             line[0] = user.getName();
             line[1] = String.valueOf(user.getAge());
-            line[2] = String.valueOf(user.getWeight().getValue());
-            line[3] = user.getEmail();
-            line[4] = user.getGoal().getGoalType();
-            line[5] = String.valueOf(user.getGoal().getTargetWeight());
+            line[2] = user.getEmail();
+            line[3] = user.getGoal().getGoalType();
+            line[4] = String.valueOf(user.getGoal().getTargetWeight());
             csvData.add(line);
         }
         return csvData;

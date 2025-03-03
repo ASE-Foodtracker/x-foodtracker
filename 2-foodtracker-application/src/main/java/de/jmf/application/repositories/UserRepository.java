@@ -21,6 +21,12 @@ public class UserRepository {
     public void setUser(User user) {
         this.activeUser = user;
     }
+    public void updateUser(User user) {
+        userList.remove(activeUser);
+        userList.add(user);
+
+        activeUser = user;
+    }
 
     public Optional<User> getUserByMail(String mail) {
         return this.userList.stream()
@@ -43,7 +49,7 @@ public class UserRepository {
             Weight targetWeight = new Weight(Double.parseDouble(line[5]));
             String mail = line[3];
             FitnessGoal goal = new FitnessGoal(line[4], weight, targetWeight);
-            User user = new User(name, age, weight, mail, goal);
+            User user = new User(name, age, mail, goal);
             this.userList.add(user);
         }
     }

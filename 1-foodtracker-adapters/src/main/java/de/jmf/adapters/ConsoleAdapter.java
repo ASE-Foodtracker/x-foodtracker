@@ -1,40 +1,58 @@
 package de.jmf.adapters;
 
 import de.jmf.adapters.handlers.UserHandler;
+import de.jmf.adapters.handlers.ProgressHandler;
+import de.jmf.adapters.io.CSVReader;
 import de.jmf.adapters.io.CSVWriter;
+import de.jmf.application.usecases.progress.LoadWeight;
+import de.jmf.application.usecases.progress.SaveWeight;
+import de.jmf.application.usecases.progress.TrackWeight;
 import de.jmf.application.usecases.user.CreateUser;
 import de.jmf.application.usecases.user.LogUser;
 import de.jmf.application.usecases.user.RegisterUser;
 import de.jmf.application.usecases.user.SaveUser;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleAdapter {
     private final Scanner scanner;
     private final UserHandler userHandler;
+    private final ProgressHandler progressHandler;
 
-    public ConsoleAdapter(CreateUser createUser, RegisterUser login, LogUser logUser, SaveUser saveUser) {
+    public ConsoleAdapter(CreateUser createUser, RegisterUser login, LogUser logUser, SaveUser saveUser,
+                          TrackWeight trackWeight, SaveWeight saveWeight, LoadWeight loadWeight) {
         this.scanner = new Scanner(System.in);
         this.userHandler = new UserHandler(createUser, login, logUser, saveUser);
+        this.progressHandler = new ProgressHandler(logUser, trackWeight, saveWeight, loadWeight);
     }
 
     public void running() {
         boolean running = true;
         init();
-        startup();
         while (running) {
             try {
                 printMenu();
                 int option = getInt("Please enter the number of the action you want to perform: ");
                 switch (option) {
                     case 0:
-                        this.userHandler.saveUser();
+                        String saving = getString("Do you want so save before quitting? (y|n): ");
+                        if (saving.equals("y")) {
+                            save();
+                        }
                         System.out.println("See you ^^");
                         running = false;
                         break;
                     case 1:
                         this.userHandler.logUser();
+                        break;
+                    case 2:
+                        this.progressHandler.newWeightEntry();
+                        break;
+                    case 3:
+                        save();
                         break;
                     default:
                         System.out.println("The number you entered was not a valid option");
@@ -47,19 +65,16 @@ public class ConsoleAdapter {
     }
 
     private void init() {
-        // purpose: check if all needed files exist
-        String dir = Paths.get("").toAbsolutePath().toString();
-        String usersPath = dir + "/data/output/users.csv";
-        String dietsPath = dir + "/data/input/diets.csv";
-        String gainPath = dir + "/data/input/gain.csv";
-        String gymPath = dir + "/data/input/megaFymDataset.csv";
-        String nutrientsPath = dir + "/data/input/nutrients.csv";
-
-        CSVWriter usersWriter = new CSVWriter(usersPath);
-        usersWriter.createFile("name,age,currentWeight,mail,goalType,targetWeight");
+        // purpose: check if all needed files exist and get the content for the user
+        startup();
+        progressHandler.loadProgress();
     }
 
     private void startup() {
+        Path usersPath = Paths.get("").resolve("data").resolve("output").resolve("users.csv");
+        CSVWriter usersWriter = new CSVWriter(usersPath);
+        usersWriter.createFile("name,age,currentWeight,mail,goalType,targetWeight");
+
         boolean running = true;
         System.out.println("Welcome to your favorite fitness app");
         while (running) {
@@ -89,7 +104,14 @@ public class ConsoleAdapter {
         System.out.println();
         System.out.println("Main Menu");
         System.out.println("1 - user details");
+        System.out.println("2 - track your weight");
+        System.out.println("3 - save weight");
         System.out.println("0 - exit");
+    }
+
+    private void save() {
+        this.userHandler.saveUser();
+        this.progressHandler.saveWeight();
     }
 
     private int getInt(String msg) {
