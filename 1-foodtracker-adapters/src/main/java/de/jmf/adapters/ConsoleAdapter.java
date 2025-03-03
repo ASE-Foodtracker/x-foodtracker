@@ -2,7 +2,6 @@ package de.jmf.adapters;
 
 import de.jmf.adapters.handlers.UserHandler;
 import de.jmf.adapters.handlers.ProgressHandler;
-import de.jmf.adapters.io.CSVReader;
 import de.jmf.adapters.io.CSVWriter;
 import de.jmf.application.usecases.progress.LoadWeight;
 import de.jmf.application.usecases.progress.SaveWeight;
@@ -15,7 +14,6 @@ import de.jmf.application.usecases.user.SaveUser;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleAdapter {
@@ -52,9 +50,12 @@ public class ConsoleAdapter {
                     case 2:
                         this.progressHandler.newWeightEntry();
                         break;
-                    case 3:
+                    case 4:
                         this.userHandler.logOut();
                         startup();
+                        break;
+                    case 3:
+                        saving();
                         break;
                     default:
                         System.out.println("The number you entered was not a valid option");
@@ -102,12 +103,46 @@ public class ConsoleAdapter {
         }
     }
 
+    private void saving() {
+        boolean repeat = true;
+        System.out.println();
+        System.out.println("Saving");
+        System.out.println("1 - all");
+        System.out.println("2 - user details");
+        System.out.println("3 - weight progress");
+        System.out.println("0 - cancel");
+        while (repeat) {
+            int option = getInt("Please enter the number of the file(s) you want to save: ");
+            switch (option) {
+                case 0:
+                    repeat = false;
+                    break;
+                case 1:
+                    save();
+                    repeat = false;
+                    break;
+                case 2:
+                    this.userHandler.saveUser();
+                    repeat = false;
+                    break;
+                case 3:
+                    this.progressHandler.saveWeight();
+                    repeat = false;
+                    break;
+                default:
+                    System.out.println("The number you entered was not a valid option");
+                    break;
+            }
+        }
+    }
+
     private void printMenu() {
         System.out.println();
         System.out.println("Main Menu");
         System.out.println("1 - user details");
         System.out.println("2 - track your weight");
-        System.out.println("3 - log out");
+        System.out.println("3 - save");
+        System.out.println("4 - log out");
         System.out.println("0 - exit");
     }
 
