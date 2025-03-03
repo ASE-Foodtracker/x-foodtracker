@@ -32,6 +32,10 @@ public class UserRepository {
         return this.activeUser;
     }
 
+    public void logOut() {
+        this.activeUser = null;
+    }
+
     // ---- User List
 
     public void setUserList(List<String[]> users) {

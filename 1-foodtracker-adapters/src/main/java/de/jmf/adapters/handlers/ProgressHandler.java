@@ -36,8 +36,9 @@ public class ProgressHandler {
 
         CSVReader weightReader = new CSVReader(weightPath);
         List<String[]> weightLog = weightReader.readAll();
-
-        loadWeight.execute(weightLog);
+        if (!weightLog.isEmpty()) {
+            loadWeight.execute(weightLog);
+        }
     }
 
     public void newWeightEntry() {

@@ -18,10 +18,15 @@ public class TrackWeight {
     public double execute(Weight weight) {
         // Get previous weight for difference
         List<WeightLog> log = progressRepository.getProgress().getWeightLogs();
-        Weight previousWeight = log.get(log.size()-1).getWeight();
-        // Add Weight to Progress
-        progressRepository.addWeight(weight);
-        // Return difference
-        return weight.getValue() - previousWeight.getValue();
+        if (log.size() > 1) {
+            Weight previousWeight = log.get(log.size()-1).getWeight();
+            // Add Weight to Progress
+            progressRepository.addWeight(weight);
+            // Return difference
+            return weight.getValue() - previousWeight.getValue();
+        } else {
+            progressRepository.addWeight(weight);
+            return 0;
+        }
     }
 }

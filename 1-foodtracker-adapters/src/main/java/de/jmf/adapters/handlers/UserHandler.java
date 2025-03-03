@@ -4,6 +4,7 @@ import de.jmf.adapters.io.CSVReader;
 import de.jmf.adapters.io.CSVWriter;
 import de.jmf.application.exceptions.duplicateException;
 import de.jmf.application.usecases.user.CreateUser;
+import de.jmf.application.usecases.user.LogOutUser;
 import de.jmf.application.usecases.user.LogUser;
 import de.jmf.application.usecases.user.RegisterUser;
 import de.jmf.application.usecases.user.SaveUser;
@@ -22,14 +23,17 @@ public class UserHandler {
     private final RegisterUser login;
     private final LogUser logUser;
     private final SaveUser saveUser;
+    private final LogOutUser logOutUser;
 
     private final Scanner scanner;
 
-    public UserHandler(CreateUser createUser, RegisterUser login, LogUser logUser, SaveUser saveUser) {
+    public UserHandler(CreateUser createUser, RegisterUser login, LogUser logUser, SaveUser saveUser,
+            LogOutUser logOutUser) {
         this.createUser = createUser;
         this.login = login;
         this.logUser = logUser;
         this.saveUser = saveUser;
+        this.logOutUser = logOutUser;
         this.scanner = new Scanner(System.in);
     }
 
@@ -86,12 +90,14 @@ public class UserHandler {
             }
         } catch (Exception e) {
             System.out.print("Something went wrong. " + e.getMessage());
+            System.out.println();
             return true;
         }
     }
 
     public boolean createUser() {
         try {
+            System.out.println();
             System.out.println("Creating New Account");
             String mail = getString("Email: ");
             String name = getString("Name: ");
@@ -113,6 +119,11 @@ public class UserHandler {
             System.out.print("Something went wrong. " + e.getMessage());
             return true;
         }
+    }
+
+    public void logOut() {
+        logOutUser.execute();
+        System.out.println();
     }
 
     private int getInt(String msg) {
