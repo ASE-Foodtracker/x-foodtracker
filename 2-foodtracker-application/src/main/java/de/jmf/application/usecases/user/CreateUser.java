@@ -20,7 +20,7 @@ public class CreateUser {
         userRepository.setUserList(users);
     }
 
-    public void execute(String mail, String name, Integer age, Weight weight, FitnessGoal goal) {
+    public void execute(String mail, String name, Integer age, FitnessGoal goal) {
         Optional<User> optionalUser = userRepository.getUserByMail(mail);
         if (optionalUser.isPresent()) {
             // throw exception

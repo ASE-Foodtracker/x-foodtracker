@@ -51,9 +51,6 @@ public class ConsoleAdapter {
                     case 2:
                         this.progressHandler.newWeightEntry();
                         break;
-                    case 3:
-                        save();
-                        break;
                     default:
                         System.out.println("The number you entered was not a valid option");
                         break;
@@ -73,7 +70,7 @@ public class ConsoleAdapter {
     private void startup() {
         Path usersPath = Paths.get("").resolve("data").resolve("output").resolve("users.csv");
         CSVWriter usersWriter = new CSVWriter(usersPath);
-        usersWriter.createFile("name,age,currentWeight,mail,goalType,targetWeight");
+        usersWriter.createFile("name,age,mail,goalType,targetWeight");
 
         boolean running = true;
         System.out.println("Welcome to your favorite fitness app");
@@ -105,7 +102,6 @@ public class ConsoleAdapter {
         System.out.println("Main Menu");
         System.out.println("1 - user details");
         System.out.println("2 - track your weight");
-        System.out.println("3 - save weight");
         System.out.println("0 - exit");
     }
 

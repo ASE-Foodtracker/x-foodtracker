@@ -29,7 +29,7 @@ public class ProgressHandler {
     }
 
     public void loadProgress() {
-        String userName = logUser.execute().getName();
+        String userName = logUser.execute().getEmail();
 
         Path outputDir = Paths.get("").resolve("data").resolve("output");
         Path weightPath = outputDir.resolve(userName).resolve("weight.csv");
@@ -61,13 +61,13 @@ public class ProgressHandler {
         head[1] = "weight";
         weightLog.add(0, head);
 
-        String userName = logUser.execute().getName();
+        String email = logUser.execute().getEmail();
 
         // Clear data/output/users
         // Write Users to data/output/users
-        Path outputPath = Paths.get("").resolve("data").resolve("output").resolve(userName).resolve("weight.csv");
-        CSVWriter csvWriter = new CSVWriter(outputPath);
-        csvWriter.createDirectory(Paths.get("").toAbsolutePath().toString() + "/data/output/" + userName);
+        Path outputPath = Paths.get("").resolve("data").resolve("output").resolve(email);
+        CSVWriter csvWriter = new CSVWriter(outputPath.resolve("weight.csv"));
+        csvWriter.createDirectory(outputPath);
         csvWriter.createFile("date,weight");
         csvWriter.clear();
         csvWriter.saveAll(weightLog);

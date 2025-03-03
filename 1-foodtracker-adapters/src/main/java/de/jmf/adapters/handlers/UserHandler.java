@@ -38,10 +38,9 @@ public class UserHandler {
         String[] head = new String[6];
         head[0] = "name";
         head[1] = "age";
-        head[2] = "currentWeight";
-        head[3] = "mail";
-        head[4] = "goalType";
-        head[5] = "targetWeight";
+        head[2] = "mail";
+        head[3] = "goalType";
+        head[4] = "targetWeight";
 
         users.add(0, head);
         // Clear data/output/users
@@ -92,15 +91,14 @@ public class UserHandler {
             String mail = getString("Email: ");
             String name = getString("Name: ");
             int age = getInt("Age: ");
-            Weight weightC = new Weight(getDouble("Please enter you current weight: "));
             String goalType = getString("Do you want to (gain|loose) weight: ");
             Weight weightF = new Weight(getDouble("Please enter you target weight: "));
-            FitnessGoal goal = new FitnessGoal(goalType, weightF, weightC);
+            FitnessGoal goal = new FitnessGoal(goalType, weightF);
             // load user.csv
             Path currentPath = Paths.get("").resolve("data").resolve("output").resolve("users.csv");
             createUser.setup(new CSVReader(currentPath).readAll());
             // create user
-            createUser.execute(mail, name, age, weightC, goal);
+            createUser.execute(mail, name, age, goal);
             System.out.println("You successfully created a new account");
             return false;
         } catch (duplicateException e) {

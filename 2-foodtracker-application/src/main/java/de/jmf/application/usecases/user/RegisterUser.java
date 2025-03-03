@@ -14,6 +14,7 @@ public class RegisterUser {
     }
 
     public void setup(List<String[]> users) {
+        users.remove(0);
         userRepository.setUserList(users);
     }
 
