@@ -123,6 +123,7 @@ public class UserHandler {
 
     public void logOut() {
         logOutUser.execute();
+        System.out.println();
     }
 
     private int getInt(String msg) {
