@@ -7,6 +7,7 @@ import de.jmf.application.usecases.progress.LoadWeight;
 import de.jmf.application.usecases.progress.SaveWeight;
 import de.jmf.application.usecases.progress.TrackWeight;
 import de.jmf.application.usecases.user.CreateUser;
+import de.jmf.application.usecases.user.LogOutUser;
 import de.jmf.application.usecases.user.LogUser;
 import de.jmf.application.usecases.user.RegisterUser;
 import de.jmf.application.usecases.user.SaveUser;
@@ -20,12 +21,14 @@ public class Main {
         RegisterUser login = new RegisterUser(userRepository);
         LogUser logUser = new LogUser(userRepository);
         SaveUser saveUser = new SaveUser(userRepository);
+        LogOutUser logoutUser = new LogOutUser(userRepository);
 
         TrackWeight trackWeight = new TrackWeight(progressRepository);
         SaveWeight saveWeight = new SaveWeight(progressRepository);
         LoadWeight loadWeight = new LoadWeight(progressRepository);
 
-        ConsoleAdapter console = new ConsoleAdapter(createUser, login, logUser, saveUser, trackWeight, saveWeight, loadWeight);
+        ConsoleAdapter console = new ConsoleAdapter(createUser, login, logUser, saveUser, trackWeight, saveWeight,
+                loadWeight, logoutUser);
         // Start the application
         console.running();
     }

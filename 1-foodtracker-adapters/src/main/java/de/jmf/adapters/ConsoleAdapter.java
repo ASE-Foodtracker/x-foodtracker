@@ -8,6 +8,7 @@ import de.jmf.application.usecases.progress.LoadWeight;
 import de.jmf.application.usecases.progress.SaveWeight;
 import de.jmf.application.usecases.progress.TrackWeight;
 import de.jmf.application.usecases.user.CreateUser;
+import de.jmf.application.usecases.user.LogOutUser;
 import de.jmf.application.usecases.user.LogUser;
 import de.jmf.application.usecases.user.RegisterUser;
 import de.jmf.application.usecases.user.SaveUser;
@@ -23,9 +24,9 @@ public class ConsoleAdapter {
     private final ProgressHandler progressHandler;
 
     public ConsoleAdapter(CreateUser createUser, RegisterUser login, LogUser logUser, SaveUser saveUser,
-                          TrackWeight trackWeight, SaveWeight saveWeight, LoadWeight loadWeight) {
+            TrackWeight trackWeight, SaveWeight saveWeight, LoadWeight loadWeight, LogOutUser logOutUser) {
         this.scanner = new Scanner(System.in);
-        this.userHandler = new UserHandler(createUser, login, logUser, saveUser);
+        this.userHandler = new UserHandler(createUser, login, logUser, saveUser, logOutUser);
         this.progressHandler = new ProgressHandler(logUser, trackWeight, saveWeight, loadWeight);
     }
 
@@ -50,6 +51,10 @@ public class ConsoleAdapter {
                         break;
                     case 2:
                         this.progressHandler.newWeightEntry();
+                        break;
+                    case 3:
+                        this.userHandler.logOut();
+                        startup();
                         break;
                     default:
                         System.out.println("The number you entered was not a valid option");
@@ -102,6 +107,7 @@ public class ConsoleAdapter {
         System.out.println("Main Menu");
         System.out.println("1 - user details");
         System.out.println("2 - track your weight");
+        System.out.println("3 - log out");
         System.out.println("0 - exit");
     }
 
