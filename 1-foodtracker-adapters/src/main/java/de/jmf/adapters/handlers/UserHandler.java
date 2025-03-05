@@ -1,5 +1,6 @@
 package de.jmf.adapters.handlers;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
@@ -8,6 +9,7 @@ import de.jmf.adapters.io.CSVReader;
 import de.jmf.adapters.io.CSVWriter;
 import de.jmf.application.exceptions.duplicateException;
 import de.jmf.application.usecases.user.CreateUser;
+import de.jmf.application.usecases.user.LogOutUser;
 import de.jmf.application.usecases.user.LogUser;
 import de.jmf.application.usecases.user.RegisterUser;
 import de.jmf.application.usecases.user.SaveUser;
@@ -21,37 +23,39 @@ public class UserHandler {
     private final RegisterUser login;
     private final LogUser logUser;
     private final SaveUser saveUser;
+    private final LogOutUser logOutUser;
 
     private final Scanner scanner;
 
-    public UserHandler(CreateUser createUser, RegisterUser login, LogUser logUser, SaveUser saveUser) {
+    public UserHandler(CreateUser createUser, RegisterUser login, LogUser logUser, SaveUser saveUser,
+            LogOutUser logOutUser) {
         this.createUser = createUser;
         this.login = login;
         this.logUser = logUser;
         this.saveUser = saveUser;
+        this.logOutUser = logOutUser;
         this.scanner = new Scanner(System.in);
     }
 
     public void saveUser() {
         List<String[]> users = saveUser.execute();
-        String[] head = new String[6];
+        String[] head = new String[5];
         head[0] = "name";
         head[1] = "age";
-        head[2] = "currentWeight";
-        head[3] = "mail";
-        head[4] = "goalType";
-        head[5] = "targetWeight";
+        head[2] = "mail";
+        head[3] = "goalType";
+        head[4] = "targetWeight";
 
         users.add(0, head);
         // Clear data/output/users
         // Write Users to data/output/users
-        String outputPath = Paths.get("").toAbsolutePath().toString() + "/data/output/users.csv";
+        Path outputPath = Paths.get("").resolve("data").resolve("output").resolve("users.csv");
         CSVWriter csvWriter = new CSVWriter(outputPath);
         csvWriter.clear();
         csvWriter.saveAll(users);
     }
 
-    public void logUser() {
+    public User logUser() {
         try {
             System.out.println();
             System.out.println("Current Active User");
@@ -59,11 +63,12 @@ public class UserHandler {
             System.out.println("Mail: " + user.getEmail());
             System.out.println("Name: " + user.getName());
             System.out.println("Age: " + user.getAge());
-            System.out.println("Weight: " + user.getWeight().getValue());
             System.out.println("Goal: " + user.getGoal().getGoalType());
+            return user;
         } catch (Exception e) {
             System.out.println("User couldn't be fetched: " + e.getMessage());
         }
+        return null;
     }
 
     public String getUserMail(){
@@ -92,33 +97,39 @@ public class UserHandler {
             System.out.println("Registration");
             String mail = getString("Please enter your email: ");
             // load users.csv
-            String currentPath = Paths.get("").toAbsolutePath().toString() + "/data/output/users.csv";
+            Path currentPath = Paths.get("").resolve("data").resolve("output").resolve("users.csv");
             login.setup(new CSVReader(currentPath).readAll());
             // user login
-            login.execute(mail);
-            System.out.println("You successfully logged into your account");
-            return false;
+            boolean success = login.execute(mail);
+            if (success) {
+                System.out.println("You successfully logged into your account");
+                return false;
+            } else {
+                System.out.println("This user doesn't exist. Please try again.");
+                return true;
+            }
         } catch (Exception e) {
             System.out.print("Something went wrong. " + e.getMessage());
+            System.out.println();
             return true;
         }
     }
 
     public boolean createUser() {
         try {
+            System.out.println();
             System.out.println("Creating New Account");
             String mail = getString("Email: ");
             String name = getString("Name: ");
             int age = getInt("Age: ");
-            Weight weightC = new Weight(getDouble("Please enter you current weight: "));
             String goalType = getString("Do you want to (gain|loose) weight: ");
             Weight weightF = new Weight(getDouble("Please enter you target weight: "));
-            FitnessGoal goal = new FitnessGoal(goalType, weightF, weightC);
+            FitnessGoal goal = new FitnessGoal(goalType, weightF);
             // load user.csv
-            String currentPath = Paths.get("").toAbsolutePath().toString() + "/data/output/users.csv";
+            Path currentPath = Paths.get("").resolve("data").resolve("output").resolve("users.csv");
             createUser.setup(new CSVReader(currentPath).readAll());
             // create user
-            createUser.execute(mail, name, age, weightC, goal);
+            createUser.execute(mail, name, age, goal);
             System.out.println("You successfully created a new account");
             return false;
         } catch (duplicateException e) {
@@ -128,6 +139,11 @@ public class UserHandler {
             System.out.print("Something went wrong. " + e.getMessage());
             return true;
         }
+    }
+
+    public void logOut() {
+        logOutUser.execute();
+        System.out.println();
     }
 
     private int getInt(String msg) {

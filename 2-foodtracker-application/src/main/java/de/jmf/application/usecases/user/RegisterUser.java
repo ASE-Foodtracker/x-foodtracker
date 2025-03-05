@@ -14,15 +14,18 @@ public class RegisterUser {
     }
 
     public void setup(List<String[]> users) {
+        users.remove(0);
         userRepository.setUserList(users);
     }
 
-    public void execute(String mail) {
+    public boolean execute(String mail) {
         try {
             Optional<User> user = userRepository.getUserByMail(mail);
             user.ifPresent(userRepository::setUser);
+            return user.isPresent();
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return false;
         }
     }
 }
