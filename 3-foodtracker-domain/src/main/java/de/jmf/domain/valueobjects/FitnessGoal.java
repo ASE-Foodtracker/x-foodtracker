@@ -1,7 +1,7 @@
 package de.jmf.domain.valueobjects;
 
 public class FitnessGoal {
-    private final String goalType;  // "abnehmen" oder "muskelaufbau"
+    private final String goalType;  // "gain" or "loose"
     private final Weight targetWeight;
 
     public FitnessGoal(String goalType, Weight targetWeight) {

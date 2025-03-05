@@ -12,7 +12,9 @@ import de.jmf.application.repositories.GymPlanRepository;
 
 public class CreateGymPlan {
     private final GymPlanRepository gymPlanRepository;
-    private final String gymExercisesPath = "data/output/megaGymDataset.csv";
+    private final String gymExercisesPath = "data/input/megaGymDataset.csv";
+    private final String gainWeight = "gain";
+    private final String looseWeight = "loose";
 
     public CreateGymPlan(GymPlanRepository gymPlanRepository) {
         this.gymPlanRepository = gymPlanRepository;
@@ -22,11 +24,12 @@ public class CreateGymPlan {
         List<String> exercises = readExercisesFromCsv(gymExercisesPath);
         List<String> gymPlan = new ArrayList<>();
 
-        if ("gain weight".equalsIgnoreCase(fitnessGoal)) {
+        System.out.println(fitnessGoal);
+        if (gainWeight.equalsIgnoreCase(fitnessGoal)) {
             gymPlan.addAll(getRandomExercises(exercises, "Monday", 3));
             gymPlan.addAll(getRandomExercises(exercises, "Wednesday", 3));
             gymPlan.addAll(getRandomExercises(exercises, "Friday", 3));
-        } else if ("reduce weight".equalsIgnoreCase(fitnessGoal)) {
+        } else if (looseWeight.equalsIgnoreCase(fitnessGoal)) {
             gymPlan.addAll(getCardioExercises(exercises, "Monday"));
             gymPlan.addAll(getCardioExercises(exercises, "Tuesday"));
             gymPlan.addAll(getCardioExercises(exercises, "Wednesday"));

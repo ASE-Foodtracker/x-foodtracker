@@ -16,7 +16,7 @@ public class GymPlanHandler {
 
     public void createGymPlan(String fitnessGoal) {
         try {
-            gymPlan = createGymPlan.createPlan(fitnessGoal);
+            this.gymPlan = createGymPlan.createPlan(fitnessGoal);
             System.out.println("Gym plan created successfully.");
         } catch (IOException e) {
             System.out.println("Error creating gym plan: " + e.getMessage());
@@ -30,6 +30,7 @@ public class GymPlanHandler {
     public List<String> getGymPlan() {
         if(gymPlan == null){
             System.out.println("Gym plan not created yet.");
+            //try to get an existing one of the csv with the user mail
             return null;
         }else{
             System.out.println("Gym plan retrieved successfully.");
