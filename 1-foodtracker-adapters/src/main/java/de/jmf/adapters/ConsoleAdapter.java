@@ -1,22 +1,26 @@
 package de.jmf.adapters;
 
+import java.nio.file.Paths;
+import java.util.Scanner;
+
+import de.jmf.adapters.handlers.GymPlanHandler;
 import de.jmf.adapters.handlers.UserHandler;
 import de.jmf.adapters.io.CSVWriter;
+import de.jmf.application.usecases.CreateGymPlan;
 import de.jmf.application.usecases.user.CreateUser;
 import de.jmf.application.usecases.user.LogUser;
 import de.jmf.application.usecases.user.RegisterUser;
 import de.jmf.application.usecases.user.SaveUser;
 
-import java.nio.file.Paths;
-import java.util.Scanner;
-
 public class ConsoleAdapter {
     private final Scanner scanner;
     private final UserHandler userHandler;
+    private final GymPlanHandler gymPlanHandler;    
 
-    public ConsoleAdapter(CreateUser createUser, RegisterUser login, LogUser logUser, SaveUser saveUser) {
+    public ConsoleAdapter(CreateUser createUser, RegisterUser login, LogUser logUser, SaveUser saveUser, CreateGymPlan createGymPlan) {
         this.scanner = new Scanner(System.in);
         this.userHandler = new UserHandler(createUser, login, logUser, saveUser);
+        this.gymPlanHandler = new GymPlanHandler(createGymPlan);
     }
 
     public void running() {
@@ -35,6 +39,26 @@ public class ConsoleAdapter {
                         break;
                     case 1:
                         this.userHandler.logUser();
+                        break;
+                    case 2:
+                        String fitnessGoal = this.userHandler.getUserFitnessGoal();
+                        String userMail = this.userHandler.getUserMail();
+                        while (true) {
+                            this.gymPlanHandler.createGymPlan(fitnessGoal);
+                            System.out.println("Do you want to see the plan first in the console? (yes/no)");
+                            String seePlan = getString("Please enter your choice: ");
+                            if (seePlan.equalsIgnoreCase("yes")) {
+                                this.gymPlanHandler.printGymPlan();
+                            }
+                            System.out.println("Do you want to save the plan, retry or exit? (save/retry/exit)");
+                            String savePlan = getString("Please enter your choice: ");
+                            if (savePlan.equalsIgnoreCase("save")) {
+                                this.gymPlanHandler.saveGymPlan(userMail);
+                                break;
+                            }else if(savePlan.equalsIgnoreCase("exit")){
+                                break;
+                            }
+                        }
                         break;
                     default:
                         System.out.println("The number you entered was not a valid option");
@@ -89,6 +113,7 @@ public class ConsoleAdapter {
         System.out.println();
         System.out.println("Main Menu");
         System.out.println("1 - user details");
+        System.out.println("2 - create new Gymplan");
         System.out.println("0 - exit");
     }
 

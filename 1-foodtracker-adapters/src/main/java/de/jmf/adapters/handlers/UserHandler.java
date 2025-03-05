@@ -1,5 +1,9 @@
 package de.jmf.adapters.handlers;
 
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Scanner;
+
 import de.jmf.adapters.io.CSVReader;
 import de.jmf.adapters.io.CSVWriter;
 import de.jmf.application.exceptions.duplicateException;
@@ -10,10 +14,6 @@ import de.jmf.application.usecases.user.SaveUser;
 import de.jmf.domain.entities.User;
 import de.jmf.domain.valueobjects.FitnessGoal;
 import de.jmf.domain.valueobjects.Weight;
-
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.Scanner;
 
 public class UserHandler {
 
@@ -63,6 +63,26 @@ public class UserHandler {
             System.out.println("Goal: " + user.getGoal().getGoalType());
         } catch (Exception e) {
             System.out.println("User couldn't be fetched: " + e.getMessage());
+        }
+    }
+
+    public String getUserMail(){
+        try{
+            User user = logUser.execute();
+            return user.getEmail();
+        } catch (Exception e){
+            System.out.println("User couldn't be fetched: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public String getUserFitnessGoal(){
+        try{
+            User user = logUser.execute();
+            return user.getGoal().getGoalType();
+        } catch (Exception e){
+            System.out.println("User couldn't be fetched: " + e.getMessage());
+            return null;
         }
     }
 
