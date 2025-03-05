@@ -1,8 +1,12 @@
 package de.jmf.adapters;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Scanner;
+
 import de.jmf.adapters.handlers.GymPlanHandler;
-import de.jmf.adapters.handlers.UserHandler;
 import de.jmf.adapters.handlers.ProgressHandler;
+import de.jmf.adapters.handlers.UserHandler;
 import de.jmf.adapters.io.CSVWriter;
 import de.jmf.application.usecases.CreateGymPlan;
 import de.jmf.application.usecases.progress.LoadWeight;
@@ -13,10 +17,6 @@ import de.jmf.application.usecases.user.LogOutUser;
 import de.jmf.application.usecases.user.LogUser;
 import de.jmf.application.usecases.user.RegisterUser;
 import de.jmf.application.usecases.user.SaveUser;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Scanner;
 
 public class ConsoleAdapter {
     private final Scanner scanner;
@@ -72,7 +72,7 @@ public class ConsoleAdapter {
                         }
                         break;
                     case 3:
-                        this.progressHandler.trackWeight();
+                        //this.progressHandler.trackWeight();
                         break;
                     case 4:
                         this.userHandler.logOut();
