@@ -183,10 +183,6 @@ public class ProgressHandler {
         csvWriter.saveAll(meals);
     }
 
-    public void loadMeals() {
-
-    }
-
     // Utility
 
     private int getInt(String msg) {
@@ -204,7 +200,7 @@ public class ProgressHandler {
         while (true) {
             try {
                 System.out.print(msg);
-                return scanner.next().trim();
+                return scanner.nextLine().trim();
             } catch (Exception e) {
                 System.out.println("Wrong input please try again.");
             }

@@ -70,7 +70,6 @@ public class ConsoleAdapter {
         // purpose: check if all needed files exist and get the content for the user
         startup();
         progressHandler.loadProgress();
-        progressHandler.loadMeals();
     }
 
     private void startup() {
