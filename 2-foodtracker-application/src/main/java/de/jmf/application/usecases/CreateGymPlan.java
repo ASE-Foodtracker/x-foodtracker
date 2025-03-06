@@ -17,6 +17,14 @@ public class CreateGymPlan {
         this.gymPlanRepository = gymPlanRepository;
     }
 
+    public List<String[]> getGymPlan(String userMail) throws Exception {
+        return gymPlanRepository.getGymPlan(userMail);
+    }
+
+    public void setGymPlan(List<String[]> gymPlan){
+        gymPlanRepository.setGymPlan(gymPlan);
+    }
+
     public void createPlan(String fitnessGoal, List<String[]> exercises, String userMail) throws IOException {
         List<String[]> gymPlan = new ArrayList<>();
 
@@ -65,13 +73,5 @@ public class CreateGymPlan {
             randomItems.add(exerciseWithDay);
         }
         return randomItems;
-    }
-
-    public List<String[]> getGymPlan(String userMail) throws Exception {
-        return gymPlanRepository.getGymPlan(userMail);
-    }
-
-    public void setGymPlan(List<String[]> gymPlan){
-        gymPlanRepository.setGymPlan(gymPlan);
     }
 }

@@ -55,16 +55,15 @@ public class ConsoleAdapter {
                         String fitnessGoal = this.userHandler.getUserFitnessGoal();
                         String userMail = this.userHandler.getUserMail();
                         while (true) {
-
-                            // do you want to load your existing plan or do you want to create a new one? (load/create)
                             System.out.println("Do you want to load your existing plan or do you want to create a new one? (load/create)");
                             String loadOrCreate = getString("Please enter your choice: ");
+
                             if (loadOrCreate.equalsIgnoreCase("load")) {
                                 // print the gymplan of the gymPlanRepository for the user
                                 this.gymPlanHandler.getGymPlan(userMail);
                                 this.gymPlanHandler.printGymPlan(userMail);
                                 break;
-                            }else{
+                            }else if(loadOrCreate.equalsIgnoreCase("create")){
                                 this.gymPlanHandler.createGymPlan(fitnessGoal, userMail);
                                 System.out.println("Do you want to see the plan first in the console? (yes/no)");
                                 String seePlan = getString("Please enter your choice: ");
@@ -78,7 +77,13 @@ public class ConsoleAdapter {
                                     break;
                                 }else if(savePlan.equalsIgnoreCase("exit")){
                                     break;
+                                }else if(savePlan.equalsIgnoreCase("retry")){
+                                }else{
+                                    System.out.println("The input was not valid. You will get navigated back to the menu");
+                                    break;
                                 }
+                            }else{
+                                System.out.println("The input was not valid. Please try again.");
                             }
                         }
                         break;

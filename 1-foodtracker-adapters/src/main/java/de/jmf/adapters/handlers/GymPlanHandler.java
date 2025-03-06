@@ -22,15 +22,16 @@ public class GymPlanHandler {
             Path inputDir = Paths.get("").resolve("data").resolve("input").resolve("megaGymDataset.csv");
             CSVReader gymReader = new CSVReader(inputDir);
 
-            createGymPlan.createPlan(fitnessGoal, gymReader.readAll(), userMail);
+            this.createGymPlan.createPlan(fitnessGoal, gymReader.readAll(), userMail);
             System.out.println("Gym plan created successfully.");
+        
         } catch (IOException e) {
             System.out.println("Error creating gym plan: " + e.getMessage());
         }
     }
 
     public void saveGymPlan(String userMail) throws Exception{
-        List<String[]> gymPlan = createGymPlan.getGymPlan(userMail);
+        List<String[]> gymPlan = this.createGymPlan.getGymPlan(userMail);
         
         if (gymPlan == null || gymPlan.isEmpty()) {
             System.out.println("No gym plan to save.");
@@ -59,7 +60,7 @@ public class GymPlanHandler {
 
     public void printGymPlan(String userMail) throws Exception {
         ConsoleWriter consoleWriter = new ConsoleWriter();
-        List<String[]> gymPlan = createGymPlan.getGymPlan(userMail);
+        List<String[]> gymPlan = this.createGymPlan.getGymPlan(userMail);
         consoleWriter.printGymPlan(gymPlan);
     }
 }
