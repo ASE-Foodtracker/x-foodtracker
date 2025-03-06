@@ -18,11 +18,11 @@ public class CreateGymPlan {
     }
 
     public List<String[]> getGymPlan(String userMail) throws Exception {
-        return gymPlanRepository.getGymPlan(userMail);
+        return this.gymPlanRepository.getGymPlan(userMail);
     }
 
     public void setGymPlan(List<String[]> gymPlan){
-        gymPlanRepository.setGymPlan(gymPlan);
+        this.gymPlanRepository.setGymPlan(gymPlan);
     }
 
     public void createPlan(String fitnessGoal, List<String[]> exercises, String userMail) throws IOException {

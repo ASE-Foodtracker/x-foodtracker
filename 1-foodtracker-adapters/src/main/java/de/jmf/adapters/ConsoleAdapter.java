@@ -60,14 +60,16 @@ public class ConsoleAdapter {
 
                             if (loadOrCreate.equalsIgnoreCase("load")) {
                                 // print the gymplan of the gymPlanRepository for the user
-                                this.gymPlanHandler.getGymPlan(userMail);
+                                this.gymPlanHandler.loadGymPlan(userMail);
                                 this.gymPlanHandler.printGymPlan(userMail);
                                 break;
                             }else if(loadOrCreate.equalsIgnoreCase("create")){
                                 this.gymPlanHandler.createGymPlan(fitnessGoal, userMail);
                                 System.out.println("Do you want to see the plan first in the console? (yes/no)");
+                                System.out.println();
                                 String seePlan = getString("Please enter your choice: ");
                                 if (seePlan.equalsIgnoreCase("yes")) {
+                                    System.out.println();
                                     this.gymPlanHandler.printGymPlan(userMail);
                                 }
                                 System.out.println("Do you want to save the plan, retry or exit? (save/retry/exit)");

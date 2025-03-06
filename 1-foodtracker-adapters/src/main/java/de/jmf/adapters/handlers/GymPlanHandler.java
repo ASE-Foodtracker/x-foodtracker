@@ -37,7 +37,7 @@ public class GymPlanHandler {
             System.out.println("No gym plan to save.");
             return;
         }
-        gymPlan.add(0, new String[]{"Day", "Exercise", "Details"});
+        gymPlan.add(0, new String[]{"Day", "Exercise", "Type", "Level", "BodyPart", "Sets", "Reps", "Duration"});
 
         Path outputPath = Paths.get("").resolve("data").resolve("output").resolve(userMail);
         CSVWriter csvWriter = new CSVWriter(outputPath.resolve("gymPlan.csv"));
@@ -49,7 +49,7 @@ public class GymPlanHandler {
         System.out.println("Gym plan saved successfully.");
     }
 
-    public void getGymPlan(String userMail){
+    public void loadGymPlan(String userMail){
         // Use the CSVReader to read the gym plan with the specific userMail
         Path inputDir = Paths.get("").resolve("data").resolve("output").resolve(userMail).resolve("gymPlan.csv");
         CSVReader gymReader = new CSVReader(inputDir);
@@ -57,10 +57,12 @@ public class GymPlanHandler {
         this.createGymPlan.setGymPlan(gymReader.readAll());
     }
 
-
     public void printGymPlan(String userMail) throws Exception {
         ConsoleWriter consoleWriter = new ConsoleWriter();
         List<String[]> gymPlan = this.createGymPlan.getGymPlan(userMail);
+        if (gymPlan != null && !gymPlan.isEmpty()) {
+            gymPlan.remove(0); // Remove the first entry
+        }
         consoleWriter.printGymPlan(gymPlan);
     }
 }
