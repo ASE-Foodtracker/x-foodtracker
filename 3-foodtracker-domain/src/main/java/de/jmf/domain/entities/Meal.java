@@ -1,12 +1,9 @@
 package de.jmf.domain.entities;
 
-import java.util.List;
-
 public class Meal {
     private String name;
     private int calories;
     private int protein;
-    private List<String> ingredients;
 
     public Meal(String name, int protein, int calories) {
         this.name = name;
@@ -20,7 +17,6 @@ public class Meal {
 
     // Getters and Setters
 
-
     public String getName() {
         return name;
     }
@@ -29,5 +25,7 @@ public class Meal {
         return calories;
     }
 
-    public int getProtein() {return protein;}
+    public int getProtein() {
+        return protein;
+    }
 }

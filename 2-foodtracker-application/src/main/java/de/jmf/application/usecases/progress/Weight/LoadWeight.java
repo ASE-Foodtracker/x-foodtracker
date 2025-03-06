@@ -1,11 +1,10 @@
-package de.jmf.application.usecases.progress;
+package de.jmf.application.usecases.progress.Weight;
 
 import de.jmf.application.repositories.ProgressRepository;
 import de.jmf.domain.entities.WeightLog;
 import de.jmf.domain.valueobjects.Weight;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -6,10 +6,10 @@ import de.jmf.domain.entities.User;
 import java.util.List;
 import java.util.Optional;
 
-public class RegisterUser {
+public class LoginUser {
     private final UserRepository userRepository;
 
-    public RegisterUser(UserRepository userRepository) {
+    public LoginUser(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

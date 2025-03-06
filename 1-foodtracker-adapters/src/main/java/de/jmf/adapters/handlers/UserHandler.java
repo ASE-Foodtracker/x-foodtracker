@@ -5,8 +5,8 @@ import de.jmf.adapters.io.CSVWriter;
 import de.jmf.application.exceptions.duplicateException;
 import de.jmf.application.usecases.user.CreateUser;
 import de.jmf.application.usecases.user.LogOutUser;
-import de.jmf.application.usecases.user.LogUser;
-import de.jmf.application.usecases.user.RegisterUser;
+import de.jmf.application.usecases.user.GetActiveUser;
+import de.jmf.application.usecases.user.LoginUser;
 import de.jmf.application.usecases.user.SaveUser;
 import de.jmf.domain.entities.User;
 import de.jmf.domain.valueobjects.FitnessGoal;
@@ -20,15 +20,15 @@ import java.util.Scanner;
 public class UserHandler {
 
     private final CreateUser createUser;
-    private final RegisterUser login;
-    private final LogUser logUser;
+    private final LoginUser login;
+    private final GetActiveUser logUser;
     private final SaveUser saveUser;
     private final LogOutUser logOutUser;
 
     private final Scanner scanner;
 
-    public UserHandler(CreateUser createUser, RegisterUser login, LogUser logUser, SaveUser saveUser,
-            LogOutUser logOutUser) {
+    public UserHandler(CreateUser createUser, LoginUser login, GetActiveUser logUser, SaveUser saveUser,
+                       LogOutUser logOutUser) {
         this.createUser = createUser;
         this.login = login;
         this.logUser = logUser;

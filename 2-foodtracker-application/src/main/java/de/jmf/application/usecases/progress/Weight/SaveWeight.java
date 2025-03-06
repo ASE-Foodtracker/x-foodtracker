@@ -1,4 +1,4 @@
-package de.jmf.application.usecases.progress;
+package de.jmf.application.usecases.progress.Weight;
 
 import java.util.ArrayList;
 import java.util.List;

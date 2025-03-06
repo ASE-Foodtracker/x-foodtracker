@@ -3,15 +3,9 @@ package de.jmf.adapters;
 import de.jmf.adapters.handlers.UserHandler;
 import de.jmf.adapters.handlers.ProgressHandler;
 import de.jmf.adapters.io.CSVWriter;
-import de.jmf.application.usecases.progress.LoadWeight;
-import de.jmf.application.usecases.progress.SaveWeight;
-import de.jmf.application.usecases.progress.TrackWeight;
-import de.jmf.application.usecases.user.CreateUser;
-import de.jmf.application.usecases.user.LogOutUser;
-import de.jmf.application.usecases.user.LogUser;
-import de.jmf.application.usecases.user.RegisterUser;
-import de.jmf.application.usecases.user.SaveUser;
-
+import de.jmf.application.usecases.progress.Meals.*;
+import de.jmf.application.usecases.progress.Weight.*;
+import de.jmf.application.usecases.user.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
@@ -21,11 +15,13 @@ public class ConsoleAdapter {
     private final UserHandler userHandler;
     private final ProgressHandler progressHandler;
 
-    public ConsoleAdapter(CreateUser createUser, RegisterUser login, LogUser logUser, SaveUser saveUser,
-            TrackWeight trackWeight, SaveWeight saveWeight, LoadWeight loadWeight, LogOutUser logOutUser) {
+    public ConsoleAdapter(CreateUser createUser, LoginUser login, GetActiveUser logUser, SaveUser saveUser,
+            TrackWeight trackWeight, SaveWeight saveWeight, LoadWeight loadWeight, LogOutUser logOutUser,
+            SaveMeal saveMeal, GetTodaysMeals logTodaysMeals, RemoveMeal removeMeal, GetAllMeals getAllMeals) {
         this.scanner = new Scanner(System.in);
         this.userHandler = new UserHandler(createUser, login, logUser, saveUser, logOutUser);
-        this.progressHandler = new ProgressHandler(logUser, trackWeight, saveWeight, loadWeight);
+        this.progressHandler = new ProgressHandler(logUser, trackWeight, saveWeight, loadWeight, saveMeal,
+                logTodaysMeals, removeMeal, getAllMeals);
     }
 
     public void running() {
@@ -50,12 +46,15 @@ public class ConsoleAdapter {
                     case 2:
                         this.progressHandler.newWeightEntry();
                         break;
+                    case 3:
+                        mealManagement();
+                        break;
                     case 4:
+                        saving();
+                        break;
+                    case 5:
                         this.userHandler.logOut();
                         startup();
-                        break;
-                    case 3:
-                        saving();
                         break;
                     default:
                         System.out.println("The number you entered was not a valid option");
@@ -71,6 +70,7 @@ public class ConsoleAdapter {
         // purpose: check if all needed files exist and get the content for the user
         startup();
         progressHandler.loadProgress();
+        progressHandler.loadMeals();
     }
 
     private void startup() {
@@ -110,7 +110,8 @@ public class ConsoleAdapter {
         System.out.println("1 - all");
         System.out.println("2 - user details");
         System.out.println("3 - weight progress");
-        System.out.println("0 - cancel");
+        System.out.println("4 - meals");
+        System.out.println("0 - back");
         while (repeat) {
             int option = getInt("Please enter the number of the file(s) you want to save: ");
             switch (option) {
@@ -129,6 +130,10 @@ public class ConsoleAdapter {
                     this.progressHandler.saveWeight();
                     repeat = false;
                     break;
+                case 4:
+                    this.progressHandler.saveMeals();
+                    repeat = false;
+                    break;
                 default:
                     System.out.println("The number you entered was not a valid option");
                     break;
@@ -141,14 +146,50 @@ public class ConsoleAdapter {
         System.out.println("Main Menu");
         System.out.println("1 - user details");
         System.out.println("2 - track your weight");
-        System.out.println("3 - save");
-        System.out.println("4 - log out");
+        System.out.println("3 - meal management");
+        System.out.println("4 - save");
+        System.out.println("5 - log out");
         System.out.println("0 - exit");
+    }
+
+    private void mealManagement() {
+        boolean running = true;
+        while (running) {
+            try {
+                System.out.println();
+                System.out.println("Meal Management");
+                System.out.println("1 - add meal");
+                System.out.println("2 - remove meal");
+                System.out.println("3 - show todays meals");
+                System.out.println("0 - back");
+                int option = getInt("Please enter the number of the action you want to perform: ");
+                switch (option) {
+                    case 0:
+                        running = false;
+                        break;
+                    case 1:
+                        this.progressHandler.newMealEntry();
+                        break;
+                    case 2:
+                        this.progressHandler.removeMeal();
+                        break;
+                    case 3:
+                        this.progressHandler.logTodaysMeals();
+                        break;
+                    default:
+                        System.out.println("The number you entered was not a valid option");
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("An error occurred" + e.getMessage());
+            }
+        }
     }
 
     private void save() {
         this.userHandler.saveUser();
         this.progressHandler.saveWeight();
+        this.progressHandler.saveMeals();
     }
 
     private int getInt(String msg) {

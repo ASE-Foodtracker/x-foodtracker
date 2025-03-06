@@ -1,8 +1,6 @@
-package de.jmf.application.usecases.progress;
+package de.jmf.application.usecases.progress.Weight;
 
 import de.jmf.application.repositories.ProgressRepository;
-import de.jmf.application.repositories.UserRepository;
-import de.jmf.domain.entities.User;
 import de.jmf.domain.entities.WeightLog;
 import de.jmf.domain.valueobjects.Weight;
 
