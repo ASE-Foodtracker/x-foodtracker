@@ -28,7 +28,7 @@ public class UserHandler {
     private final Scanner scanner;
 
     public UserHandler(CreateUser createUser, LoginUser login, GetActiveUser logUser, SaveUser saveUser,
-                       LogOutUser logOutUser) {
+            LogOutUser logOutUser) {
         this.createUser = createUser;
         this.login = login;
         this.logUser = logUser;
@@ -37,7 +37,7 @@ public class UserHandler {
         this.scanner = new Scanner(System.in);
     }
 
-    public void saveUser() {
+    public boolean saveUser() {
         List<String[]> users = saveUser.execute();
         String[] head = new String[5];
         head[0] = "name";
@@ -53,6 +53,7 @@ public class UserHandler {
         CSVWriter csvWriter = new CSVWriter(outputPath);
         csvWriter.clear();
         csvWriter.saveAll(users);
+        return false;
     }
 
     public User logUser() {

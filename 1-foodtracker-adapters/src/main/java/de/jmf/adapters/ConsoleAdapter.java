@@ -122,16 +122,13 @@ public class ConsoleAdapter {
                     repeat = false;
                     break;
                 case 2:
-                    this.userHandler.saveUser();
-                    repeat = false;
+                    repeat = this.userHandler.saveUser();
                     break;
                 case 3:
-                    this.progressHandler.saveWeight();
-                    repeat = false;
+                    repeat = this.progressHandler.saveWeight();
                     break;
                 case 4:
-                    this.progressHandler.saveMeals();
-                    repeat = false;
+                    repeat = this.progressHandler.saveMeals();
                     break;
                 default:
                     System.out.println("The number you entered was not a valid option");

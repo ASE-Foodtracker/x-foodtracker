@@ -84,7 +84,7 @@ public class ProgressHandler {
         }
     }
 
-    public void saveWeight() {
+    public boolean saveWeight() {
         List<String[]> weightLog = saveWeight.execute();
         String[] head = new String[2];
         head[0] = "date";
@@ -101,6 +101,7 @@ public class ProgressHandler {
         csvWriter.createFile("date,weight");
         csvWriter.clear();
         csvWriter.saveAll(weightLog);
+        return false;
     }
 
     // MealHandler
@@ -164,7 +165,7 @@ public class ProgressHandler {
         }
     }
 
-    public void saveMeals() {
+    public boolean saveMeals() {
         List<String[]> meals = getAllMeals.execute();
         String email = logUser.execute().getEmail();
         String[] head = new String[4];
@@ -181,6 +182,7 @@ public class ProgressHandler {
         csvWriter.clear();
 
         csvWriter.saveAll(meals);
+        return false;
     }
 
     // Utility
@@ -189,7 +191,7 @@ public class ProgressHandler {
         while (true) {
             try {
                 System.out.print(msg);
-                return Integer.parseInt(scanner.next().trim());
+                return Integer.parseInt(scanner.nextLine().trim());
             } catch (Exception e) {
                 System.out.println("Wrong input please try again.");
             }
@@ -211,7 +213,7 @@ public class ProgressHandler {
         while (true) {
             try {
                 System.out.print(msg);
-                return Double.parseDouble(scanner.next().trim());
+                return Double.parseDouble(scanner.nextLine().trim());
             } catch (Exception e) {
                 System.out.println("Wrong input please try again.");
             }
