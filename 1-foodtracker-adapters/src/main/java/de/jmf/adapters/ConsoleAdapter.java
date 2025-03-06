@@ -55,19 +55,30 @@ public class ConsoleAdapter {
                         String fitnessGoal = this.userHandler.getUserFitnessGoal();
                         String userMail = this.userHandler.getUserMail();
                         while (true) {
-                            this.gymPlanHandler.createGymPlan(fitnessGoal);
-                            System.out.println("Do you want to see the plan first in the console? (yes/no)");
-                            String seePlan = getString("Please enter your choice: ");
-                            if (seePlan.equalsIgnoreCase("yes")) {
-                                this.gymPlanHandler.printGymPlan();
-                            }
-                            System.out.println("Do you want to save the plan, retry or exit? (save/retry/exit)");
-                            String savePlan = getString("Please enter your choice: ");
-                            if (savePlan.equalsIgnoreCase("save")) {
-                                this.gymPlanHandler.saveGymPlan(userMail);
+
+                            // do you want to load your existing plan or do you want to create a new one? (load/create)
+                            System.out.println("Do you want to load your existing plan or do you want to create a new one? (load/create)");
+                            String loadOrCreate = getString("Please enter your choice: ");
+                            if (loadOrCreate.equalsIgnoreCase("load")) {
+                                // print the gymplan of the gymPlanRepository for the user
+                                this.gymPlanHandler.getGymPlan(userMail);
+                                this.gymPlanHandler.printGymPlan(userMail);
                                 break;
-                            }else if(savePlan.equalsIgnoreCase("exit")){
-                                break;
+                            }else{
+                                this.gymPlanHandler.createGymPlan(fitnessGoal, userMail);
+                                System.out.println("Do you want to see the plan first in the console? (yes/no)");
+                                String seePlan = getString("Please enter your choice: ");
+                                if (seePlan.equalsIgnoreCase("yes")) {
+                                    this.gymPlanHandler.printGymPlan(userMail);
+                                }
+                                System.out.println("Do you want to save the plan, retry or exit? (save/retry/exit)");
+                                String savePlan = getString("Please enter your choice: ");
+                                if (savePlan.equalsIgnoreCase("save")) {
+                                    this.gymPlanHandler.saveGymPlan(userMail);
+                                    break;
+                                }else if(savePlan.equalsIgnoreCase("exit")){
+                                    break;
+                                }
                             }
                         }
                         break;
@@ -86,7 +97,7 @@ public class ConsoleAdapter {
                         break;
                 }
             } catch (Exception e) {
-                System.out.println("An error occurred" + e.getMessage());
+                System.out.println("An error occurredhbhjbhjb" + e.getMessage());
             }
         }
     }
@@ -164,7 +175,7 @@ public class ConsoleAdapter {
         System.out.println();
         System.out.println("Main Menu");
         System.out.println("1 - user details");
-        System.out.println("2 - create new Gymplan");
+        System.out.println("2 - Gymplan Menu");
         System.out.println("3 - track your weight");
         System.out.println("4 - log out");
         System.out.println("5 - save");

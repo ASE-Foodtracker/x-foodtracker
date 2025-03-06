@@ -9,7 +9,7 @@ public class ConsoleWriter {
 
     }
 
-    public void printGymPlan(List<String> gymPlan) {
+    public void printGymPlan(List<String[]> gymPlan) {
         if (gymPlan == null) {
             System.out.println("Gym plan not created yet.");
             return;
@@ -20,18 +20,18 @@ public class ConsoleWriter {
             return;
         }
 
-        String firstEntry = gymPlan.get(0);
-        if (firstEntry.contains("Sets")) {
+        String[] firstEntry = gymPlan.get(0);
+        if (firstEntry.length > 2 && firstEntry[2].contains("Sets")) {
             // Weight gain plan
             System.out.println("Day      | Exercise     | Sets | Reps");
-            for (String entry : gymPlan) {
-                System.out.println(entry);
+            for (String[] entry : gymPlan) {
+                System.out.println(String.join(" | ", entry));
             }
         } else {
             // Cardio plan
             System.out.println("Day      | Exercise | Duration");
-            for (String entry : gymPlan) {
-                System.out.println(entry);
+            for (String[] entry : gymPlan) {
+                System.out.println(String.join(" | ", entry));
             }
         }
     }
