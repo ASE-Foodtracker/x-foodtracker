@@ -21,7 +21,6 @@ public class CreateGymPlan {
     public List<String> createPlan(String fitnessGoal, List<String[]> exercises) throws IOException {
         List<String> gymPlan = new ArrayList<>();
 
-        System.out.println(fitnessGoal);
         if (gainWeight.equalsIgnoreCase(fitnessGoal)) {
             gymPlan.addAll(getRandomExercises(exercises, "Monday", 3));
             gymPlan.addAll(getRandomExercises(exercises, "Wednesday", 3));

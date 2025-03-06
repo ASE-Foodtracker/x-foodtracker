@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import de.jmf.adapters.io.CSVReader;
+import de.jmf.adapters.io.CSVWriter;
 import de.jmf.adapters.io.ConsoleWriter;
 import de.jmf.application.usecases.CreateGymPlan;
 
@@ -31,7 +32,26 @@ public class GymPlanHandler {
     }
 
     public void saveGymPlan(String userMail){
-        //to be continued
+        if (gymPlan == null || gymPlan.isEmpty()) {
+            System.out.println("No gym plan to save.");
+            return;
+        }
+
+        // Add header to gym plan
+        gymPlan.add(0, "Day,Exercise,Details");
+
+        // Define the output path
+        Path outputPath = Paths.get("").resolve("data").resolve("output").resolve(userMail);
+        CSVWriter csvWriter = new CSVWriter(outputPath.resolve("gymPlan.csv"));
+
+        // Create directory if it doesn't exist
+        csvWriter.createDirectory(outputPath);
+
+        // Clear existing file and save the new gym plan
+        csvWriter.clear();
+        csvWriter.saveAll(gymPlan.stream().map(line -> line.split(";")).toList());
+
+        System.out.println("Gym plan saved successfully.");
     }
 
     public List<String> getGymPlan() {
