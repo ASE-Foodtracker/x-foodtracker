@@ -20,7 +20,6 @@ public class GymPlanHandler {
 
     public void createGymPlan(String fitnessGoal) {
         try {
-            //hier den reader nehmen und in createplan schicken
             Path inputDir = Paths.get("").resolve("data").resolve("input").resolve("megaGymDataset.csv");
             CSVReader gymReader = new CSVReader(inputDir);
 
@@ -36,18 +35,12 @@ public class GymPlanHandler {
             System.out.println("No gym plan to save.");
             return;
         }
-
-        // Add header to gym plan
         gymPlan.add(0, "Day,Exercise,Details");
 
-        // Define the output path
         Path outputPath = Paths.get("").resolve("data").resolve("output").resolve(userMail);
         CSVWriter csvWriter = new CSVWriter(outputPath.resolve("gymPlan.csv"));
-
-        // Create directory if it doesn't exist
         csvWriter.createDirectory(outputPath);
 
-        // Clear existing file and save the new gym plan
         csvWriter.clear();
         csvWriter.saveAll(gymPlan.stream().map(line -> line.split(";")).toList());
 
@@ -57,7 +50,6 @@ public class GymPlanHandler {
     public List<String> getGymPlan() {
         if(gymPlan == null){
             System.out.println("Gym plan not created yet.");
-            //try to get an existing one of the csv with the user mail
             return null;
         }else{
             System.out.println("Gym plan retrieved successfully.");
@@ -66,7 +58,6 @@ public class GymPlanHandler {
     }
 
     public void printGymPlan() {
-        // throw new UnsupportedOperationException("Not supported yet.");
         ConsoleWriter consoleWriter = new ConsoleWriter();
         consoleWriter.printGymPlan(gymPlan);
     }
