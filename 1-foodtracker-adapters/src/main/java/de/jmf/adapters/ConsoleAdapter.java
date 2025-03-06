@@ -88,7 +88,7 @@ public class ConsoleAdapter {
                         }
                         break;
                     case 3:
-                        //this.progressHandler.trackWeight();
+                        this.progressHandler.newWeightEntry();
                         break;
                     case 4:
                         this.userHandler.logOut();

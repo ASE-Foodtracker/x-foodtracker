@@ -14,29 +14,9 @@
     <name>0-foodtracker-plugin-main</name>
     <dependencies>
         <dependency>
-            <groupId>de.jmf</groupId>
             <artifactId>1-foodtracker-adapters</artifactId>
+            <groupId>de.jmf</groupId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
-    <build>
-        <resources>
-            <resource>
-                <directory>${project.basedir}/../data</directory>
-                <includes>
-                    <include>**/*</include>
-                </includes>
-            </resource>
-        </resources>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.0.0</version>
-                <configuration>
-                    <mainClass>de.jmf.Main</mainClass>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>
