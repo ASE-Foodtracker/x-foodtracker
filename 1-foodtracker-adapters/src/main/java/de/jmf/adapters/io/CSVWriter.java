@@ -21,7 +21,7 @@ public class CSVWriter implements DataWriter {
                 for (int i = 0; i < line.length; i++) {
                     newLine.append(line[i]);
                     if (i < line.length - 1) {
-                        newLine.append(",");
+                        newLine.append(";");
                     }
                 }
                 writer.write(newLine.toString());

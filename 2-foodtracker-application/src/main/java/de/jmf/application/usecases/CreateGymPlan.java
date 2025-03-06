@@ -20,8 +20,7 @@ public class CreateGymPlan {
         this.gymPlanRepository = gymPlanRepository;
     }
 
-    public List<String> createPlan(String fitnessGoal) throws IOException {
-        List<String> exercises = readExercisesFromCsv(gymExercisesPath);
+    public List<String> createPlan(String fitnessGoal, List<String[]> exercises) throws IOException {
         List<String> gymPlan = new ArrayList<>();
 
         System.out.println(fitnessGoal);
@@ -53,7 +52,7 @@ public class CreateGymPlan {
         return exercises;
     }
 
-    private List<String> getRandomExercises(List<String> exercises, String day, int count) {
+    private List<String> getRandomExercises(List<String[]> exercises, String day, int count) {
         List<String> filteredExercises = exercises.stream()
                 .filter(exercise -> !exercise.contains("Cardio"))
                 .collect(Collectors.toList());

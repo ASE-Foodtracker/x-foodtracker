@@ -100,7 +100,7 @@ public class ConsoleAdapter {
     private void startup() {
         Path usersPath = Paths.get("").resolve("data").resolve("output").resolve("users.csv");
         CSVWriter usersWriter = new CSVWriter(usersPath);
-        usersWriter.createFile("name,age,mail,goalType,targetWeight");
+        usersWriter.createFile("name;age;mail;goalType;targetWeight");
 
         boolean running = true;
         System.out.println("Welcome to your favorite fitness app");
