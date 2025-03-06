@@ -102,7 +102,7 @@ public class ConsoleAdapter {
                         break;
                 }
             } catch (Exception e) {
-                System.out.println("An error occurredhbhjbhjb" + e.getMessage());
+                System.out.println("An error occurred " + e.getMessage());
             }
         }
     }
