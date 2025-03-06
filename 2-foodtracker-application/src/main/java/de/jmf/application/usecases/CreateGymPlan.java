@@ -1,7 +1,5 @@
 package de.jmf.application.usecases;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,37 +39,26 @@ public class CreateGymPlan {
         return gymPlan;
     }
 
-    private List<String> readExercisesFromCsv(String filePath) throws IOException {
-        List<String> exercises = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                exercises.add(line);
-            }
-        }
-        return exercises;
-    }
-
-    private List<String> getRandomExercises(List<String[]> exercises, String day, int count) {
-        List<String> filteredExercises = exercises.stream()
-                .filter(exercise -> !exercise.contains("Cardio"))
+   private List<String> getRandomExercises(List<String[]> exercises, String day, int count) {
+        List<String[]> filteredExercises = exercises.stream()
+                .filter(exercise -> !exercise[1].contains("Cardio"))
                 .collect(Collectors.toList());
         return getRandomItems(filteredExercises, day, count);
     }
 
-    private List<String> getCardioExercises(List<String> exercises, String day) {
-        List<String> filteredExercises = exercises.stream()
-                .filter(exercise -> exercise.contains("Cardio"))
+    private List<String> getCardioExercises(List<String[]> exercises, String day) {
+        List<String[]> filteredExercises = exercises.stream()
+                .filter(exercise -> exercise[1].contains("Cardio"))
                 .collect(Collectors.toList());
         return getRandomItems(filteredExercises, day, 1);
     }
 
-    private List<String> getRandomItems(List<String> items, String day, int count) {
+    private List<String> getRandomItems(List<String[]> items, String day, int count) {
         List<String> randomItems = new ArrayList<>();
         Random random = new Random();
         for (int i = 0; i < count; i++) {
             int index = random.nextInt(items.size());
-            randomItems.add(day + ": " + items.get(index));
+            randomItems.add(day + ": " + String.join(", ", items.get(index)));
         }
         return randomItems;
     }

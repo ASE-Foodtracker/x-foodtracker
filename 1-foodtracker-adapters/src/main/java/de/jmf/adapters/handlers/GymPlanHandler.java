@@ -6,8 +6,8 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import de.jmf.adapters.io.CSVReader;
-import de.jmf.application.usecases.CreateGymPlan;
 import de.jmf.adapters.io.ConsoleWriter;
+import de.jmf.application.usecases.CreateGymPlan;
 
 public class GymPlanHandler {
     private final CreateGymPlan createGymPlan;
@@ -22,6 +22,7 @@ public class GymPlanHandler {
             //hier den reader nehmen und in createplan schicken
             Path inputDir = Paths.get("").resolve("data").resolve("input").resolve("megaGymDataset.csv");
             CSVReader gymReader = new CSVReader(inputDir);
+
             this.gymPlan = createGymPlan.createPlan(fitnessGoal, gymReader.readAll());
             System.out.println("Gym plan created successfully.");
         } catch (IOException e) {
