@@ -26,7 +26,7 @@ public class CSVReader implements DataReader {
         if (Files.exists(filePath)) {
             try {
                 return Files.lines(filePath)
-                        .map(line -> line.split(","))
+                        .map(line -> line.split(";"))
                         .collect(Collectors.toList());
             } catch (IOException e) {
                 System.out.println("An error occurred while reading the file: "+e);

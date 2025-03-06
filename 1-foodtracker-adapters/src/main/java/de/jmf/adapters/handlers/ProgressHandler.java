@@ -1,5 +1,10 @@
 package de.jmf.adapters.handlers;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Scanner;
+
 import de.jmf.adapters.io.CSVReader;
 import de.jmf.adapters.io.CSVWriter;
 import de.jmf.application.usecases.progress.LoadWeight;
@@ -7,11 +12,6 @@ import de.jmf.application.usecases.progress.SaveWeight;
 import de.jmf.application.usecases.progress.TrackWeight;
 import de.jmf.application.usecases.user.LogUser;
 import de.jmf.domain.valueobjects.Weight;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.Scanner;
 
 public class ProgressHandler {
     private final Scanner scanner;
