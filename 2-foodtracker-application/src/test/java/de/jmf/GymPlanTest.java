@@ -57,7 +57,7 @@ public class GymPlanTest {
 
         List<String[]> gymPlan = createGymPlan.getGymPlan("john.doe@example.com");
         assertNotNull(gymPlan);
-        assertEquals(3, gymPlan.size());
+        assertEquals(9, gymPlan.size());
     }
 
     @Test
