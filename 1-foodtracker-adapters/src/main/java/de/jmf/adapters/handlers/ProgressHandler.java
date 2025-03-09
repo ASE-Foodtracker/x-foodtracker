@@ -1,5 +1,10 @@
 package de.jmf.adapters.handlers;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Scanner;
+
 import de.jmf.adapters.io.CSVReader;
 import de.jmf.adapters.io.CSVWriter;
 import de.jmf.application.usecases.progress.Meals.*;
@@ -13,7 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Scanner;
+// import java.util.Scanner;
 
 public class ProgressHandler {
     private final Scanner scanner;

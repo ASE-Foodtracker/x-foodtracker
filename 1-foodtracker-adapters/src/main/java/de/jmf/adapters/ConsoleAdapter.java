@@ -1,25 +1,31 @@
 package de.jmf.adapters;
 
-import de.jmf.adapters.handlers.UserHandler;
-import de.jmf.adapters.handlers.ProgressHandler;
-import de.jmf.adapters.io.CSVWriter;
-import de.jmf.application.usecases.progress.Meals.*;
-import de.jmf.application.usecases.progress.Weight.*;
-import de.jmf.application.usecases.user.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
+import de.jmf.adapters.handlers.GymPlanHandler;
+import de.jmf.adapters.handlers.ProgressHandler;
+import de.jmf.adapters.handlers.UserHandler;
+import de.jmf.adapters.io.CSVWriter;
+
+import de.jmf.application.usecases.progress.Meals.*;
+import de.jmf.application.usecases.progress.Weight.*;
+import de.jmf.application.usecases.user.*;
+import de.jmf.application.usecases.CreateGymPlan;
+
 public class ConsoleAdapter {
     private final Scanner scanner;
     private final UserHandler userHandler;
+    private final GymPlanHandler gymPlanHandler; 
     private final ProgressHandler progressHandler;
 
-    public ConsoleAdapter(CreateUser createUser, LoginUser login, GetActiveUser logUser, SaveUser saveUser,
+    public ConsoleAdapter(CreateUser createUser, LoginUser login, GetActiveUser logUser, SaveUser saveUser, CreateGymPlan createGymPlan,
             TrackWeight trackWeight, SaveWeight saveWeight, LoadWeight loadWeight, LogOutUser logOutUser,
             SaveMeal saveMeal, GetTodaysMeals logTodaysMeals, RemoveMeal removeMeal, GetAllMeals getAllMeals) {
         this.scanner = new Scanner(System.in);
         this.userHandler = new UserHandler(createUser, login, logUser, saveUser, logOutUser);
+        this.gymPlanHandler = new GymPlanHandler(createGymPlan);
         this.progressHandler = new ProgressHandler(logUser, trackWeight, saveWeight, loadWeight, saveMeal,
                 logTodaysMeals, removeMeal, getAllMeals);
     }
@@ -44,15 +50,53 @@ public class ConsoleAdapter {
                         this.userHandler.logUser();
                         break;
                     case 2:
-                        this.progressHandler.newWeightEntry();
+                        String fitnessGoal = this.userHandler.getUserFitnessGoal();
+                        String userMail = this.userHandler.getUserMail();
+                        while (true) {
+                            System.out.println("Do you want to load your existing plan or do you want to create a new one? (load/create)");
+                            String loadOrCreate = getString("Please enter your choice: ");
+
+                            if (loadOrCreate.equalsIgnoreCase("load")) {
+                                // print the gymplan of the gymPlanRepository for the user
+                                this.gymPlanHandler.loadGymPlan(userMail);
+                                this.gymPlanHandler.printGymPlan(userMail);
+                                break;
+                            }else if(loadOrCreate.equalsIgnoreCase("create")){
+                                this.gymPlanHandler.createGymPlan(fitnessGoal, userMail);
+                                System.out.println("Do you want to see the plan first in the console? (yes/no)");
+                                System.out.println();
+                                String seePlan = getString("Please enter your choice: ");
+                                if (seePlan.equalsIgnoreCase("yes")) {
+                                    System.out.println();
+                                    this.gymPlanHandler.printGymPlan(userMail);
+                                }
+                                System.out.println("Do you want to save the plan, retry or exit? (save/retry/exit)");
+                                String savePlan = getString("Please enter your choice: ");
+                                if (savePlan.equalsIgnoreCase("save")) {
+                                    this.gymPlanHandler.saveGymPlan(userMail);
+                                    break;
+                                }else if(savePlan.equalsIgnoreCase("exit")){
+                                    break;
+                                }else if(savePlan.equalsIgnoreCase("retry")){
+                                }else{
+                                    System.out.println("The input was not valid. You will get navigated back to the menu");
+                                    break;
+                                }
+                            }else{
+                                System.out.println("The input was not valid. Please try again.");
+                            }
+                        }
                         break;
                     case 3:
-                        mealManagement();
+                        this.progressHandler.newWeightEntry();
                         break;
                     case 4:
-                        saving();
+                        mealManagement();
                         break;
                     case 5:
+                        saving();
+                        break;
+                    case 6:
                         this.userHandler.logOut();
                         startup();
                         break;
@@ -61,7 +105,7 @@ public class ConsoleAdapter {
                         break;
                 }
             } catch (Exception e) {
-                System.out.println("An error occurred" + e.getMessage());
+                System.out.println("An error occurred " + e.getMessage());
             }
         }
     }
@@ -75,7 +119,7 @@ public class ConsoleAdapter {
     private void startup() {
         Path usersPath = Paths.get("").resolve("data").resolve("output").resolve("users.csv");
         CSVWriter usersWriter = new CSVWriter(usersPath);
-        usersWriter.createFile("name,age,mail,goalType,targetWeight");
+        usersWriter.createFile("name;age;mail;goalType;targetWeight");
 
         boolean running = true;
         System.out.println("Welcome to your favorite fitness app");
@@ -141,10 +185,11 @@ public class ConsoleAdapter {
         System.out.println();
         System.out.println("Main Menu");
         System.out.println("1 - user details");
-        System.out.println("2 - track your weight");
-        System.out.println("3 - meal management");
-        System.out.println("4 - save");
-        System.out.println("5 - log out");
+        System.out.println("2 - Gymplan Menu");
+        System.out.println("3 - track your weight");
+        System.out.println("4 - meal management");
+        System.out.println("5 - save");
+        System.out.println("6 - log out");
         System.out.println("0 - exit");
     }
 
