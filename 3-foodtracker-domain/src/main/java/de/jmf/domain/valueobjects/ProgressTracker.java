@@ -33,6 +33,10 @@ public class ProgressTracker {
         this.nutritionLogs.add(log);
     }
 
+    public void removeNutritionLog(NutritionLog log) {
+        this.nutritionLogs.remove(log);
+    }
+
     public String getMail() {
         return mail;
     }

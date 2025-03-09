@@ -10,8 +10,8 @@ import de.jmf.adapters.io.CSVWriter;
 import de.jmf.application.exceptions.duplicateException;
 import de.jmf.application.usecases.user.CreateUser;
 import de.jmf.application.usecases.user.LogOutUser;
-import de.jmf.application.usecases.user.LogUser;
-import de.jmf.application.usecases.user.RegisterUser;
+import de.jmf.application.usecases.user.GetActiveUser;
+import de.jmf.application.usecases.user.LoginUser;
 import de.jmf.application.usecases.user.SaveUser;
 import de.jmf.domain.entities.User;
 import de.jmf.domain.valueobjects.FitnessGoal;
@@ -20,14 +20,14 @@ import de.jmf.domain.valueobjects.Weight;
 public class UserHandler {
 
     private final CreateUser createUser;
-    private final RegisterUser login;
-    private final LogUser logUser;
+    private final LoginUser login;
+    private final GetActiveUser logUser;
     private final SaveUser saveUser;
     private final LogOutUser logOutUser;
 
     private final Scanner scanner;
 
-    public UserHandler(CreateUser createUser, RegisterUser login, LogUser logUser, SaveUser saveUser,
+    public UserHandler(CreateUser createUser, LoginUser login, GetActiveUser logUser, SaveUser saveUser,
             LogOutUser logOutUser) {
         this.createUser = createUser;
         this.login = login;
@@ -37,7 +37,7 @@ public class UserHandler {
         this.scanner = new Scanner(System.in);
     }
 
-    public void saveUser() {
+    public boolean saveUser() {
         List<String[]> users = saveUser.execute();
         String[] head = new String[5];
         head[0] = "name";
@@ -53,6 +53,7 @@ public class UserHandler {
         CSVWriter csvWriter = new CSVWriter(outputPath);
         csvWriter.clear();
         csvWriter.saveAll(users);
+        return false;
     }
 
     public User logUser() {

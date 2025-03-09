@@ -1,18 +1,11 @@
 package de.jmf;
 
 import de.jmf.adapters.ConsoleAdapter;
-import de.jmf.application.repositories.GymPlanRepository;
-import de.jmf.application.repositories.ProgressRepository;
-import de.jmf.application.repositories.UserRepository;
+import de.jmf.application.repositories.*;
+import de.jmf.application.usecases.progress.Meals.*;
+import de.jmf.application.usecases.progress.Weight.*;
+import de.jmf.application.usecases.user.*;
 import de.jmf.application.usecases.CreateGymPlan;
-import de.jmf.application.usecases.progress.LoadWeight;
-import de.jmf.application.usecases.progress.SaveWeight;
-import de.jmf.application.usecases.progress.TrackWeight;
-import de.jmf.application.usecases.user.CreateUser;
-import de.jmf.application.usecases.user.LogOutUser;
-import de.jmf.application.usecases.user.LogUser;
-import de.jmf.application.usecases.user.RegisterUser;
-import de.jmf.application.usecases.user.SaveUser;
 
 public class Main {
     public static void main(String[] args) {
@@ -21,8 +14,8 @@ public class Main {
         ProgressRepository progressRepository = new ProgressRepository();
 
         CreateUser createUser = new CreateUser(userRepository);
-        RegisterUser login = new RegisterUser(userRepository);
-        LogUser logUser = new LogUser(userRepository);
+        LoginUser login = new LoginUser(userRepository);
+        GetActiveUser logUser = new GetActiveUser(userRepository);
         SaveUser saveUser = new SaveUser(userRepository);
         LogOutUser logoutUser = new LogOutUser(userRepository);
         
@@ -31,8 +24,13 @@ public class Main {
         SaveWeight saveWeight = new SaveWeight(progressRepository);
         LoadWeight loadWeight = new LoadWeight(progressRepository);
 
+        SaveMeal saveMeal = new SaveMeal(progressRepository);
+        GetTodaysMeals getTodaysMeals = new GetTodaysMeals(progressRepository);
+        RemoveMeal removeMeal = new RemoveMeal(progressRepository);
+        GetAllMeals getAllMeals = new GetAllMeals(progressRepository);
+
         ConsoleAdapter console = new ConsoleAdapter(createUser, login, logUser, saveUser, createGymplan, trackWeight, saveWeight,
-                loadWeight, logoutUser);
+                loadWeight, logoutUser, saveMeal, getTodaysMeals, removeMeal, getAllMeals);
         // Start the application
         console.running();
     }
