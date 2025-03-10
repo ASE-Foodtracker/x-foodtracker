@@ -16,7 +16,7 @@ public class TrackWeight {
     public double execute(Weight weight) {
         // Get previous weight for difference
         List<WeightLog> log = progressRepository.getProgress().getWeightLogs();
-        if (log.size() > 1) {
+        if (!log.isEmpty()) {
             Weight previousWeight = log.get(log.size()-1).getWeight();
             // Add Weight to Progress
             progressRepository.addWeight(weight);
