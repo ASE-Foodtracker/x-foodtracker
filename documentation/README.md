@@ -320,18 +320,114 @@ Wir haben nur einen Mock erstellt.<br>
 
 # Kapitel 6: Domain Driven Design
 ## Ubiquitous Language
-[4 Beispiele für die Ubiquitous Language; jeweils Bezeichung, Bedeutung und kurze Begründung, warum es zur Ubiquitous Language gehört]
-Bezeichung	Bedeutung	Begründung
+### Bezeichnung: Benutzer
+**Bedeutung:** Eine Person, die die Anwendung nutzt, um ihre Fitnessziele zu verfolgen.<br>
+**Begründung:** Der Begriff "Benutzer" ist zentral für die Anwendung und wird in der gesamten Domäne verwendet, um die Hauptakteure zu beschreiben.
+
+### Bezeichnung: GymPlan
+**Bedeutung:** Ein Trainingsplan, der Übungen und deren Häufigkeit für einen bestimmten Zeitraum enthält.<br>
+**Begründung:** Der Begriff "GymPlan" ist wichtig, um die Struktur und den Inhalt der Trainingspläne zu definieren, die Benutzer erstellen und verfolgen können.
+
+### Bezeichnung: Mahlzeit
+**Bedeutung:** Eine Nahrungsaufnahme, die von einem Benutzer protokolliert wird.<br>
+**Begründung:** Der Begriff "Mahlzeit" ist entscheidend für das Nährstoff-Tracking und wird verwendet, um die einzelnen Einträge im Ernährungstagebuch zu beschreiben.
+
+### Bezeichnung: Gewicht
+**Bedeutung:** Das Körpergewicht eines Benutzers, das regelmäßig protokolliert wird.<br>
+**Begründung:** Der Begriff "Gewicht" ist zentral für das Gewichts-Tracking und wird verwendet, um die Fortschritte der Benutzer bei der Erreichung ihrer Fitnessziele zu überwachen.
+
         
         
 ## Entities
-[UML, Beschreibung und Begründung des Einsatzes einer Entity; falls keine Entity vorhanden: ausführliche Begründung, warum es keines geben kann/hier nicht sinnvoll ist]
-### Value Objects
-[UML, Beschreibung und Begründung des Einsatzes eines Value Objects; falls kein Value Object vorhanden: ausführliche Begründung, warum es keines geben kann/hier nicht sinnvoll ist]
-### Repositories
-[UML, Beschreibung und Begründung des Einsatzes eines Repositories; falls kein Repository vorhanden: ausführliche Begründung, warum es keines geben kann/hier nicht sinnvoll ist]
-### Aggregates
-[UML, Beschreibung und Begründung des Einsatzes eines Aggregates; falls kein Aggregate vorhanden: ausführliche Begründung, warum es keines geben kann/hier nicht sinnvoll ist]
+[UML, Beschreibung und Begründung des Einsatzes einer Entität; falls keine Entität vorhanden: ausführliche Begründung, warum es keines geben kann/hier nicht sinnvoll ist]
+### Benutzer
+**UML:**
+
+    _______________________________________
+    | **Benutzer**                         |
+    | + String email                       |
+    | + String name                        |
+    | + int age                            |
+    | + FitnessGoal fitnessGoal            |
+    | + void updateFitnessGoal(FitnessGoal)|
+    ---------------------------------------
+**Beschreibung:** Die Entität "Benutzer" repräsentiert einen Benutzer der Anwendung mit seinen persönlichen Daten und Fitnesszielen.<br>
+**Begründung:** Diese Entität ist notwendig, um die Benutzerinformationen und deren Fitnessziele zu verwalten.
+
+### GymPlan
+**UML:**
+
+     _______________________________________
+    | **GymPlan**                           |
+    | + String userMail                     |
+    | + List<String> exercises              |
+    | + void addExercise(String exercise)   |
+    | + void removeExercise(String exercise)|
+     ---------------------------------------
+
+**Beschreibung:** Die Entität "GymPlan" repräsentiert einen Trainingsplan eines Benutzers.<br>
+**Begründung:** Diese Entität ist notwendig, um die Struktur und den Inhalt der Trainingspläne zu verwalten.
+
+### Mahlzeit
+**UML:**
+
+     ______________________________________
+    | **Mahlzeit**                         |
+    | + String name                        |
+    | + int calories                       |
+    | + void updateCalories(int calories)  |
+     --------------------------------------
+
+**Beschreibung:** Die Entität "Mahlzeit" repräsentiert eine protokollierte Mahlzeit eines Benutzers.<br>
+**Begründung:** Diese Entität ist notwendig, um die Nahrungsaufnahme der Benutzer zu verwalten.
+
+### Gewicht
+**UML:**
+
+     ______________________________________
+    | **Gewicht**                          |
+    | + double value                       |
+    | + Date date                          |
+    | + void updateWeight(double value)    |
+     --------------------------------------
+
+**Beschreibung:** Die Entität "Gewicht" repräsentiert das Körpergewicht eines Benutzers zu einem bestimmten Zeitpunkt.<br>
+**Begründung:** Diese Entität ist notwendig, um die Gewichtsveränderungen der Benutzer zu verwalten.
+
+## Value Objects
+### FitnessGoal
+**UML:**
+
+     ______________________________________
+    | **FitnessGoal**                      |
+    | + String goal                        |
+    | + double targetWeight                |
+    | + void updateTargetWeight(double)    |
+     --------------------------------------
+
+**Beschreibung:** Das Value Object "FitnessGoal" repräsentiert das Fitnessziel eines Benutzers.<br>
+**Begründung:** Dieses Value Object ist notwendig, um die Fitnessziele der Benutzer zu verwalten und sicherzustellen, dass sie unveränderlich sind.
+
+## Repositories
+### BenutzerRepository
+**UML:**
+
+     ______________________________________
+    | **BenutzerRepository**               |
+    | + Optional<Benutzer> findByEmail(String email)|
+    | + void save(Benutzer benutzer)       |
+    | + List<Benutzer> findAll()           |
+     --------------------------------------
+     
+**Beschreibung:** Das Repository "BenutzerRepository" verwaltet die Speicherung und den Zugriff auf Benutzerinformationen.<br>
+**Begründung:** Dieses Repository ist notwendig, um die Benutzerinformationen persistent zu speichern und darauf zuzugreifen.
+
+## Aggregates
+### Warum keine Aggregate?
+In unserer aktuellen Implementierung haben wir keine Aggregate definiert. Ein Aggregate ist ein Cluster von zusammengehörigen Objekten, die als eine Einheit behandelt werden. In unserem Fall könnten wir theoretisch ein BenutzerAggregate haben, das Benutzer, GymPlan, Mahlzeit und Gewicht umfasst. 
+
+Allerdings haben wir uns entschieden, diese Entitäten separat zu behandeln und über Repositories zu verwalten. Das vereinfacht die Implementierung und vermeidet Komplexitäten, die mit der Verwaltung von Aggregates einhergehen. Jede Entität hat ihre eigenen Verantwortlichkeiten und wird unabhängig voneinander verwaltet.
+
 
 # Kapitel 7: Refactoring
 ## Code Smells
