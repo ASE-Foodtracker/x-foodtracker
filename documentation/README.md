@@ -217,22 +217,106 @@ Was mir sonst nur einfällt ist der CSVWriter. Dank ihm haben wir diese Logik au
 
 # Kapitel 5: Unit Tests
 ## 10 Unit Tests
-[Nennung von 10 Unit-Tests und Beschreibung, was getestet wird]
-### Unit Test	Beschreibung
-Klasse#Methode	
+### Application Layer
+1. GymPlanTest
+    - testCreateGymPlanForGainWeight<br>
+        **Beschreibung**: Dieser Test überprüft, ob für das Fitnessziel "Muskelaufbau" (gain) ein Fitnessplan für Montag, Mittwoch und Freitag mit insgesamt 9 Übungen bereitstellt.
+    - testCreateGymPlanForLooseWeight<br>
+        **Beschreibung:** Dieser Test überprüft, ob für das Fitnessziel "Abnehmen" (loose) ein Fitnessplan für jeden Tag mit einer Cardioübung zur Verfügung stellt.
+    - testGetGymPlan<br>
+        **Beschreibung:** Dieser Test überprüft, ob der zurückgegebene GymPlan die richtige Gesamtlenge entspricht.
+    - testSetGymPlan<br>
+        **Beschreibung:** Dieser Test überprüft, ob der zurückgegebene Gymplan dem gesetzten Gymplan entspricht.
+2. MealsTest
+    - testSaveMeal<br>
+        **Beschreibung:** Dieser Test überprüft, ob das Gericht, welches gespeichert wird, auch wieder zurückgerufen werden kann.
+    - testGetTodaysMeals<br>
+        **Beschreibung:** Dieser Test überprüft, ob heute gespeicherte Gerichte zurückgegeben werden können.
+    - testRemoveMeal<br>
+        **Beschreibung:** Dieser Test überprüft, ob das gespeicherte Essen wieder entfernt werden kann.
+    - testGetAllMeals<br>
+        **Beschreibung:** Dieser Test überprüft, ob alle gespeicherten Gerichte ausgegeben werden können.
+3. UserTest
+    - testCreateUser<br>
+        **Beschreibung:** Dieser Test überprüft, ob ein Benutzer erstellt werden kann.
+    - testLoginUser<br>
+        **Beschreibung:** Dieser Test überprüft, ob ein angemeldeter Nutzer auch als aktiver Nutzer gilt.
+    - testLogOutUser<br>
+        **Beschreibung:** Dieser Test überprüft, ob nach dem ausloggen der aktive Nutzer auf Null gesetzt wird.
+    - testSaveUser<br>
+        **Beschreibung:** Dieser Test überprüft, ob der Nutzer richtig abgespeichert wird.
+4. Weight Test
+    - …
+### Domain Layer
+1. …	
    
 ## ATRIP: Automatic
-[Begründung/Erläuterung, wie ‘Automatic’ realisiert wurde]
-### ATRIP: Thorough
-[jeweils 1 positives und negatives Beispiel zu ‘Thorough’; jeweils Code-Beispiel, Analyse und Begründung, was professionell/nicht professionell ist]
-### ATRIP: Professional
-[jeweils 1 positives und negatives Beispiel zu ‘Professional’; jeweils Code-Beispiel, Analyse und Begründung, was professionell/nicht professionell ist]
+Die Tests werden automatisch mit Maven ausgeführt, indem der Befehl mvn test verwendet wird. Dies stellt sicher, dass die Tests bei jeder Änderung des Codes ausgeführt werden und dass keine manuellen Schritte erforderlich sind.
 
+### ATRIP: Thorough
+**Positives Beispiel:**
+
+    @Test
+    public void testSaveUser() {
+        FitnessGoal goal = new FitnessGoal("gain", new Weight(70));
+        createUser.execute("john.doe@example.com", "John Doe", 25, goal);
+
+        List<String[]> users = saveUser.execute();
+        assertNotNull(users);
+        assertEquals(1, users.size());
+        assertEquals("John Doe", users.get(0)[0]);
+        assertEquals("25", users.get(0)[1]);
+        assertEquals("john.doe@example.com", users.get(0)[2]);
+        assertEquals("gain", users.get(0)[3]);
+        assertEquals("70.0", users.get(0)[4]);
+    }
+**Begründung:**<br>Dieser Test aus der Klasse ```2-foodtracker-application/src/test/java/de/jmf/UserTest.java``` überprüft gründlich, ob die Methode korrekt funktioniert, indem sichergestellt wird, dass die Benutzerdaten korrekt gespeichert werden und die erwarteten Werte wieder ausgegeben werden.
+
+**Negatives Beispiel:**
+
+    @Test
+    public void testSaveUser() {
+        userHandler.saveUser();
+    }
+**Begründung:**<br> Hier fehlt bspw. die Verifikation des Verhaltens.
+
+### ATRIP: Professional
+**Positives Beispiel:**
+
+    @Test
+    public void testCreateUser() {
+        doNothing().when(createUser).execute(anyString(), anyString(), anyInt(), any(FitnessGoal.class));
+
+        boolean result = userHandler.createUser();
+
+        assertFalse(result);
+        verify(createUser, times(1)).execute(anyString(), anyString(), anyInt(), any(FitnessGoal.class));
+    }
+**Begründung:**<br> Dieser Test wäre professionell, da er auch sicherstellt, dass die execute Methode nur ein einziges Mal aufgerufen wird.
+
+**Negatives Beispiel:**
+
+    @Test
+    public void testCreateUser() {
+        userHandler.createUser();
+    }
+**Begründung:**<br> Dieser Test ist nicht professionell, da weder überprüft ob die Methode aufgerufen wurde, noch die Verifikation des Verhaltens überprüft.
 ## Code Coverage
-[Code Coverage im Projekt analysieren und begründen]
+Die Code Coverage im Projekt wird durch die Ausführung der Unit-Tests mit Maven gemessen. Eine hohe Code Coverage stellt sicher, dass der größte Teil des Codes durch Tests abgedeckt ist, was die Wahrscheinlichkeit von Fehlern reduziert und die Wartbarkeit des Codes erhöht. Bei uns läuft jeder Test grün durch :)
 
 ## Fakes und Mocks
-[Analyse und Begründung des Einsatzes von 2 Fake/Mock-Objekten; zusätzlich jeweils UML Diagramm der Klasse]
+Wir haben nur einen Mock erstellt.<br>
+**UML:**
+
+     _________________________________________
+    | **ProgressRepository**                  |
+    | + ProgressTracker getProgress()         |
+    | + void addWeight(Weight weight)         |
+    | + void loadWeight(List<WeightLog> logs) |
+     -----------------------------------------
+
+**Begründung:**<br> Der Mock für die Klasse 'ProgressRepository' wird verwendet, um die Methoden *getProgress*, *addWeight* und *loadWeight* zu simulieren. Dadurch wird sichergestellt, dass diese korrekt aufgerufen werden, ohne dabei die tatsächliche Implementierung auszuführen.
+
 
 # Kapitel 6: Domain Driven Design
 ## Ubiquitous Language
