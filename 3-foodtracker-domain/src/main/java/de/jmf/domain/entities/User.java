@@ -1,7 +1,6 @@
 package de.jmf.domain.entities;
 
 import de.jmf.domain.valueobjects.FitnessGoal;
-import de.jmf.domain.valueobjects.Weight;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +10,6 @@ public class User {
     private int age;
     private String email;
     private List<WorkoutPlan> workoutPlans;
-    private List<DietPlan> dietPlans;
     private FitnessGoal goal;
 
     public User(String name, int age, String email, FitnessGoal goal) {
@@ -20,15 +18,10 @@ public class User {
         this.email = email;
         this.goal = goal;
         this.workoutPlans = new ArrayList<>();
-        this.dietPlans = new ArrayList<>();
     }
 
     public void addWorkoutPlan(WorkoutPlan plan) {
         this.workoutPlans.add(plan);
-    }
-
-    public void addDietPlan(DietPlan plan) {
-        this.dietPlans.add(plan);
     }
 
     // Getters and Setters
@@ -62,14 +55,6 @@ public class User {
 
     public void setWorkoutPlans(List<WorkoutPlan> workoutPlans) {
         this.workoutPlans = workoutPlans;
-    }
-
-    public List<DietPlan> getDietPlans() {
-        return dietPlans;
-    }
-
-    public void setDietPlans(List<DietPlan> dietPlans) {
-        this.dietPlans = dietPlans;
     }
 
     public FitnessGoal getGoal() {
