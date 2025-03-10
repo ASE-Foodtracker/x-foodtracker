@@ -434,7 +434,7 @@ Allerdings haben wir uns entschieden, diese Entitäten separat zu behandeln und 
 
 ### Long Method
 ```https://vscode.dev/github/ASE-Foodtracker/x-foodtracker/blob/documentation/1-foodtracker-adapters/src/main/java/de/jmf/adapters/ConsoleAdapter.java#L75```
-
+```Java    
     public void running()
         while
             try
@@ -443,65 +443,67 @@ Allerdings haben wir uns entschieden, diese Entitäten separat zu behandeln und 
                         while
                             else
                                 if
+```
 
 Diese Methode ist viel zu lang und viel zu sehr in sich selbst verschachtelt. Dafür ist ein Refactoring definitiv von Nöten.<br>
 **Lösungsweg:**<br> Die Methode in mehrere kleine Methoden aufteilen.
-
-    public void running(){
-        boolean running = true;
-        init();
-        while(running){
-            printMenu();
-            int option = getInt("Please enter the number of the action you want to perform: ");
-            running = handleMenu(option)
-        }
+```Java    
+public void running(){
+    boolean running = true;
+    init();
+    while(running){
+        printMenu();
+        int option = getInt("Please enter the number of the action you want to perform: ");
+        running = handleMenu(option)
     }
-    private void handleMenu(int option){
-        case 0:
-            …
-        case 1:
-            …
-    }
-
+}
+private void handleMenu(int option){
+    case 0:
+        …
+    case 1:
+        …
+}
+```
 ### Large Class
 ```1-foodtracker-adapters/src/main/java/de/jmf/adapters/handlers/UserHandler.java```
-    
-    public class UserHandler{
-        …
-        public UserHandler(){}
-        public boolean saveUser(){}
-        public User logUser(){}
-        public String getUserMail(){}
-        public String getUserFitnessGoal(){}
-        public boolean login(){}
-        public boolean createUser(){}
-        public void logOut(){}
-        private int getInt(){}
-        private String getString(){}
-        private Double getDouble(){}
-    }
+```Java    
+public class UserHandler{
+    …
+    public UserHandler(){}
+    public boolean saveUser(){}
+    public User logUser(){}
+    public String getUserMail(){}
+    public String getUserFitnessGoal(){}
+    public boolean login(){}
+    public boolean createUser(){}
+    public void logOut(){}
+    private int getInt(){}
+    private String getString(){}
+    private Double getDouble(){}
+}
+```
 
 Diese Klasse hat definitiv zu viele Verantwortlichkeiten.<br>
 **Lösungsweg:**<br>Wir können die Methoden zur Benutzereingabe in eine separate Klasse auslagern: 
+```Java    
+public class UserHandler{
+    …
+    public UserHandler(){}
+    public boolean saveUser(){}
+    public User logUser(){}
+    public String getUserMail(){}
+    public String getUserFitnessGoal(){}
+    public boolean login(){}
+    public boolean createUser(){}
+    public void logOut(){}
+}
 
-    public class UserHandler{
-        …
-        public UserHandler(){}
-        public boolean saveUser(){}
-        public User logUser(){}
-        public String getUserMail(){}
-        public String getUserFitnessGoal(){}
-        public boolean login(){}
-        public boolean createUser(){}
-        public void logOut(){}
-    }
-
-    public lcass InputHandler{
-        public int getInt(){}
-        public String getString(){}
-        public Double getDouble(){}
-    }
-
+public lcass InputHandler{
+    public int getInt(){}
+    public String getString(){}
+    public Double getDouble(){}
+}
+```
 ## 2 Refactorings
 ### Rename Method
 **Commit:**https://github.com/ASE-Foodtracker/x-foodtracker/commit/aca842f75f4fc81a0d29ac42a03d60f5a1557aba <br>
@@ -511,8 +513,186 @@ Diese Klasse hat definitiv zu viele Verantwortlichkeiten.<br>
 **Begründung:**<br>
 Durch das auslagern von Methoden wird die Lesbarkeit im Code deutlich verbessert. Somit verringert man das Risiko von Duplicated Code und Long Methods. Mein Betreuer (Architekt) meinte einst: **"Wenn ich meine Brille abnehme und sehen kann, dass der Code über den halben Bildschirm verschachtelt ist, dann muss dort auf jeden Fall gerefactored werden!"**
 
+
+
 # Kapitel 8: Entwurfsmuster
-[2 unterschiedliche Entwurfsmuster aus der Vorlesung (oder nach Absprache auch andere) jeweils sinnvoll einsetzen, begründen und UML-Diagramm]
-## Entwurfsmuster: [Name]
-## Entwurfsmuster: [Name]
- 
+## Entwurfsmuster: Dekorator
+### Einsatz
+Das Dekorator-Muster wird verwendet, um einem Objekt zur Laufzeit zusätzliche Verantwortlichkeiten hinzuzufügen, ohne seine Struktur zu ändern. In unserem Projekt können wir das Dekorator-Muster verwenden, um zusätzliche Funktionen zu den Benutzerdaten hinzuzufügen, wie z.B. das Protokollieren von Änderungen oder das Validieren von Eingaben.
+
+### Beispiel
+Wir haben eine Benutzerklasse, die wir mit zusätzlichen Funktionen wie Validierung und Protokollierung dekorieren möchten.
+
+### Code
+```java
+// filepath: 1-foodtracker-adapters/src/main/java/de/jmf/adapters/decorator/User.java
+public interface User {
+    void save();
+}
+
+// filepath: 1-foodtracker-adapters/src/main/java/de/jmf/adapters/decorator/BasicUser.java
+public class BasicUser implements User {
+    @Override
+    public void save() {
+        // Grundlegende Speichern-Implementierung
+    }
+}
+
+// filepath: 1-foodtracker-adapters/src/main/java/de/jmf/adapters/decorator/UserDecorator.java
+public abstract class UserDecorator implements User {
+    protected User decoratedUser;
+
+    public UserDecorator(User decoratedUser) {
+        this.decoratedUser = decoratedUser;
+    }
+
+    @Override
+    public void save() {
+        decoratedUser.save();
+    }
+}
+
+public class ValidationUserDecorator extends UserDecorator {
+    public ValidationUserDecorator(User decoratedUser) {
+        super(decoratedUser);
+    }
+
+    @Override
+    public void save() {
+        validate();
+        super.save();
+    }
+
+    private void validate() {
+        // Validierungslogik
+    }
+}
+public class LoggingUserDecorator extends UserDecorator {
+    public LoggingUserDecorator(User decoratedUser) {
+        super(decoratedUser);
+    }
+
+    @Override
+    public void save() {
+        log();
+        super.save();
+    }
+
+    private void log() {
+        // Protokollierungslogik
+    }
+}
+```
+
+     -------------------         -------------------
+    |       User        |<------|   UserDecorator   |
+    |-------------------|       |-------------------|
+    | + save()          |       | - decoratedUser   |
+     -------------------        | + save()          |
+                                 -------------------
+                                    /\
+                                    ||
+                                    ||
+                                    ||
+     -------------------        -------------------
+    |    BasicUser      |       | ValidationUserDec |
+    |-------------------|       |-------------------|
+    | + save()          |       | + save()          |
+     -------------------        | + validate()      |
+                                 -------------------
+                                    /\
+                                    ||
+                                    ||
+                                    ||
+                                 -------------------
+                                | LoggingUserDec    |
+                                |-------------------|
+                                | + save()          |
+                                | + log()           |
+                                 -------------------
+
+**Begründung:**<br>
+Das Dekorator-Muster ermöglicht es uns, zusätzliche Funktionen wie Validierung und Protokollierung hinzuzufügen, ohne die grundlegende Benutzerklasse zu ändern. Dies erhöht die Flexibilität und Erweiterbarkeit des Codes.
+
+## Entwurfsmuster: Erbauer
+### Einsatz
+Das Erbauer-Muster wird verwendet, um die Konstruktion eines komplexen Objekts zu trennen, sodass derselbe Konstruktionsprozess verschiedene Darstellungen erzeugen kann. In unserem Projekt können wir das Erbauer-Muster verwenden, um komplexe Benutzerobjekte mit verschiedenen Attributen zu erstellen.
+
+### Beispiel
+Wir haben eine Benutzerklasse, die viele Attribute hat. Mit dem Erbauer-Muster können wir Benutzerobjekte schrittweise und kontrolliert erstellen. Vorallem wenn wir vom Index, der gerade die Email ist, auf eine ID wechseln, dann kann die E-Mail auch optional sein.
+
+### Code
+```Java
+public class User {
+    private String email;
+    private String name;
+    private int age;
+    private FitnessGoal fitnessGoal;
+
+    private User(UserBuilder builder) {
+        this.email = builder.email;
+        this.name = builder.name;
+        this.age = builder.age;
+        this.fitnessGoal = builder.fitnessGoal;
+    }
+
+    public static class UserBuilder {
+        private String email;
+        private String name;
+        private int age;
+        private FitnessGoal fitnessGoal;
+
+        public UserBuilder setEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public UserBuilder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public UserBuilder setAge(int age) {
+            this.age = age;
+            return this;
+        }
+
+        public UserBuilder setFitnessGoal(FitnessGoal fitnessGoal) {
+            this.fitnessGoal = fitnessGoal;
+            return this;
+        }
+
+        public User build() {
+            return new User(this);
+        }
+    }
+}
+```
+     -------------------
+    |       User        |
+    |-------------------|
+    | - email           |
+    | - name            |
+    | - age             |
+    | - fitnessGoal     |
+     -------------------
+            /\
+            ||
+            ||
+            ||
+     ------------------- 
+    |   UserBuilder     |
+    |-------------------|
+    | - email           |
+    | - name            |
+    | - age             |
+    | - fitnessGoal     |
+     -------------------
+    | + setEmail()      |
+    | + setName()       |
+    | + setAge()        |
+    | + setFitnessGoal()|
+    | + build()         |
+     -------------------
+**Begründung:**<br>
+Das Erbauer-Muster ermöglicht es uns, komplexe Benutzerobjekte schrittweise und kontrolliert zu erstellen. Dies erhöht die Lesbarkeit und Wartbarkeit des Codes, da die Konstruktion von Benutzerobjekten klar und strukturiert ist.
