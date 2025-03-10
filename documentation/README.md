@@ -73,7 +73,7 @@ Dies wird durch die Trennung der Anwendung in verschiedene Schichten erreicht, w
 UML:
 
     _______________________________________
-    | **CSVReader**                         |
+    | CSVReader                             |
     | +  List<String[]> readAll()           |
     ---------------------------------------
 
@@ -84,7 +84,7 @@ Unsere Klasse 'CSVReader' hat eine einzige Verantwortlichkeit. Und zwar das Lese
 UML:
 
     ___________________________________
-    | **UserHandler**                   |
+    | UserHandler                       |
     | + boolean saveUser()              |
     | + User logUser()                  |
     | + String getUserMail()            |
@@ -107,7 +107,7 @@ Man sollte einen dedizierten InputHandler für die Benutzereingaben einbauen.
 UML:
 
         ___________________________________________________
-        | **CreateGymPlan**                                 |
+        | CreateGymPlan                                     |
         | + List<String> createPlan(..) throws IOException  |
         | - List<String> getRandomExercises (..)            |
         | - List<String> getCardioExercises (..)            |
@@ -121,11 +121,11 @@ Unsere 'CreateGymPlan' Klasse ist offen für Erweiterungen und zeitgleich geschl
 UML:
 
     _______________________________________________________    
-    | **GymPlanHandler**                                    |
+    | GymPlanHandler                                        |
     | + createGymPlan(String fitnessGoal, String userMail)  |
     | + saveGymPlan(String userMail)                        |
     | + List<String> getGymPlan()                           |
-    |+ printGymPlan()                                       |
+    | + printGymPlan()                                      |
     -------------------------------------------------------
 Begründung:<br>
 Der 'GymPlanHandler' wiederum ist nicht offen für Erweiterungen, da Änderungen an der Art und Weise wie Gym-Pläne erstellt oder gespeichert werden, eine Änderung an der Klasse selbst erfordern.
@@ -140,7 +140,7 @@ Sei S ein von T abgeleiteter Typ, dann können Objekte des Typs T durch Objekte 
 UML:
 
     _______________________________________________
-    | **UserRepository**                            |
+    | UserRepository                                |
     | + Optional<User> findByEmail(String email)    |
     | + void save(User user)                        |
     | + List<User> findAll()                        | 
@@ -152,7 +152,7 @@ Die Klasse 'UserRepository' kann durch jede andere Implementierung eines Benutze
 UML:
 
     _______________________________________________ 
-    | **GymPlanRepository**                         |
+    | GymPlanRepository                             |
     | + List<String[]> getGymPlan(String userMail)  |
     |       throws Exception                        |
     | + void setGymPlan(List<String[]> gymPlan)     |
@@ -170,10 +170,10 @@ Die Klasse sollte keine Methoden besizten, die eine Exception wirft. Demnach die
 UML:
 
     _______________________________________
-    | **ConsoleWriter**                    |
+    | ConsoleWriter                        |
     | + void printGymPlan(List<String[]> gp)|
     ---------------------------------------
-    | **CSVReader**                        |
+    | CSVReader                            |
     | + List<String[]> readAll()           |
     ---------------------------------------
 Begründung: <br>
@@ -182,15 +182,15 @@ Die Klassen ConsoleWriter und CSVReader sind perfekte Beispiele für die geringe
 UML:
 
     ___________________________________
-    | **ProgressHandler**               |
+    | ProgressHandler                   |
     | + void loadProgress()             |
     | + void newWeightEntry()           |
     | + void saveWeight()               |
     -----------------------------------
-    | **CSVReader**                     |
+    | CSVReader                         |
     | + List<String[]> readAll()        |
     -----------------------------------
-    | **CSVWriter**                     |
+    | CSVWriter                          |
     | + void saveAll(List<String[]> data)|
     -----------------------------------
 Begründung:<br>
@@ -203,7 +203,7 @@ Um die Kopplung zu lösen, sollte der ProgressHanlder von DataReader und DataWri
 UML:
 
     _______________________________________
-    | **NutritionLog**                     |
+    | NutritionLog                         |
     | + void addMeal(Meal meal)            |
     | + List<Meal> getMeals()              |
     | + double getTotalCalories()          |
@@ -309,7 +309,7 @@ Wir haben nur einen Mock erstellt.<br>
 **UML:**
 
      _________________________________________
-    | **ProgressRepository**                  |
+    | ProgressRepository                      |
     | + ProgressTracker getProgress()         |
     | + void addWeight(Weight weight)         |
     | + void loadWeight(List<WeightLog> logs) |
@@ -344,7 +344,7 @@ Wir haben nur einen Mock erstellt.<br>
 **UML:**
 
     _______________________________________
-    | **Benutzer**                         |
+    | Benutzer                             |
     | + String email                       |
     | + String name                        |
     | + int age                            |
@@ -358,7 +358,7 @@ Wir haben nur einen Mock erstellt.<br>
 **UML:**
 
      _______________________________________
-    | **GymPlan**                           |
+    | GymPlan                               |
     | + String userMail                     |
     | + List<String> exercises              |
     | + void addExercise(String exercise)   |
@@ -372,7 +372,7 @@ Wir haben nur einen Mock erstellt.<br>
 **UML:**
 
      ______________________________________
-    | **Mahlzeit**                         |
+    | Mahlzeit                             |
     | + String name                        |
     | + int calories                       |
     | + void updateCalories(int calories)  |
@@ -385,7 +385,7 @@ Wir haben nur einen Mock erstellt.<br>
 **UML:**
 
      ______________________________________
-    | **Gewicht**                          |
+    | Gewicht                              |
     | + double value                       |
     | + Date date                          |
     | + void updateWeight(double value)    |
@@ -399,7 +399,7 @@ Wir haben nur einen Mock erstellt.<br>
 **UML:**
 
      ______________________________________
-    | **FitnessGoal**                      |
+    | FitnessGoal                          |
     | + String goal                        |
     | + double targetWeight                |
     | + void updateTargetWeight(double)    |
@@ -413,8 +413,8 @@ Wir haben nur einen Mock erstellt.<br>
 **UML:**
 
      ______________________________________
-    | **BenutzerRepository**               |
-    | + Optional<Benutzer> findByEmail(String email)|
+    | BenutzerRepository                   |
+    | + Optional<Benutzer> findByEmail()   |
     | + void save(Benutzer benutzer)       |
     | + List<Benutzer> findAll()           |
      --------------------------------------
