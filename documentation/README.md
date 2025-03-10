@@ -431,11 +431,88 @@ Allerdings haben wir uns entschieden, diese Entitäten separat zu behandeln und 
 
 # Kapitel 7: Refactoring
 ## Code Smells
-[jeweils 1 Code-Beispiel zu 2 Code Smells aus der Vorlesung; jeweils Code-Beispiel und einen möglichen Lösungsweg bzw. den genommen Lösungsweg beschreiben (inkl. (Pseudo-)Code)]
+
+### Long Method
+```https://vscode.dev/github/ASE-Foodtracker/x-foodtracker/blob/documentation/1-foodtracker-adapters/src/main/java/de/jmf/adapters/ConsoleAdapter.java#L75```
+
+    public void running()
+        while
+            try
+                switch
+                    case
+                        while
+                            else
+                                if
+
+Diese Methode ist viel zu lang und viel zu sehr in sich selbst verschachtelt. Dafür ist ein Refactoring definitiv von Nöten.<br>
+**Lösungsweg:**<br> Die Methode in mehrere kleine Methoden aufteilen.
+
+    public void running(){
+        boolean running = true;
+        init();
+        while(running){
+            printMenu();
+            int option = getInt("Please enter the number of the action you want to perform: ");
+            running = handleMenu(option)
+        }
+    }
+    private void handleMenu(int option){
+        case 0:
+            …
+        case 1:
+            …
+    }
+
+### Large Class
+```1-foodtracker-adapters/src/main/java/de/jmf/adapters/handlers/UserHandler.java```
+    
+    public class UserHandler{
+        …
+        public UserHandler(){}
+        public boolean saveUser(){}
+        public User logUser(){}
+        public String getUserMail(){}
+        public String getUserFitnessGoal(){}
+        public boolean login(){}
+        public boolean createUser(){}
+        public void logOut(){}
+        private int getInt(){}
+        private String getString(){}
+        private Double getDouble(){}
+    }
+
+Diese Klasse hat definitiv zu viele Verantwortlichkeiten.<br>
+**Lösungsweg:**<br>Wir können die Methoden zur Benutzereingabe in eine separate Klasse auslagern: 
+
+    public class UserHandler{
+        …
+        public UserHandler(){}
+        public boolean saveUser(){}
+        public User logUser(){}
+        public String getUserMail(){}
+        public String getUserFitnessGoal(){}
+        public boolean login(){}
+        public boolean createUser(){}
+        public void logOut(){}
+    }
+
+    public lcass InputHandler{
+        public int getInt(){}
+        public String getString(){}
+        public Double getDouble(){}
+    }
+
 ## 2 Refactorings
-[2 unterschiedliche Refactorings aus der Vorlesung anwenden, begründen, sowie UML vorher/nachher liefern; jeweils auf die Commits verweisen]
+### Rename Method
+**Commit:**https://github.com/ASE-Foodtracker/x-foodtracker/commit/aca842f75f4fc81a0d29ac42a03d60f5a1557aba <br>
+**Begründung:**<br> Durch dieses renaming wurde die Lesbarkeit und das Verständnis des Codes erhöht. Wer nichts mit dem Methodennamen anfangen kann, hat es deutlich schwerer sich durch den Code zu lesen und ihn zu verstehen.
+
+### Extract Method (Nicht gemacht, sollten wir aber)
+**Begründung:**<br>
+Durch das auslagern von Methoden wird die Lesbarkeit im Code deutlich verbessert. Somit verringert man das Risiko von Duplicated Code und Long Methods. Mein Betreuer (Architekt) meinte einst: **"Wenn ich meine Brille abnehme und sehen kann, dass der Code über den halben Bildschirm verschachtelt ist, dann muss dort auf jeden Fall gerefactored werden!"**
 
 # Kapitel 8: Entwurfsmuster
 [2 unterschiedliche Entwurfsmuster aus der Vorlesung (oder nach Absprache auch andere) jeweils sinnvoll einsetzen, begründen und UML-Diagramm]
 ## Entwurfsmuster: [Name]
 ## Entwurfsmuster: [Name]
+ 
