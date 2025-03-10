@@ -165,14 +165,55 @@ Die Klasse sollte keine Methoden besizten, die eine Exception wirft. Demnach die
 
 # Kapitel 4: Weitere Prinzipien
 ## Analyse GRASP: Geringe Kopplung
-[jeweils eine bis jetzt noch nicht behandelte Klasse als positives und negatives Beispiel geringer Kopplung; jeweils UML Diagramm mit zusammenspielenden Klassen, Aufgabenbeschreibung und Begründung für die Umsetzung der geringen Kopplung bzw. Beschreibung, wie die Kopplung aufgelöst werden kann]
+
 ### Positiv-Beispiel
+UML:
+
+    _______________________________________
+    | **ConsoleWriter**                    |
+    | + void printGymPlan(List<String[]> gp)|
+    ---------------------------------------
+    | **CSVReader**                        |
+    | + List<String[]> readAll()           |
+    ---------------------------------------
+Begründung: <br>
+Die Klassen ConsoleWriter und CSVReader sind perfekte Beispiele für die geringe Kupplung. Sie sind unabhänging voneinander aber haben ihre klar definierten Verantwortlichkeiten. ConsoleWriter beschäftigt sich nur um die Ausgabe des GymPlans und CSVReader nur um die Einlesung.
 ### Negativ-Beispiel
+UML:
+
+    ___________________________________
+    | **ProgressHandler**               |
+    | + void loadProgress()             |
+    | + void newWeightEntry()           |
+    | + void saveWeight()               |
+    -----------------------------------
+    | **CSVReader**                     |
+    | + List<String[]> readAll()        |
+    -----------------------------------
+    | **CSVWriter**                     |
+    | + void saveAll(List<String[]> data)|
+    -----------------------------------
+Begründung:<br>
+Die Klasse 'ProgressHandler' hat eine starke Kopplung zu den Klassen CSVReader und CSVWriter. Jede Änderung in den Methoden readAll oder saveAll können zu Fehlern in der ProgressHandler-Klasse führen.
+
+*Lösung:*<br>
+Um die Kopplung zu lösen, sollte der ProgressHanlder von DataReader und DataWriter erben.
 
 ## Analyse GRASP: Hohe Kohäsion
-[eine Klasse als positives Beispiel hoher Kohäsion; UML Diagramm und Begründung, warum die Kohäsion hoch ist]
+UML:
+
+    _______________________________________
+    | **NutritionLog**                     |
+    | + void addMeal(Meal meal)            |
+    | + List<Meal> getMeals()              |
+    | + double getTotalCalories()          |
+    ---------------------------------------
+Die Klasse NutritionLog hat eine hohe Kohäsion, da alle ihre Methoden eng miteinander verbunden sind und sich auf die Verwaltung von Mahlzeiten und Nährwerten konzentrieren. Jede Methode trägt zur Hauptverantwortung der Klasse bei, was die Kohäsion erhöht und die Klasse leichter verständlich und wartbar macht.
+
 ## Don’t Repeat Yourself (DRY)
-[ein Commit angeben, bei dem duplizierter Code/duplizierte Logik aufgelöst wurde; Code-Beispiele (vorher/nachher); begründen und Auswirkung beschreiben]
+
+Von Beginn keine Duplizierungen verwendet :o <br>
+Was mir sonst nur einfällt ist der CSVWriter. Dank ihm haben wir diese Logik ausgelagert und können diese immerwieder von egal wo aufrufen, da wir jeweils einen eigenen Path für den Writer definieren. Er kann also alle Daten einer String List[] in ein beliebiges Verzeichnis laden.
 
 # Kapitel 5: Unit Tests
 ## 10 Unit Tests
