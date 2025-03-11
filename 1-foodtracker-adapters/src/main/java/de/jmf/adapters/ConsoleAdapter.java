@@ -48,7 +48,6 @@ public class ConsoleAdapter {
     private static final String CREATE = "create";
     private static final String LOAD = "load";
 
-
     public ConsoleAdapter(CreateUser createUser, LoginUser login, GetActiveUser logUser, SaveUser saveUser, CreateGymPlan createGymPlan,
             TrackWeight trackWeight, SaveWeight saveWeight, LoadWeight loadWeight, LogOutUser logOutUser,
             SaveMeal saveMeal, GetTodaysMeals logTodaysMeals, RemoveMeal removeMeal, GetAllMeals getAllMeals) {
@@ -57,6 +56,71 @@ public class ConsoleAdapter {
         this.gymPlanHandler = new GymPlanHandler(createGymPlan);
         this.progressHandler = new ProgressHandler(logUser, trackWeight, saveWeight, loadWeight, saveMeal,
                 logTodaysMeals, removeMeal, getAllMeals);
+    }
+
+    private void handleQuit(){
+        String saving = getString(DO_YOU_WANT_TO_SAVE_BEFORE_QUITTING);
+        if (saving.equals(YES)) {
+            save();
+        }
+        System.out.println("See you ^^");
+    }
+
+    private void handleGymPlan(){
+        String fitnessGoal = this.userHandler.getUserFitnessGoal();
+        String userMail = this.userHandler.getUserMail();
+        while (true) {
+            System.out.println(LOAD_YOUR_EXISTING_PLAN_OR_CREATE_A_NEW_ONE);
+            String loadOrCreate = getString(PLEASE_ENTER_YOUR_CHOICE);
+
+            if (loadOrCreate.equalsIgnoreCase(LOAD)) {
+                // print the gymplan of the gymPlanRepository for the user
+                handleGymPlanLoad(userMail);
+                break;
+            }else if(loadOrCreate.equalsIgnoreCase(CREATE)){
+                handleGymPlanCreate(fitnessGoal, userMail);
+                break;
+            }else{
+                System.out.println(THE_INPUT_WAS_NOT_VALID_TRY_AGAIN);
+            }
+        }
+    }
+
+    private void handleGymPlanLoad(String userMail){
+        this.gymPlanHandler.loadGymPlan(userMail);
+        this.gymPlanHandler.printGymPlan(userMail);
+    }
+
+    private void handleGymPlanCreate(String fitnessGoal, String userMail){
+        this.gymPlanHandler.createGymPlan(fitnessGoal, userMail);
+        System.out.println(DO_YOU_WANT_TO_SEE_THE_PLAN_FIRST_IN_THE_CONSOLE);
+        System.out.println();
+        String seePlan = getString(PLEASE_ENTER_YOUR_CHOICE);
+        if (seePlan.equalsIgnoreCase(YES)) {
+            System.out.println();
+            this.gymPlanHandler.printGymPlan(userMail);
+        }
+        System.out.println(DO_YOU_WANT_TO_SAVE_THE_PLAN_RETRY_OR_EXIT);
+        String savePlan = getString(PLEASE_ENTER_YOUR_CHOICE);
+        if (savePlan.equalsIgnoreCase(SAVE)) {
+            this.gymPlanHandler.saveGymPlan(userMail);
+        }else if(savePlan.equalsIgnoreCase(EXIT_STRING)){
+        }else if(savePlan.equalsIgnoreCase(RETRY)){
+        }else{
+            System.out.println(THE_INPUT_WAS_NOT_VALID_YOU_WILL_GET_NAVIGATED_BACK_TO_THE_MENU);
+        }
+    }
+
+    private void handleUserLogin(){
+        this.userHandler.logUser();
+    }
+    private void handleUserLogout(){
+        this.userHandler.logOut();
+        startup();
+    }
+
+    private void handleWeightEntry(){
+        this.progressHandler.newWeightEntry();
     }
 
     public void running() {
@@ -68,66 +132,26 @@ public class ConsoleAdapter {
                 int option = getInt(ENTER_THE_NUMBER_OF_THE_ACTION);
                 switch (option) {
                     case 0:
-                        String saving = getString(DO_YOU_WANT_TO_SAVE_BEFORE_QUITTING);
-                        if (saving.equals(YES)) {
-                            save();
-                        }
-                        System.out.println("See you ^^");
+                        handleQuit();
                         running = false;
                         break;
                     case 1:
-                        this.userHandler.logUser();
+                        handleUserLogin();
                         break;
                     case 2:
-                        String fitnessGoal = this.userHandler.getUserFitnessGoal();
-                        String userMail = this.userHandler.getUserMail();
-                        while (true) {
-                            System.out.println(LOAD_YOUR_EXISTING_PLAN_OR_CREATE_A_NEW_ONE);
-                            String loadOrCreate = getString(PLEASE_ENTER_YOUR_CHOICE);
-
-                            if (loadOrCreate.equalsIgnoreCase(LOAD)) {
-                                // print the gymplan of the gymPlanRepository for the user
-                                this.gymPlanHandler.loadGymPlan(userMail);
-                                this.gymPlanHandler.printGymPlan(userMail);
-                                break;
-                            }else if(loadOrCreate.equalsIgnoreCase(CREATE)){
-                                this.gymPlanHandler.createGymPlan(fitnessGoal, userMail);
-                                System.out.println(DO_YOU_WANT_TO_SEE_THE_PLAN_FIRST_IN_THE_CONSOLE);
-                                System.out.println();
-                                String seePlan = getString(PLEASE_ENTER_YOUR_CHOICE);
-                                if (seePlan.equalsIgnoreCase(YES)) {
-                                    System.out.println();
-                                    this.gymPlanHandler.printGymPlan(userMail);
-                                }
-                                System.out.println(DO_YOU_WANT_TO_SAVE_THE_PLAN_RETRY_OR_EXIT);
-                                String savePlan = getString(PLEASE_ENTER_YOUR_CHOICE);
-                                if (savePlan.equalsIgnoreCase(SAVE)) {
-                                    this.gymPlanHandler.saveGymPlan(userMail);
-                                    break;
-                                }else if(savePlan.equalsIgnoreCase(EXIT_STRING)){
-                                    break;
-                                }else if(savePlan.equalsIgnoreCase(RETRY)){
-                                }else{
-                                    System.out.println(THE_INPUT_WAS_NOT_VALID_YOU_WILL_GET_NAVIGATED_BACK_TO_THE_MENU);
-                                    break;
-                                }
-                            }else{
-                                System.out.println(THE_INPUT_WAS_NOT_VALID_TRY_AGAIN);
-                            }
-                        }
+                        handleGymPlan();
                         break;
                     case 3:
-                        this.progressHandler.newWeightEntry();
+                        handleWeightEntry();
                         break;
                     case 4:
-                        mealManagement();
+                        handleMealManagement();
                         break;
                     case 5:
-                        saving();
+                        handleSaving();
                         break;
                     case 6:
-                        this.userHandler.logOut();
-                        startup();
+                        handleUserLogout();
                         break;
                     default:
                         System.out.println(THE_INPUT_WAS_NOT_VALID_TRY_AGAIN);
@@ -175,7 +199,7 @@ public class ConsoleAdapter {
         }
     }
 
-    private void saving() {
+    private void handleSaving() {
         boolean repeat = true;
         System.out.println();
         System.out.println("Saving");
@@ -222,7 +246,7 @@ public class ConsoleAdapter {
         System.out.println("0 - exit");
     }
 
-    private void mealManagement() {
+    private void handleMealManagement() {
         boolean running = true;
         while (running) {
             try {
