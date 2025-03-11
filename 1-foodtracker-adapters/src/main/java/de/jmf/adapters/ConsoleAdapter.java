@@ -8,17 +8,46 @@ import de.jmf.adapters.handlers.GymPlanHandler;
 import de.jmf.adapters.handlers.ProgressHandler;
 import de.jmf.adapters.handlers.UserHandler;
 import de.jmf.adapters.io.CSVWriter;
-
-import de.jmf.application.usecases.progress.Meals.*;
-import de.jmf.application.usecases.progress.Weight.*;
-import de.jmf.application.usecases.user.*;
 import de.jmf.application.usecases.CreateGymPlan;
+import de.jmf.application.usecases.progress.Meals.GetAllMeals;
+import de.jmf.application.usecases.progress.Meals.GetTodaysMeals;
+import de.jmf.application.usecases.progress.Meals.RemoveMeal;
+import de.jmf.application.usecases.progress.Meals.SaveMeal;
+import de.jmf.application.usecases.progress.Weight.LoadWeight;
+import de.jmf.application.usecases.progress.Weight.SaveWeight;
+import de.jmf.application.usecases.progress.Weight.TrackWeight;
+import de.jmf.application.usecases.user.CreateUser;
+import de.jmf.application.usecases.user.GetActiveUser;
+import de.jmf.application.usecases.user.LogOutUser;
+import de.jmf.application.usecases.user.LoginUser;
+import de.jmf.application.usecases.user.SaveUser;
 
 public class ConsoleAdapter {
     private final Scanner scanner;
     private final UserHandler userHandler;
     private final GymPlanHandler gymPlanHandler; 
     private final ProgressHandler progressHandler;
+
+    private static final String ENTER_THE_NUMBER_OF_THE_ACTION = "Please enter the number of the action you want to perform: ";
+    private static final String DO_YOU_WANT_TO_SAVE_BEFORE_QUITTING = "Do you want so save before quitting? (yes|no): ";
+    private static final String LOAD_YOUR_EXISTING_PLAN_OR_CREATE_A_NEW_ONE = "Do you want to load your existing plan or do you want to create a new one? (load/create)";
+    private static final String PLEASE_ENTER_YOUR_CHOICE = "Please enter your choice: ";
+    private static final String DO_YOU_WANT_TO_SEE_THE_PLAN_FIRST_IN_THE_CONSOLE = "Do you want to see the plan first in the console? (yes/no)";
+    private static final String DO_YOU_WANT_TO_SAVE_THE_PLAN_RETRY_OR_EXIT = "Do you want to save the plan, retry or exit? (save/retry/exit)";
+
+    private static final String THE_INPUT_WAS_NOT_VALID_YOU_WILL_GET_NAVIGATED_BACK_TO_THE_MENU = "The input was not valid. You will get navigated back to the menu";
+    private static final String THE_INPUT_WAS_NOT_VALID_TRY_AGAIN = "The input was not valid. Please try again.";
+
+    private static final String WELCOME_TO_YOUR_FAVORITE_FITNESS_APP = "Welcome to your favorite fitness app";
+    private static final String WOULD_YOU_LIKE_TO = "Would you like to:";
+    private static final String YES = "yes";
+    private static final String NO = "no";
+    private static final String SAVE = "save";
+    private static final String EXIT_STRING = "exit";
+    private static final String RETRY = "retry";
+    private static final String CREATE = "create";
+    private static final String LOAD = "load";
+
 
     public ConsoleAdapter(CreateUser createUser, LoginUser login, GetActiveUser logUser, SaveUser saveUser, CreateGymPlan createGymPlan,
             TrackWeight trackWeight, SaveWeight saveWeight, LoadWeight loadWeight, LogOutUser logOutUser,
@@ -36,11 +65,11 @@ public class ConsoleAdapter {
         while (running) {
             try {
                 printMenu();
-                int option = getInt("Please enter the number of the action you want to perform: ");
+                int option = getInt(ENTER_THE_NUMBER_OF_THE_ACTION);
                 switch (option) {
                     case 0:
-                        String saving = getString("Do you want so save before quitting? (y|n): ");
-                        if (saving.equals("y")) {
+                        String saving = getString(DO_YOU_WANT_TO_SAVE_BEFORE_QUITTING);
+                        if (saving.equals(YES)) {
                             save();
                         }
                         System.out.println("See you ^^");
@@ -53,37 +82,37 @@ public class ConsoleAdapter {
                         String fitnessGoal = this.userHandler.getUserFitnessGoal();
                         String userMail = this.userHandler.getUserMail();
                         while (true) {
-                            System.out.println("Do you want to load your existing plan or do you want to create a new one? (load/create)");
-                            String loadOrCreate = getString("Please enter your choice: ");
+                            System.out.println(LOAD_YOUR_EXISTING_PLAN_OR_CREATE_A_NEW_ONE);
+                            String loadOrCreate = getString(PLEASE_ENTER_YOUR_CHOICE);
 
-                            if (loadOrCreate.equalsIgnoreCase("load")) {
+                            if (loadOrCreate.equalsIgnoreCase(LOAD)) {
                                 // print the gymplan of the gymPlanRepository for the user
                                 this.gymPlanHandler.loadGymPlan(userMail);
                                 this.gymPlanHandler.printGymPlan(userMail);
                                 break;
-                            }else if(loadOrCreate.equalsIgnoreCase("create")){
+                            }else if(loadOrCreate.equalsIgnoreCase(CREATE)){
                                 this.gymPlanHandler.createGymPlan(fitnessGoal, userMail);
-                                System.out.println("Do you want to see the plan first in the console? (yes/no)");
+                                System.out.println(DO_YOU_WANT_TO_SEE_THE_PLAN_FIRST_IN_THE_CONSOLE);
                                 System.out.println();
-                                String seePlan = getString("Please enter your choice: ");
-                                if (seePlan.equalsIgnoreCase("yes")) {
+                                String seePlan = getString(PLEASE_ENTER_YOUR_CHOICE);
+                                if (seePlan.equalsIgnoreCase(YES)) {
                                     System.out.println();
                                     this.gymPlanHandler.printGymPlan(userMail);
                                 }
-                                System.out.println("Do you want to save the plan, retry or exit? (save/retry/exit)");
-                                String savePlan = getString("Please enter your choice: ");
-                                if (savePlan.equalsIgnoreCase("save")) {
+                                System.out.println(DO_YOU_WANT_TO_SAVE_THE_PLAN_RETRY_OR_EXIT);
+                                String savePlan = getString(PLEASE_ENTER_YOUR_CHOICE);
+                                if (savePlan.equalsIgnoreCase(SAVE)) {
                                     this.gymPlanHandler.saveGymPlan(userMail);
                                     break;
-                                }else if(savePlan.equalsIgnoreCase("exit")){
+                                }else if(savePlan.equalsIgnoreCase(EXIT_STRING)){
                                     break;
-                                }else if(savePlan.equalsIgnoreCase("retry")){
+                                }else if(savePlan.equalsIgnoreCase(RETRY)){
                                 }else{
-                                    System.out.println("The input was not valid. You will get navigated back to the menu");
+                                    System.out.println(THE_INPUT_WAS_NOT_VALID_YOU_WILL_GET_NAVIGATED_BACK_TO_THE_MENU);
                                     break;
                                 }
                             }else{
-                                System.out.println("The input was not valid. Please try again.");
+                                System.out.println(THE_INPUT_WAS_NOT_VALID_TRY_AGAIN);
                             }
                         }
                         break;
@@ -101,7 +130,7 @@ public class ConsoleAdapter {
                         startup();
                         break;
                     default:
-                        System.out.println("The number you entered was not a valid option");
+                        System.out.println(THE_INPUT_WAS_NOT_VALID_TRY_AGAIN);
                         break;
                 }
             } catch (Exception e) {
