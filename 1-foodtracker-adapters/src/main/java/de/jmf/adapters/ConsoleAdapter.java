@@ -16,8 +16,8 @@ import de.jmf.adapters.handlers.GymPlanHandler;
 import de.jmf.adapters.handlers.ProgressHandler;
 import de.jmf.adapters.handlers.UserHandler;
 import de.jmf.adapters.helper.InputValidator;
-import de.jmf.adapters.helper.strings;
 import de.jmf.adapters.helper.LoopUntilSuccessful;
+import de.jmf.adapters.helper.Strings;
 import de.jmf.adapters.io.CSVWriter;
 import de.jmf.adapters.menus.HomeScreenOption;
 import de.jmf.adapters.menus.MainMenuOption;
@@ -93,14 +93,14 @@ public class ConsoleAdapter {
         while (running) {
             try {
                 this.printMenus.printMainMenu();
-                int option = this.inputValidator.getInt(strings.ENTER_THE_NUMBER_OF_THE_ACTION);
+                int option = this.inputValidator.getInt(Strings.ENTER_THE_NUMBER_OF_THE_ACTION);
                 MainMenuOption selected = MainMenuOption.fromInt(option);
                 this.performMenuOption.execute(mainMenuActions, selected);
                 if(selected == MainMenuOption.QUIT){
                     running = false;
                 }
             } catch (Exception e) {
-                System.out.println(strings.AN_ERROR_OCCURED + " " + e.getMessage());
+                System.out.println(Strings.AN_ERROR_OCCURED + " " + e.getMessage());
             }
         }
     }
@@ -122,11 +122,11 @@ public class ConsoleAdapter {
         homeScreenActions.put(HomeScreenOption.REGISTER, () -> this.loopUntilSuccessful.execute(() -> this.userHandler.createUser()));
 
         try {
-            int option = this.inputValidator.getInt(strings.ENTER_THE_NUMBER_OF_THE_ACTION);
+            int option = this.inputValidator.getInt(Strings.ENTER_THE_NUMBER_OF_THE_ACTION);
             HomeScreenOption selected = HomeScreenOption.fromInt(option);
             this.performMenuOption.execute(homeScreenActions, selected);
         } catch (Exception e) {
-            System.out.println(strings.AN_ERROR_OCCURED + " " + e.getMessage());
+            System.out.println(Strings.AN_ERROR_OCCURED + " " + e.getMessage());
         }
     }
 }

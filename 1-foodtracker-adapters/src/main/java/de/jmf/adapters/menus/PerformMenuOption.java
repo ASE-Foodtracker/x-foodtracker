@@ -2,7 +2,7 @@ package de.jmf.adapters.menus;
 
 import java.util.Map;
 
-import de.jmf.adapters.helper.strings;
+import de.jmf.adapters.helper.Strings;
 
 public class PerformMenuOption {
 
@@ -10,7 +10,7 @@ public class PerformMenuOption {
         if (mainMenuActions.containsKey(selected)) {
             mainMenuActions.get(selected).run();
         } else {
-            System.out.println(strings.THE_INPUT_WAS_NOT_VALID_TRY_AGAIN);
+            System.out.println(Strings.THE_INPUT_WAS_NOT_VALID_TRY_AGAIN);
         }
     }
 }

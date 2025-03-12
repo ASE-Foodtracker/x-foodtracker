@@ -6,8 +6,8 @@ import java.util.Map;
 import de.jmf.adapters.handlers.ProgressHandler;
 import de.jmf.adapters.handlers.UserHandler;
 import de.jmf.adapters.helper.InputValidator;
-import de.jmf.adapters.helper.strings;
 import de.jmf.adapters.helper.LoopUntilSuccessful;
+import de.jmf.adapters.helper.Strings;
 import de.jmf.adapters.menus.PerformMenuOption;
 import de.jmf.adapters.menus.PrintMenus;
 import de.jmf.adapters.menus.SaveOption;
@@ -49,7 +49,7 @@ public class HandleSavingAction implements Action {
         //lol hier ist die Endlosschleife
         //Und am ende ausgeben, dass erfolgreich gespeichert wurde
         try {
-            int option = this.inputValidator.getInt(strings.ENTER_THE_NUMBER_OF_THE_ACTION);
+            int option = this.inputValidator.getInt(Strings.ENTER_THE_NUMBER_OF_THE_ACTION);
             SaveOption selected = SaveOption.fromInt(option);
             this.performMenuOption.execute(saveOptions, selected);
         } catch (Exception e) {

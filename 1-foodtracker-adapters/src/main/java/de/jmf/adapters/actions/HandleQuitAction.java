@@ -3,7 +3,7 @@ package de.jmf.adapters.actions;
 import de.jmf.adapters.handlers.ProgressHandler;
 import de.jmf.adapters.handlers.UserHandler;
 import de.jmf.adapters.helper.InputValidator;
-import de.jmf.adapters.helper.strings;
+import de.jmf.adapters.helper.Strings;
 
 public class HandleQuitAction implements Action {
     private final InputValidator inputValidator;
@@ -16,8 +16,8 @@ public class HandleQuitAction implements Action {
 
     @Override
     public void execute() {
-        String saving = inputValidator.getString(strings.DO_YOU_WANT_TO_SAVE_BEFORE_QUITTING);
-        if (saving.equals(strings.YES)) {
+        String saving = inputValidator.getString(Strings.DO_YOU_WANT_TO_SAVE_BEFORE_QUITTING);
+        if (saving.equals(Strings.YES)) {
             this.handleSavingAction.saveAll();
         }
         System.out.println("See you ^^");
