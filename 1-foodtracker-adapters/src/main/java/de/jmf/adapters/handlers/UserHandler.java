@@ -9,8 +9,8 @@ import de.jmf.adapters.io.CSVReader;
 import de.jmf.adapters.io.CSVWriter;
 import de.jmf.application.exceptions.duplicateException;
 import de.jmf.application.usecases.user.CreateUser;
-import de.jmf.application.usecases.user.LogOutUser;
 import de.jmf.application.usecases.user.GetActiveUser;
+import de.jmf.application.usecases.user.LogOutUser;
 import de.jmf.application.usecases.user.LoginUser;
 import de.jmf.application.usecases.user.SaveUser;
 import de.jmf.domain.entities.User;
@@ -53,7 +53,7 @@ public class UserHandler {
         CSVWriter csvWriter = new CSVWriter(outputPath);
         csvWriter.clear();
         csvWriter.saveAll(users);
-        return false;
+        return true;
     }
 
     public User logUser() {
@@ -104,15 +104,15 @@ public class UserHandler {
             boolean success = login.execute(mail);
             if (success) {
                 System.out.println("You successfully logged into your account");
-                return false;
+                return true;
             } else {
                 System.out.println("This user doesn't exist. Please try again.");
-                return true;
+                return false;
             }
         } catch (Exception e) {
             System.out.print("Something went wrong. " + e.getMessage());
             System.out.println();
-            return true;
+            return false;
         }
     }
 
@@ -132,13 +132,13 @@ public class UserHandler {
             // create user
             createUser.execute(mail, name, age, goal);
             System.out.println("You successfully created a new account");
-            return false;
+            return true;
         } catch (duplicateException e) {
             System.out.println(e.getMessage());
-            return true;
+            return false;
         } catch (Exception e) {
             System.out.print("Something went wrong. " + e.getMessage());
-            return true;
+            return false;
         }
     }
 

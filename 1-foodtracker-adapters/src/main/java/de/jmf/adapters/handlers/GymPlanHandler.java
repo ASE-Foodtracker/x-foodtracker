@@ -30,7 +30,7 @@ public class GymPlanHandler {
         }
     }
 
-    public void saveGymPlan(String userMail) throws Exception{
+    public void saveGymPlan(String userMail){
         List<String[]> gymPlan = this.createGymPlan.getGymPlan(userMail);
         
         if (gymPlan == null || gymPlan.isEmpty()) {
@@ -57,7 +57,7 @@ public class GymPlanHandler {
         this.createGymPlan.setGymPlan(gymReader.readAll());
     }
 
-    public void printGymPlan(String userMail) throws Exception {
+    public void printGymPlan(String userMail){
         ConsoleWriter consoleWriter = new ConsoleWriter();
         List<String[]> gymPlan = this.createGymPlan.getGymPlan(userMail);
         if (gymPlan != null && !gymPlan.isEmpty()) {
