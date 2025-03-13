@@ -11,7 +11,7 @@ public class GymPlanRepository {
         this.gymPlan = new ArrayList<>();
     }
 
-    public List<String[]> getGymPlan(String userMail) throws Exception {
+    public List<String[]> getGymPlan(String userMail) {
         return this.gymPlan;
     }
 

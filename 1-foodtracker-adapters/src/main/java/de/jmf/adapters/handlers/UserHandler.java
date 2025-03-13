@@ -3,16 +3,17 @@ package de.jmf.adapters.handlers;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Scanner;
 
 import de.jmf.adapters.io.CSVReader;
 import de.jmf.adapters.io.CSVWriter;
 import de.jmf.application.exceptions.duplicateException;
 import de.jmf.application.usecases.user.CreateUser;
-import de.jmf.application.usecases.user.LogOutUser;
 import de.jmf.application.usecases.user.GetActiveUser;
+import de.jmf.application.usecases.user.LogOutUser;
 import de.jmf.application.usecases.user.LoginUser;
 import de.jmf.application.usecases.user.SaveUser;
+import de.jmf.adapters.helper.InputValidator;
+import de.jmf.adapters.helper.Strings;
 import de.jmf.domain.entities.User;
 import de.jmf.domain.valueobjects.FitnessGoal;
 import de.jmf.domain.valueobjects.Weight;
@@ -25,7 +26,7 @@ public class UserHandler {
     private final SaveUser saveUser;
     private final LogOutUser logOutUser;
 
-    private final Scanner scanner;
+    private final InputValidator inputValidator;
 
     public UserHandler(CreateUser createUser, LoginUser login, GetActiveUser logUser, SaveUser saveUser,
             LogOutUser logOutUser) {
@@ -34,7 +35,7 @@ public class UserHandler {
         this.logUser = logUser;
         this.saveUser = saveUser;
         this.logOutUser = logOutUser;
-        this.scanner = new Scanner(System.in);
+        this.inputValidator = new InputValidator();
     }
 
     public boolean saveUser() {
@@ -53,18 +54,18 @@ public class UserHandler {
         CSVWriter csvWriter = new CSVWriter(outputPath);
         csvWriter.clear();
         csvWriter.saveAll(users);
-        return false;
+        return true;
     }
 
     public User logUser() {
         try {
             System.out.println();
-            System.out.println("Current Active User");
+            System.out.println(Strings.CURRENT_ACTIVE_USER);
             User user = logUser.execute();
-            System.out.println("Mail: " + user.getEmail());
-            System.out.println("Name: " + user.getName());
-            System.out.println("Age: " + user.getAge());
-            System.out.println("Goal: " + user.getGoal().getGoalType());
+            System.out.println(Strings.EMAIL + user.getEmail());
+            System.out.println(Strings.NAME + user.getName());
+            System.out.println(Strings.AGE + user.getAge());
+            System.out.println(Strings.GOAL + user.getGoal().getGoalType());
             return user;
         } catch (Exception e) {
             System.out.println("User couldn't be fetched: " + e.getMessage());
@@ -95,88 +96,55 @@ public class UserHandler {
     public boolean login() {
         try {
             System.out.println();
-            System.out.println("Registration");
-            String mail = getString("Please enter your email: ");
+            System.out.println(Strings.REGISTRATION);
+            String mail = this.inputValidator.getString(Strings.PLEASE_ENTER_YOUR_EMAIL);
             // load users.csv
             Path currentPath = Paths.get("").resolve("data").resolve("output").resolve("users.csv");
             login.setup(new CSVReader(currentPath).readAll());
             // user login
             boolean success = login.execute(mail);
             if (success) {
-                System.out.println("You successfully logged into your account");
-                return false;
-            } else {
-                System.out.println("This user doesn't exist. Please try again.");
+                System.out.println(Strings.YOU_SUCCESSFULLY_LOGGED_INTO_YOUR_ACCOUNT);
                 return true;
+            } else {
+                System.out.println(Strings.THIS_USER_DOESNT_EXIST_PLEASE_TRY_AGAIN);
+                return false;
             }
         } catch (Exception e) {
-            System.out.print("Something went wrong. " + e.getMessage());
+            System.out.print(Strings.AN_ERROR_OCCURED + e.getMessage());
             System.out.println();
-            return true;
+            return false;
         }
     }
 
     public boolean createUser() {
         try {
             System.out.println();
-            System.out.println("Creating New Account");
-            String mail = getString("Email: ");
-            String name = getString("Name: ");
-            int age = getInt("Age: ");
-            String goalType = getString("Do you want to (gain|loose) weight: ");
-            Weight weightF = new Weight(getDouble("Please enter you target weight: "));
+            System.out.println(Strings.CREATING_NEW_ACCOUNT);
+            String mail = this.inputValidator.getString(Strings.EMAIL);
+            String name = this.inputValidator.getString(Strings.NAME);
+            int age = this.inputValidator.getInt(Strings.AGE);
+            String goalType = this.inputValidator.getString(Strings.DO_YOU_WANT_TO_GAIN_OR_LOOSE);
+            Weight weightF = new Weight(this.inputValidator.getDouble(Strings.PLEASE_ENTER_YOUR_TARGET_WEIGHT));
             FitnessGoal goal = new FitnessGoal(goalType, weightF);
             // load user.csv
             Path currentPath = Paths.get("").resolve("data").resolve("output").resolve("users.csv");
             createUser.setup(new CSVReader(currentPath).readAll());
             // create user
             createUser.execute(mail, name, age, goal);
-            System.out.println("You successfully created a new account");
-            return false;
+            System.out.println(Strings.YOU_SUCCESSFULLY_CREATED_A_NEW_ACCOUNT);
+            return true;
         } catch (duplicateException e) {
             System.out.println(e.getMessage());
-            return true;
+            return false;
         } catch (Exception e) {
-            System.out.print("Something went wrong. " + e.getMessage());
-            return true;
+            System.out.print(Strings.AN_ERROR_OCCURED + e.getMessage());
+            return false;
         }
     }
 
     public void logOut() {
         logOutUser.execute();
         System.out.println();
-    }
-
-    private int getInt(String msg) {
-        while (true) {
-            try {
-                System.out.print(msg);
-                return Integer.parseInt(scanner.next().trim());
-            } catch (Exception e) {
-                System.out.println("Wrong input please try again.");
-            }
-        }
-    }
-
-    private String getString(String msg) {
-        while (true) {
-            try {
-                System.out.print(msg);
-                return scanner.next().trim();
-            } catch (Exception e) {
-                System.out.println("Wrong input please try again.");
-            }
-        }
-    }
-
-    private double getDouble(String msg) {
-        while (true) {
-            try {
-                System.out.print(msg);
-                return Double.parseDouble(scanner.next().trim());
-            } catch (Exception e) {
-                System.out.println("Wrong input please try again.");
-            }
-        }
     }
 }

@@ -2,22 +2,23 @@ package de.jmf.adapters.handlers;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
 import de.jmf.adapters.io.CSVReader;
 import de.jmf.adapters.io.CSVWriter;
-import de.jmf.application.usecases.progress.Meals.*;
-import de.jmf.application.usecases.progress.Weight.*;
+import de.jmf.application.usecases.progress.Meals.GetAllMeals;
+import de.jmf.application.usecases.progress.Meals.GetTodaysMeals;
+import de.jmf.application.usecases.progress.Meals.RemoveMeal;
+import de.jmf.application.usecases.progress.Meals.SaveMeal;
+import de.jmf.application.usecases.progress.Weight.LoadWeight;
+import de.jmf.application.usecases.progress.Weight.SaveWeight;
+import de.jmf.application.usecases.progress.Weight.TrackWeight;
 import de.jmf.application.usecases.user.GetActiveUser;
 import de.jmf.domain.entities.Meal;
-import de.jmf.domain.valueobjects.Weight;
 import de.jmf.domain.entities.NutritionLog;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.List;
+import de.jmf.domain.valueobjects.Weight;
 // import java.util.Scanner;
 
 public class ProgressHandler {
@@ -106,7 +107,7 @@ public class ProgressHandler {
         csvWriter.createFile("date,weight");
         csvWriter.clear();
         csvWriter.saveAll(weightLog);
-        return false;
+        return true;
     }
 
     // MealHandler
@@ -187,7 +188,7 @@ public class ProgressHandler {
         csvWriter.clear();
 
         csvWriter.saveAll(meals);
-        return false;
+        return true;
     }
 
     // Utility

@@ -17,7 +17,7 @@ public class CreateGymPlan {
         this.gymPlanRepository = gymPlanRepository;
     }
 
-    public List<String[]> getGymPlan(String userMail) throws Exception {
+    public List<String[]> getGymPlan(String userMail){
         return this.gymPlanRepository.getGymPlan(userMail);
     }
 
