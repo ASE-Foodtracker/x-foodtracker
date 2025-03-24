@@ -177,6 +177,9 @@ Der 'UserHandler' hingegen hat mehrere Verantwortlichkeiten. Auch wenn der 'Hand
 *Lösungsweg*:<br>
 Man sollte einen dedizierten InputHandler für die Benutzereingaben einbauen.
 
+#### Commit zur Behebung
+https://github.com/ASE-Foodtracker/x-foodtracker/commit/fa13e490e1872d75a89f34bbe5ec0ac47706e0e6#diff-2a5fb3c4109d43aef6bc73287d8628a4d57c40cd1120466b5ed032e34d0beb8e
+
 ## Analyse Open-Closed-Principle (OCP)
 ### Positiv-Beispiel
 UML:
