@@ -4,7 +4,6 @@ import de.jmf.domain.entities.*;
 import de.jmf.domain.valueobjects.*;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import java.time.LocalDate;
 
 public class Tests {
 
@@ -53,15 +52,5 @@ public class Tests {
 
         assertEquals("gain", goal.getGoalType());
         assertEquals(70, goal.getTargetWeight());
-    }
-
-    @Test
-    public void testExerciseLog() {
-        Exercise exercise = new Exercise("Push-ups", 10, "Push-ups description");
-        ExerciseLog exerciseLog = new ExerciseLog(1, LocalDate.now(), exercise);
-
-        assertEquals(1, exerciseLog.getId());
-        assertEquals(LocalDate.now(), exerciseLog.getDate());
-        assertEquals(exercise, exerciseLog.getExercise());
     }
 }

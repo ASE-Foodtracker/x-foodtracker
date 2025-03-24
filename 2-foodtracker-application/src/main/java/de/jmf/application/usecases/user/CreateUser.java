@@ -4,7 +4,6 @@ import de.jmf.application.exceptions.duplicateException;
 import de.jmf.application.repositories.UserRepository;
 import de.jmf.domain.valueobjects.FitnessGoal;
 import de.jmf.domain.entities.User;
-import de.jmf.domain.valueobjects.Weight;
 
 import java.util.List;
 import java.util.Optional;

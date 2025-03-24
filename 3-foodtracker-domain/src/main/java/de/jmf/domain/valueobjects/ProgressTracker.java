@@ -2,7 +2,6 @@
 
 package de.jmf.domain.valueobjects;
 
-import de.jmf.domain.entities.ExerciseLog;
 import de.jmf.domain.entities.NutritionLog;
 import de.jmf.domain.entities.WeightLog;
 
@@ -12,21 +11,15 @@ import java.util.List;
 public class ProgressTracker {
     private String mail;
     private final List<WeightLog> weightLogs;
-    private final List<ExerciseLog> exerciseLogs;
     private final List<NutritionLog> nutritionLogs;
 
     public ProgressTracker() {
         this.weightLogs = new ArrayList<>();
-        this.exerciseLogs = new ArrayList<>();
         this.nutritionLogs = new ArrayList<>();
     }
 
     public void addWeightLog(WeightLog log) {
         this.weightLogs.add(log);
-    }
-
-    public void addExerciseLog(ExerciseLog log) {
-        this.exerciseLogs.add(log);
     }
 
     public void addNutritionLog(NutritionLog log) {
@@ -47,10 +40,6 @@ public class ProgressTracker {
 
     public List<WeightLog> getWeightLogs() {
         return weightLogs;
-    }
-
-    public List<ExerciseLog> getExerciseLogs() {
-        return exerciseLogs;
     }
 
     public List<NutritionLog> getNutritionLogs() {
