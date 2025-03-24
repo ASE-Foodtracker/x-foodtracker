@@ -43,17 +43,12 @@ public class HandleSavingAction implements Action {
         saveOptions.put(SaveOption.MEALS, () ->  this.loopUntilSuccessful.execute(() -> this.progressHandler.saveMeals()));
 
 
-        boolean repeat = true;
-
-
-        //lol hier ist die Endlosschleife
-        //Und am ende ausgeben, dass erfolgreich gespeichert wurde
         try {
             int option = this.inputValidator.getInt(Strings.ENTER_THE_NUMBER_OF_THE_ACTION);
             SaveOption selected = SaveOption.fromInt(option);
             this.performMenuOption.execute(saveOptions, selected);
         } catch (Exception e) {
-            System.out.println("An error occurred " + e.getMessage());
+            System.out.println(Strings.AN_ERROR_OCCURED + ": " + e.getMessage());
         }
     }
 

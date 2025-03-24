@@ -15,7 +15,7 @@ public class InputReader{
                 System.out.print(msg);
                 return Integer.parseInt(scanner.next().trim());
             } catch (Exception e) {
-                System.out.println("Wrong input please try again.");
+                System.out.println(Strings.WRONG_INPUT); 
             }
         }
     }
@@ -26,7 +26,7 @@ public class InputReader{
                 System.out.print(msg);
                 return scanner.next().trim();
             } catch (Exception e) {
-                System.out.println("Wrong input please try again.");
+                System.out.println(Strings.WRONG_INPUT);
             }
         }
     }
@@ -37,7 +37,7 @@ public class InputReader{
                 System.out.print(msg);
                 return Double.parseDouble(scanner.next().trim());
             } catch (Exception e) {
-                System.out.println("Wrong input please try again.");
+                System.out.println(Strings.WRONG_INPUT);
             }
         }
     }

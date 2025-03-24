@@ -113,7 +113,8 @@ public class ProgressHandler {
     }
 
 
-    public void newMealEntry() {
+    public boolean newMealEntry() {
+        boolean successful = false;
         try {
             System.out.println();
             System.out.println("New Meal Entry");
@@ -131,9 +132,11 @@ public class ProgressHandler {
             saveMeal.execute(meal, LocalDate.now());
 
             System.out.println("Successfully entered meal");
+            successful = true;
         } catch (Exception e) {
             System.out.println("Something went wrong: " + e.getMessage());
         }
+        return successful;
     }
 
     public void logTodaysMeals() {
@@ -151,7 +154,8 @@ public class ProgressHandler {
         }
     }
 
-    public void removeMeal() {
+    public boolean removeMeal() {
+        boolean successful = false;
         try {
             System.out.println("Remove Meal");
             List<NutritionLog> meals = logTodaysMeals.execute();
@@ -170,10 +174,12 @@ public class ProgressHandler {
                 NutritionLog meal = meals.get(index - 1);
                 removeMeal.execute(meal);
                 System.out.println("Successfully removed meal");
+                successful = true;
             }
         } catch (Exception e) {
             System.out.println("Something went wrong: " + e.getMessage());
         }
+        return successful;
     }
 
     public boolean saveMeals() {
