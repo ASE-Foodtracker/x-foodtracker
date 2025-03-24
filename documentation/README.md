@@ -53,10 +53,85 @@ Die Hauptidee besteht darin, die Geschäftslogik von den Details der Implementie
 Dies wird durch die Trennung der Anwendung in verschiedene Schichten erreicht, wobei jede Schicht eine spezifische Rolle spielt und nur auf die unmittelbar darunter liegende Schicht zugreift. 
 
 ## Analyse der Dependency Rule
+Alle Schichten des Projekts sind in eigene Projekte aufgeteilt, innere Schichten wurden als Dependency an die Äußeren übergeben. So wurde die Dependency Rule eingehalten und kann nicht verletzt werden.
+
+```
+├── 0-foodtracker-plugin-main
+├── 1-foodtracker-adapters
+├── 2-foodtracker-application
+└── 3-foodtracker-domain
+```
+
 
 ### Positiv-Beispiel
+```mermaid
+classDiagram
+    class ProgressRepository {
+        - ProgressTracker progressTracker
+        + ProgressRepository()
+        + void loadWeight(List~WeightLog~ weightLogs)
+        + void addWeight(Weight weight)
+        + void saveMeal(Meal meal, LocalDate date)
+        + List~NutritionLog~ getNutritionLogs()
+        + void removeMeal(NutritionLog meal)
+        + ProgressTracker getProgress()
+    }
+
+    class ProgressTracker {
+    }
+
+    class WeightLog {
+    }
+
+    class NutritionLog {
+    }
+
+    class Weight {
+    }
+
+    class Meal {
+    }
+
+    class LocalDate {
+        <<Java Built-in>>
+    }
+
+    ProgressRepository --> ProgressTracker
+    ProgressRepository --> WeightLog
+    ProgressRepository --> NutritionLog
+    ProgressRepository --> Weight
+    ProgressRepository --> Meal
+    ProgressRepository --> LocalDate
+```
+
+
+#### Analyse
 
 ### Positiv-Beispiel-2
+```mermaid
+classDiagram
+    class CreateUser {
+        - UserRepository userRepository
+        + CreateUser(UserRepository userRepository)
+        + void setup(List~String[]~ users)
+        + void execute(String mail, String name, Integer age, FitnessGoal goal)
+    }
+
+    class UserRepository {
+    }
+
+    class FitnessGoal {
+    }
+
+    class duplicateException {
+        <<Exception>>
+    }
+
+    CreateUser --> UserRepository
+    CreateUser --> User
+    CreateUser --> FitnessGoal
+    CreateUser --> duplicateException
+```
 
 ## Analyse der Schichten
 
