@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
+import de.jmf.adapters.helper.Strings;
 import de.jmf.adapters.io.CSVReader;
 import de.jmf.adapters.io.CSVWriter;
 import de.jmf.application.usecases.progress.Meals.GetAllMeals;
@@ -21,7 +22,6 @@ import de.jmf.domain.decorator.FatDecorator;
 import de.jmf.domain.entities.Meal;
 import de.jmf.domain.entities.NutritionLog;
 import de.jmf.domain.valueobjects.Weight;
-// import java.util.Scanner;
 
 public class ProgressHandler {
     private final Scanner scanner;
@@ -51,8 +51,6 @@ public class ProgressHandler {
     public void loadProgress() {
         String userName = logUser.execute().getEmail();
 
-        // Load Weight
-
         Path outputDir = Paths.get("").resolve("data").resolve("output");
         Path weightPath = outputDir.resolve(userName).resolve("weight.csv");
 
@@ -62,7 +60,6 @@ public class ProgressHandler {
             loadWeight.execute(weightLog);
         }
 
-        // Load Meals
         Path mealPath = outputDir.resolve(userName).resolve("meals.csv");
 
         CSVReader mealReader = new CSVReader(mealPath);
@@ -75,8 +72,6 @@ public class ProgressHandler {
             }
         }
     }
-
-    // WeightHandler
 
     public void newWeightEntry() {
         try {
@@ -101,8 +96,6 @@ public class ProgressHandler {
 
         String email = logUser.execute().getEmail();
 
-        // Clear data/output/users
-        // Write Users to data/output/users
         Path outputPath = Paths.get("").resolve("data").resolve("output").resolve(email);
         CSVWriter csvWriter = new CSVWriter(outputPath.resolve("weight.csv"));
         csvWriter.createDirectory(outputPath);
@@ -202,7 +195,6 @@ public class ProgressHandler {
         return true;
     }
 
-    // Utility
 
     private int getInt(String msg) {
         while (true) {
@@ -210,7 +202,7 @@ public class ProgressHandler {
                 System.out.print(msg);
                 return Integer.parseInt(scanner.nextLine().trim());
             } catch (Exception e) {
-                System.out.println("Wrong input please try again.");
+                System.out.println(Strings.THE_INPUT_WAS_NOT_VALID_TRY_AGAIN);
             }
         }
     }
@@ -221,7 +213,7 @@ public class ProgressHandler {
                 System.out.print(msg);
                 return scanner.nextLine().trim();
             } catch (Exception e) {
-                System.out.println("Wrong input please try again.");
+                System.out.println(Strings.THE_INPUT_WAS_NOT_VALID_TRY_AGAIN);
             }
         }
     }
@@ -232,7 +224,7 @@ public class ProgressHandler {
                 System.out.print(msg);
                 return Double.parseDouble(scanner.nextLine().trim());
             } catch (Exception e) {
-                System.out.println("Wrong input please try again.");
+                System.out.println(Strings.THE_INPUT_WAS_NOT_VALID_TRY_AGAIN);
             }
         }
     }

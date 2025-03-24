@@ -16,8 +16,6 @@ public class UserRepository {
         this.userList = new ArrayList<>();
     }
 
-    // Single User
-
     public void setUser(User user) {
         this.activeUser = user;
     }
@@ -35,8 +33,6 @@ public class UserRepository {
     public void logOut() {
         this.activeUser = null;
     }
-
-    // ---- User List
 
     public void setUserList(List<String[]> users) {
         for (String[] line : users) {

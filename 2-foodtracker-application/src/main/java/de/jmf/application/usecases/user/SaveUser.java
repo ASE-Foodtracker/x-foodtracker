@@ -1,10 +1,10 @@
 package de.jmf.application.usecases.user;
 
-import de.jmf.application.repositories.UserRepository;
-import de.jmf.domain.entities.User;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import de.jmf.application.repositories.UserRepository;
+import de.jmf.domain.entities.User;
 
 public class SaveUser {
     private final UserRepository userRepository;
@@ -14,7 +14,6 @@ public class SaveUser {
     }
 
     public List<String[]> execute() {
-        // fetch users
         List<User> users = userRepository.getUserList();
         List<String[]> csvData = new ArrayList<>();
 

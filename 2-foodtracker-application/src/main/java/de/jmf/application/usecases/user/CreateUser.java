@@ -23,7 +23,6 @@ public class CreateUser {
     public void execute(String mail, String name, Integer age, FitnessGoal goal) {
         Optional<User> optionalUser = userRepository.getUserByMail(mail);
         if (optionalUser.isPresent()) {
-            // throw exception
             throw new duplicateException("A user with this mail already exists.");
         } else {
             User user = new User.Builder()

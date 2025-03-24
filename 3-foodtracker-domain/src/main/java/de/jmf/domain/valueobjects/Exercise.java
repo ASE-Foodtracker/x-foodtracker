@@ -1,10 +1,8 @@
-// VO: Represents a specific type of exercise (e.g., "Push-ups").  Should be immutable.
-
 package de.jmf.domain.valueobjects;
 
 public class Exercise {
     private String name;
-    private int duration; // in minutes
+    private int duration;
     private String desc;
 
     public Exercise(String name, int duration, String desc) {
@@ -17,7 +15,6 @@ public class Exercise {
         return desc;
     }
 
-    // Getters and Setters
     public String getName() {
         return name;
     }

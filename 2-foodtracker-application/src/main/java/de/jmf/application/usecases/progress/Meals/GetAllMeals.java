@@ -14,7 +14,6 @@ public class GetAllMeals {
     }
 
     public List<String[]> execute() {
-        // Log all meals
         List<NutritionLog> log = progressRepository.getNutritionLogs();
 
         List<String[]> meals = new ArrayList<>();

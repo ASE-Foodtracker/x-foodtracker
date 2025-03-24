@@ -1,13 +1,11 @@
-// VO: Is a snapshot of progress at a point in time.
-
 package de.jmf.domain.valueobjects;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.jmf.domain.entities.ExerciseLog;
 import de.jmf.domain.entities.NutritionLog;
 import de.jmf.domain.entities.WeightLog;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ProgressTracker {
     private String mail;

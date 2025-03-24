@@ -1,7 +1,7 @@
 package de.jmf.domain.entities;
-import de.jmf.domain.valueobjects.Exercise;
-
 import java.time.LocalDate;
+
+import de.jmf.domain.valueobjects.Exercise;
 
 public class ExerciseLog {
     private int id;
@@ -13,8 +13,6 @@ public class ExerciseLog {
         this.date = date;
         this.exercise = exercise;
     }
-
-    // Getters and Setters
 
     public int getId() {
         return id;

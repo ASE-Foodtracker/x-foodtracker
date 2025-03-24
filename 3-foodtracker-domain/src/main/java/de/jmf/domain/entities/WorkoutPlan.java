@@ -1,9 +1,9 @@
 package de.jmf.domain.entities;
 
-import de.jmf.domain.valueobjects.Exercise;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import de.jmf.domain.valueobjects.Exercise;
 
 public class WorkoutPlan {
     private int id;
@@ -23,8 +23,6 @@ public class WorkoutPlan {
     public void removeExercise(Exercise exercise) {
         this.exercises.remove(exercise);
     }
-
-    // Getters and Setters
 
 
     public int getId() {
