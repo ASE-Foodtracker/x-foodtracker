@@ -63,7 +63,7 @@ Alle Schichten des Projekts sind in eigene Projekte aufgeteilt, innere Schichten
 ```
 
 
-### Positiv-Beispiel
+### Positiv-Beispiel: ProgressRepository
 ```mermaid
 classDiagram
     class ProgressRepository {
@@ -77,21 +77,11 @@ classDiagram
         + ProgressTracker getProgress()
     }
 
-    class ProgressTracker {
-    }
-
-    class WeightLog {
-    }
-
-    class NutritionLog {
-    }
-
-    class Weight {
-    }
-
-    class Meal {
-    }
-
+    class ProgressTracker 
+    class WeightLog
+    class NutritionLog
+    class Weight
+    class Meal
     class LocalDate {
         <<Java Built-in>>
     }
@@ -104,10 +94,13 @@ classDiagram
     ProgressRepository --> LocalDate
 ```
 
+Analyse:
+- Die Klasse 'ProgressRepository' hat ProgressTracker, WeightLog, NutritionLog, Weight, Meal und LocalDate als Abhängigkeiten aus dem Domain Layer.
+- Die Klasse hält sich an die Dependency Rule, da die Abhängigkeiten aus dem Domain Layer stammen und die Klasse selbst im Application Layer liegt.
 
 #### Analyse
 
-### Positiv-Beispiel-2
+### Negativ-Beispiel: CreateUser
 ```mermaid
 classDiagram
     class CreateUser {
@@ -117,12 +110,8 @@ classDiagram
         + void execute(String mail, String name, Integer age, FitnessGoal goal)
     }
 
-    class UserRepository {
-    }
-
-    class FitnessGoal {
-    }
-
+    class UserRepository
+    class FitnessGoal
     class duplicateException {
         <<Exception>>
     }
@@ -133,14 +122,79 @@ classDiagram
     CreateUser --> duplicateException
 ```
 
+Analyse:
+- Die Klasse 'CreateUser' hat User und FitnessGoal als Abhängigkeiten aus dem Domain Layer und UserRepository und duplicateException aus dem Application Layer.
+- Die Klasse verletzt die Dependency Rule, da sie Abhängigkeiten aus dem Domain Layer und aus dem eigenen Layer (Application Layer) hat.
+
 ## Analyse der Schichten
 
-### Schicht:
+### Schicht: Application Layer
+Klasse: GetTodaysMeals
 
-### Schicht:
+Die Klasse GetTodaysMeals ist verantwortlich für das Abrufen der Mahlzeiten des aktuellen Tages. Sie gehört zum Application Layer und greift auf das ProgressRepository zu, um die Mahlzeiten zu laden und zurückzugeben.
+
+```mermaid
+classDiagram
+    class GetTodaysMeals {
+        - ProgressRepository progressRepository
+        + GetTodaysMeals(ProgressRepository progressRepository)
+        + List~NutritionLog~ execute()
+    }
+
+    class ProgressRepository
+    class NutritionLog
+    class LocalDate
+
+    GetTodaysMeals --> ProgressRepository
+    GetTodaysMeals --> NutritionLog
+    GetTodaysMeals --> LocalDate
+```
+
+Erklärung:
+
+- Verantwortung: Die Klasse ist darauf spezialisiert, die Mahlzeiten des aktuellen Tages zu filtern und zurückzugeben.
+- Abhängigkeiten:
+  - ProgressRepository: Wird verwendet, um alle gespeicherten Mahlzeiten zu laden.
+  - NutritionLog: Repräsentiert die einzelnen Mahlzeiten.
+  - LocalDate: Dient zur Bestimmung des aktuellen Datums.
+- Schichtzuordnung: Die Klasse gehört zum Application Layer, da sie die Geschäftslogik für die Verarbeitung von Mahlzeiten implementiert, ohne sich um die Details der Datenquelle zu kümmern.
 
 
+### Schicht: Domain Layer
+Klasse: ProgressTracker
 
+Die Klasse ProgressTracker ist verantwortlich für das Tracking von Gewicht und Ernährung. Sie gehört zum Domain Layer, da sie die Geschäftslogik für das Verwalten von Gewichtseinträgen und Ernährungsprotokollen enthält.
+
+```mermaid
+classDiagram
+    class ProgressTracker {
+        - String mail
+        - List~WeightLog~ weightLogs
+        - List~NutritionLog~ nutritionLogs
+        + ProgressTracker()
+        + void addWeightLog(WeightLog log)
+        + void addNutritionLog(NutritionLog log)
+        + void removeNutritionLog(NutritionLog log)
+        + String getMail()
+        + void setMail(String mail)
+        + List~WeightLog~ getWeightLogs()
+        + List~NutritionLog~ getNutritionLogs()
+    }
+
+    class WeightLog
+    class NutritionLog
+
+    ProgressTracker --> WeightLog
+    ProgressTracker --> NutritionLog
+```
+
+Erklärung:
+
+- Verantwortung: Die Klasse ProgressTracker dient als zentrale Komponente für das Verwalten von Gewichtseinträgen (WeightLog) und Ernährungsprotokollen (NutritionLog). Sie ermöglicht das Hinzufügen, Entfernen und Abrufen dieser Daten.
+- Abhängigkeiten:
+  - WeightLog: Repräsentiert einzelne Gewichtseinträge.
+  - NutritionLog: Repräsentiert einzelne Ernährungsprotokolle.
+- Schichtzuordnung: Die Klasse gehört zum Domain Layer, da sie die Kernlogik für das Tracking von Gewicht und Ernährung implementiert und keine Abhängigkeiten zu äußeren Schichten hat.
 
 # Kapitel 3: SOLID
 ## Analyse Single-Responsibility-Principle (SRP)
