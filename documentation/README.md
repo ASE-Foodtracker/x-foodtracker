@@ -53,7 +53,7 @@ Die Hauptidee besteht darin, die Geschäftslogik von den Details der Implementie
 Dies wird durch die Trennung der Anwendung in verschiedene Schichten erreicht, wobei jede Schicht eine spezifische Rolle spielt und nur auf die unmittelbar darunter liegende Schicht zugreift. 
 
 ## Analyse der Dependency Rule
-Alle Schichten des Projekts sind in eigene Projekte aufgeteilt, innere Schichten wurden als Dependency an die Äußeren übergeben. So wurde die Dependency Rule eingehalten und kann nicht verletzt werden.
+Alle Schichten des Projekts sind in eigene Projekte aufgeteilt, innere Schichten wurden als Dependency an die Äußeren übergeben. Dies unterstützt die Dependency Rule.
 
 ```
 ├── 0-foodtracker-plugin-main
@@ -163,7 +163,7 @@ Erklärung:
 ### Schicht: Domain Layer
 Klasse: ProgressTracker
 
-Die Klasse ProgressTracker ist verantwortlich für das Tracking von Gewicht und Ernährung. Sie gehört zum Domain Layer, da sie die Geschäftslogik für das Verwalten von Gewichtseinträgen und Ernährungsprotokollen enthält.
+Die Klasse ProgressTracker ist verantwortlich für das Tracking von Gewicht und Ernährung. Sie gehört zum Domain Layer, da sie die Geschäftslogik für das Verwalten von WeightLogs und NutritionLogs enthält.
 
 ```mermaid
 classDiagram
@@ -190,7 +190,7 @@ classDiagram
 
 Erklärung:
 
-- Verantwortung: Die Klasse ProgressTracker dient als zentrale Komponente für das Verwalten von Gewichtseinträgen (WeightLog) und Ernährungsprotokollen (NutritionLog). Sie ermöglicht das Hinzufügen, Entfernen und Abrufen dieser Daten.
+- Verantwortung: Die Klasse ProgressTracker dient als zentrale Komponente für das Verwalten von WeightLogs und NutritionLogs. Sie ermöglicht das Hinzufügen, Entfernen und Abrufen dieser Daten.
 - Abhängigkeiten:
   - WeightLog: Repräsentiert einzelne Gewichtseinträge.
   - NutritionLog: Repräsentiert einzelne Ernährungsprotokolle.
