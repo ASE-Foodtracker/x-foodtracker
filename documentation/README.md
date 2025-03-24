@@ -593,147 +593,222 @@ Durch das auslagern von Methoden wird die Lesbarkeit im Code deutlich verbessert
 # Kapitel 8: Entwurfsmuster
 ## Entwurfsmuster: Dekorator
 ### Einsatz
-Das Dekorator-Muster wird verwendet, um einem Objekt zur Laufzeit zusätzliche Verantwortlichkeiten hinzuzufügen, ohne seine Struktur zu ändern. In unserem Projekt können wir das Dekorator-Muster verwenden, um zusätzliche Funktionen zu den Benutzerdaten hinzuzufügen, wie z.B. das Protokollieren von Änderungen oder das Validieren von Eingaben.
+Das Dekorator-Muster wird verwendet, um einem Objekt zur Laufzeit zusätzliche Verantwortlichkeiten hinzuzufügen, ohne seine Struktur zu ändern. In unserem Projekt können wir das Dekorator-Muster verwenden, um zusätzliche Nährwertinformationen zu den Mahlzeiten hinzuzufügen, wie z.B. den Fett- und Kohlenhydratgehalt.
 
 ### Beispiel
-Wir haben eine Benutzerklasse, die wir mit zusätzlichen Funktionen wie Validierung und Protokollierung dekorieren möchten.
+Wir haben eine Mahlzeitenklasse, die wir mit zusätzlichen Nährwertinformationen wie Fett und Kohlenhydraten dekorieren möchten.
 
 ### Code
 ```java
-// filepath: 1-foodtracker-adapters/src/main/java/de/jmf/adapters/decorator/User.java
-public interface User {
-    void save();
-}
+public class Meal {
+    private final String name;
+    private final int protein;
+    private final int calories;
 
-// filepath: 1-foodtracker-adapters/src/main/java/de/jmf/adapters/decorator/BasicUser.java
-public class BasicUser implements User {
-    @Override
-    public void save() {
-        // Grundlegende Speichern-Implementierung
+    public Meal(String name, int protein, int calories) {
+        this.name = name;
+        this.protein = protein;
+        this.calories = calories;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getProtein() {
+        return protein;
+    }
+
+    public int getCalories() {
+        return calories;
+    }
+
+    public int getFat() {
+        return 0;
+    }
+
+    public int getCarbs() {
+        return 0;
     }
 }
 
-// filepath: 1-foodtracker-adapters/src/main/java/de/jmf/adapters/decorator/UserDecorator.java
-public abstract class UserDecorator implements User {
-    protected User decoratedUser;
+// filepath: de/jmf/domain/decorator/MealDecorator.java
+package de.jmf.domain.decorator;
+import de.jmf.domain.entities.Meal;
 
-    public UserDecorator(User decoratedUser) {
-        this.decoratedUser = decoratedUser;
+public abstract class MealDecorator extends Meal {
+    protected Meal decoratedMeal;
+
+    public MealDecorator(Meal decoratedMeal) {
+        super(decoratedMeal.getName(), decoratedMeal.getProtein(), decoratedMeal.getCalories());
+        this.decoratedMeal = decoratedMeal;
     }
 
     @Override
-    public void save() {
-        decoratedUser.save();
+    public String getName() {
+        return decoratedMeal.getName();
+    }
+
+    @Override
+    public int getCalories() {
+        return decoratedMeal.getCalories();
+    }
+
+    @Override
+    public int getProtein() {
+        return decoratedMeal.getProtein();
+    }
+
+    public abstract int getFat();
+    public abstract int getCarbs();
+}
+
+// filepath: de/jmf/domain/decorator/FatDecorator.java
+package de.jmf.domain.decorator;
+import de.jmf.domain.entities.Meal;
+
+public class FatDecorator extends MealDecorator {
+    private final int fat;
+
+    public FatDecorator(Meal decoratedMeal, int fat) {
+        super(decoratedMeal);
+        this.fat = fat;
+    }
+
+    @Override
+    public int getFat() {
+        return fat;
+    }
+
+    @Override
+    public int getCarbs() {
+        return decoratedMeal instanceof MealDecorator ? ((MealDecorator) decoratedMeal).getCarbs() : 0;
     }
 }
 
-public class ValidationUserDecorator extends UserDecorator {
-    public ValidationUserDecorator(User decoratedUser) {
-        super(decoratedUser);
+// filepath: de/jmf/domain/decorator/CarbsDecorator.java
+package de.jmf.domain.decorator;
+import de.jmf.domain.entities.Meal;
+
+public class CarbsDecorator extends MealDecorator {
+    private final int carbs;
+
+    public CarbsDecorator(Meal decoratedMeal, int carbs) {
+        super(decoratedMeal);
+        this.carbs = carbs;
     }
 
     @Override
-    public void save() {
-        validate();
-        super.save();
-    }
-
-    private void validate() {
-        // Validierungslogik
-    }
-}
-public class LoggingUserDecorator extends UserDecorator {
-    public LoggingUserDecorator(User decoratedUser) {
-        super(decoratedUser);
+    public int getCarbs() {
+        return carbs;
     }
 
     @Override
-    public void save() {
-        log();
-        super.save();
-    }
-
-    private void log() {
-        // Protokollierungslogik
+    public int getFat() {
+        return decoratedMeal instanceof MealDecorator ? ((MealDecorator) decoratedMeal).getFat() : 0;
     }
 }
 ```
+### Verwendung:
+``` Java
+Meal meal = new Meal("Chicken Salad", 30, 400);
+meal = new FatDecorator(meal, 10);
+meal = new CarbsDecorator(meal, 20);
+```
 
-     -------------------         -------------------
-    |       User        |<------|   UserDecorator   |
+    -------------------          -------------------
+    |       Meal        |<------|   MealDecorator   |
     |-------------------|       |-------------------|
-    | + save()          |       | - decoratedUser   |
-     -------------------        | + save()          |
-                                 -------------------
-                                    /\
-                                    ||
-                                    ||
-                                    ||
-     -------------------        -------------------
-    |    BasicUser      |       | ValidationUserDec |
-    |-------------------|       |-------------------|
-    | + save()          |       | + save()          |
-     -------------------        | + validate()      |
+    | + getName()       |       | - decoratedMeal   |
+    | + getProtein()    |       | + getName()       |
+    | + getCalories()   |       | + getProtein()    |
+    | + getFat()        |       | + getCalories()   |
+    | + getCarbs()      |       | + getFat()        |
+    -------------------         | + getCarbs()      |
                                  -------------------
                                     /\
                                     ||
                                     ||
                                     ||
                                  -------------------
-                                | LoggingUserDec    |
+                                |   FatDecorator    |
                                 |-------------------|
-                                | + save()          |
-                                | + log()           |
+                                | + getFat()        |
+                                | + getCarbs()      |
+                                |                   |
+                                |                   |
+                                |                   |
                                  -------------------
+                                    /\
+                                    ||
+                                    ||
+                                    ||
+                                -------------------
+                                |  CarbsDecorator   |
+                                |-------------------|
+                                | + getCarbs()      |
+                                | + getFat()        |
+                                -------------------
 
 **Begründung:**<br>
-Das Dekorator-Muster ermöglicht es uns, zusätzliche Funktionen wie Validierung und Protokollierung hinzuzufügen, ohne die grundlegende Benutzerklasse zu ändern. Dies erhöht die Flexibilität und Erweiterbarkeit des Codes.
+Das Dekorator-Muster ermöglicht es uns, zusätzliche Nährwertinformationen wie Fett und Kohlenhydrate hinzuzufügen, ohne die grundlegende Mahlzeitenklasse zu ändern. Dies erhöht die Flexibilität und Erweiterbarkeit des Codes.
 
 ## Entwurfsmuster: Erbauer
 ### Einsatz
 Das Erbauer-Muster wird verwendet, um die Konstruktion eines komplexen Objekts zu trennen, sodass derselbe Konstruktionsprozess verschiedene Darstellungen erzeugen kann. In unserem Projekt können wir das Erbauer-Muster verwenden, um komplexe Benutzerobjekte mit verschiedenen Attributen zu erstellen.
 
 ### Beispiel
-Wir haben eine Benutzerklasse, die viele Attribute hat. Mit dem Erbauer-Muster können wir Benutzerobjekte schrittweise und kontrolliert erstellen. Vorallem wenn wir vom Index, der gerade die Email ist, auf eine ID wechseln, dann kann die E-Mail auch optional sein.
+Wir haben eine Benutzerklasse, die viele Attribute hat. Mit dem Erbauer-Muster können wir Benutzerobjekte schrittweise und kontrolliert erstellen. Vor allem wenn wir vom Index, der gerade die E-Mail ist, auf eine ID wechseln, dann kann die E-Mail auch optional sein.
+
+
 
 ### Code
 ```Java
 public class User {
-    private String email;
     private String name;
     private int age;
-    private FitnessGoal fitnessGoal;
+    private String email;
+    private List<WorkoutPlan> workoutPlans;
+    private FitnessGoal goal;
 
-    private User(UserBuilder builder) {
-        this.email = builder.email;
+
+    private User(Builder builder) {
         this.name = builder.name;
         this.age = builder.age;
-        this.fitnessGoal = builder.fitnessGoal;
+        this.email = builder.email;
+        this.goal = builder.goal;
+        this.workoutPlans = builder.workoutPlans;
     }
 
-    public static class UserBuilder {
-        private String email;
+    public static class Builder {
         private String name;
         private int age;
-        private FitnessGoal fitnessGoal;
+        private String email;
+        private List<WorkoutPlan> workoutPlans = new ArrayList<>();
+        private FitnessGoal goal;
 
-        public UserBuilder setEmail(String email) {
-            this.email = email;
-            return this;
-        }
-
-        public UserBuilder setName(String name) {
+        public Builder setName(String name) {
             this.name = name;
             return this;
         }
 
-        public UserBuilder setAge(int age) {
+        public Builder setAge(int age) {
             this.age = age;
             return this;
         }
 
-        public UserBuilder setFitnessGoal(FitnessGoal fitnessGoal) {
-            this.fitnessGoal = fitnessGoal;
+        public Builder setEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder setGoal(FitnessGoal goal) {
+            this.goal = goal;
+            return this;
+        }
+
+        public Builder setWorkoutPlans(List<WorkoutPlan> workoutPlans) {
+            this.workoutPlans = workoutPlans;
             return this;
         }
 
@@ -749,7 +824,7 @@ public class User {
     | - email           |
     | - name            |
     | - age             |
-    | - fitnessGoal     |
+    | - goal            |
      -------------------
             /\
             ||
@@ -761,12 +836,12 @@ public class User {
     | - email           |
     | - name            |
     | - age             |
-    | - fitnessGoal     |
+    | - goal            |
      -------------------
     | + setEmail()      |
     | + setName()       |
     | + setAge()        |
-    | + setFitnessGoal()|
+    | + setGoal()       |
     | + build()         |
      -------------------
 **Begründung:**<br>
