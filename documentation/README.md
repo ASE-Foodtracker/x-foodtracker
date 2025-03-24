@@ -573,7 +573,7 @@ public class UserHandler{
     public void logOut(){}
 }
 
-public lcass InputHandler{
+public class InputHandler{
     public int getInt(){}
     public String getString(){}
     public Double getDouble(){}
@@ -581,17 +581,32 @@ public lcass InputHandler{
 ```
 ## 2 Refactorings
 ### Rename Method
-**Commit:**https://github.com/ASE-Foodtracker/x-foodtracker/commit/aca842f75f4fc81a0d29ac42a03d60f5a1557aba <br>
+#### Commit
+https://github.com/ASE-Foodtracker/x-foodtracker/commit/aca842f75f4fc81a0d29ac42a03d60f5a1557aba <br>
 **Begründung:**<br> Durch dieses renaming wurde die Lesbarkeit und das Verständnis des Codes erhöht. Wer nichts mit dem Methodennamen anfangen kann, hat es deutlich schwerer sich durch den Code zu lesen und ihn zu verstehen.
 
-### Extract Method (Nicht gemacht, sollten wir aber)
-**Begründung:**<br>
-Durch das auslagern von Methoden wird die Lesbarkeit im Code deutlich verbessert. Somit verringert man das Risiko von Duplicated Code und Long Methods. Mein Betreuer (Architekt) meinte einst: **"Wenn ich meine Brille abnehme und sehen kann, dass der Code über den halben Bildschirm verschachtelt ist, dann muss dort auf jeden Fall gerefactored werden!"**
+### Rename Class
+#### Commit
+https://github.com/ASE-Foodtracker/x-foodtracker/pull/29/commits/a0d2131eeef7de4166dce89357c0af5f6e8ab26a
+#### Begründung
+Unser InputReader hieß vorher InputValidator. Da er aber nichts validiert, ist der Name hier irreführend.
 
+### Extract Method
+#### Commit
+1. https://github.com/ASE-Foodtracker/x-foodtracker/commit/e4579ee59ff6f9922ee2800f3e7888493949e539
+2. (Ausgelagert) https://github.com/ASE-Foodtracker/x-foodtracker/commit/fa13e490e1872d75a89f34bbe5ec0ac47706e0e6
+#### Begründung
+Unser ConsoleAdapter hatte mehrere Funktionen, die sich über den ganzen Bildschirm streckten. Hier haben wir einen Commit, der sich um die "running" Methode kümmert. Die einst große Methode wurde in mehrere Untermethoden ausgelagert, was die Readability deutlich erhöht!
 
+Mein Dezi meinte einst: **"Wenn ich meine Brille abnehme und sehen kann, dass der Code über den halben Bildschirm verschachtelt ist, dann muss dort auf jeden Fall gerefactored werden!"**
+
+### Anmerkung
+Es wurden insgesamt mehrere Refactorings angewand, jedoch sind nur zwei angefragt worden. Bei Fragen stehen wir gerne zur Verfügung und erläutern mehreres :)
 
 # Kapitel 8: Entwurfsmuster
 ## Entwurfsmuster: Dekorator
+### Commit
+https://github.com/ASE-Foodtracker/x-foodtracker/pull/29/commits/82a5c9065ea1ae1f140b7228cee71a79411759f6
 ### Einsatz
 Das Dekorator-Muster wird verwendet, um einem Objekt zur Laufzeit zusätzliche Verantwortlichkeiten hinzuzufügen, ohne seine Struktur zu ändern. In unserem Projekt können wir das Dekorator-Muster verwenden, um zusätzliche Nährwertinformationen zu den Mahlzeiten hinzuzufügen, wie z.B. den Fett- und Kohlenhydratgehalt.
 
@@ -754,6 +769,8 @@ meal = new CarbsDecorator(meal, 20);
 Das Dekorator-Muster ermöglicht es uns, zusätzliche Nährwertinformationen wie Fett und Kohlenhydrate hinzuzufügen, ohne die grundlegende Mahlzeitenklasse zu ändern. Dies erhöht die Flexibilität und Erweiterbarkeit des Codes.
 
 ## Entwurfsmuster: Erbauer
+### Commit
+https://github.com/ASE-Foodtracker/x-foodtracker/pull/29/commits/5d20b61e0c902d0c06af8d984434dbb34966885b
 ### Einsatz
 Das Erbauer-Muster wird verwendet, um die Konstruktion eines komplexen Objekts zu trennen, sodass derselbe Konstruktionsprozess verschiedene Darstellungen erzeugen kann. In unserem Projekt können wir das Erbauer-Muster verwenden, um komplexe Benutzerobjekte mit verschiedenen Attributen zu erstellen.
 
