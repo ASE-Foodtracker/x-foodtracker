@@ -16,6 +16,8 @@ import de.jmf.application.usecases.progress.Weight.LoadWeight;
 import de.jmf.application.usecases.progress.Weight.SaveWeight;
 import de.jmf.application.usecases.progress.Weight.TrackWeight;
 import de.jmf.application.usecases.user.GetActiveUser;
+import de.jmf.domain.decorator.CarbsDecorator;
+import de.jmf.domain.decorator.FatDecorator;
 import de.jmf.domain.entities.Meal;
 import de.jmf.domain.entities.NutritionLog;
 import de.jmf.domain.valueobjects.Weight;
@@ -110,7 +112,6 @@ public class ProgressHandler {
         return true;
     }
 
-    // MealHandler
 
     public void newMealEntry() {
         try {
@@ -120,8 +121,12 @@ public class ProgressHandler {
             String name = getString("Please enter the name of the meal: ");
             int calories = getInt("Please enter the amount of calories: ");
             int protein = getInt("Please enter the amount of protein: ");
+            int fat = getInt("Please enter the amount of fat: ");
+            int carbs = getInt("Please enter the amount of carbs: ");
 
-            Meal meal = new Meal(name, calories, protein);
+            Meal meal = new Meal(name, protein, calories);
+            meal = new FatDecorator(meal, fat);
+            meal = new CarbsDecorator(meal, carbs);
 
             saveMeal.execute(meal, LocalDate.now());
 
