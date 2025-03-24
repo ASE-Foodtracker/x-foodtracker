@@ -1,9 +1,9 @@
 package de.jmf.domain.entities;
 
-import de.jmf.domain.valueobjects.FitnessGoal;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import de.jmf.domain.valueobjects.FitnessGoal;
 
 public class User {
     private String name;
@@ -12,16 +12,49 @@ public class User {
     private List<WorkoutPlan> workoutPlans;
     private FitnessGoal goal;
 
-    public User(String name, int age, String email, FitnessGoal goal) {
-        this.name = name;
-        this.age = age;
-        this.email = email;
-        this.goal = goal;
-        this.workoutPlans = new ArrayList<>();
+    private User(Builder builder) {
+        this.name = builder.name;
+        this.age = builder.age;
+        this.email = builder.email;
+        this.goal = builder.goal;
+        this.workoutPlans = builder.workoutPlans;
     }
 
-    public void addWorkoutPlan(WorkoutPlan plan) {
-        this.workoutPlans.add(plan);
+    public static class Builder {
+        private String name;
+        private int age;
+        private String email;
+        private List<WorkoutPlan> workoutPlans = new ArrayList<>();
+        private FitnessGoal goal;
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setAge(int age) {
+            this.age = age;
+            return this;
+        }
+
+        public Builder setEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder setGoal(FitnessGoal goal) {
+            this.goal = goal;
+            return this;
+        }
+
+        public Builder setWorkoutPlans(List<WorkoutPlan> workoutPlans) {
+            this.workoutPlans = workoutPlans;
+            return this;
+        }
+
+        public User build() {
+            return new User(this);
+        }
     }
 
     // Getters and Setters

@@ -4,6 +4,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import de.jmf.adapters.helper.InputValidator;
+import de.jmf.adapters.helper.Strings;
 import de.jmf.adapters.io.CSVReader;
 import de.jmf.adapters.io.CSVWriter;
 import de.jmf.application.exceptions.duplicateException;
@@ -12,8 +14,6 @@ import de.jmf.application.usecases.user.GetActiveUser;
 import de.jmf.application.usecases.user.LogOutUser;
 import de.jmf.application.usecases.user.LoginUser;
 import de.jmf.application.usecases.user.SaveUser;
-import de.jmf.adapters.helper.InputValidator;
-import de.jmf.adapters.helper.Strings;
 import de.jmf.domain.entities.User;
 import de.jmf.domain.valueobjects.FitnessGoal;
 import de.jmf.domain.valueobjects.Weight;
