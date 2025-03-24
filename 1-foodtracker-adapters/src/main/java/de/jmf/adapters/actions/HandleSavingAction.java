@@ -5,7 +5,7 @@ import java.util.Map;
 
 import de.jmf.adapters.handlers.ProgressHandler;
 import de.jmf.adapters.handlers.UserHandler;
-import de.jmf.adapters.helper.InputValidator;
+import de.jmf.adapters.helper.InputReader;
 import de.jmf.adapters.helper.LoopUntilSuccessful;
 import de.jmf.adapters.helper.Strings;
 import de.jmf.adapters.menus.PerformMenuOption;
@@ -15,7 +15,7 @@ import de.jmf.adapters.menus.SaveOption;
 public class HandleSavingAction implements Action {
     private final UserHandler userHandler;
     private final ProgressHandler progressHandler;
-    private final InputValidator inputValidator;
+    private final InputReader inputValidator;
     private final PrintMenus printMenus;
     private final PerformMenuOption performMenuOption;
     private final LoopUntilSuccessful loopUntilSuccessful;
@@ -23,7 +23,7 @@ public class HandleSavingAction implements Action {
     public HandleSavingAction(UserHandler userHandler, ProgressHandler progressHandler) {
         this.userHandler = userHandler;
         this.progressHandler = progressHandler;
-        this.inputValidator = new InputValidator();
+        this.inputValidator = new InputReader();
         this.printMenus = new PrintMenus();
         this.performMenuOption = new PerformMenuOption();
         this.loopUntilSuccessful = new LoopUntilSuccessful();

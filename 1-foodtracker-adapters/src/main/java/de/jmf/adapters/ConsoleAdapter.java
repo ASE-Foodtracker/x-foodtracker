@@ -15,7 +15,7 @@ import de.jmf.adapters.actions.HandleWeightEntryAction;
 import de.jmf.adapters.handlers.GymPlanHandler;
 import de.jmf.adapters.handlers.ProgressHandler;
 import de.jmf.adapters.handlers.UserHandler;
-import de.jmf.adapters.helper.InputValidator;
+import de.jmf.adapters.helper.InputReader;
 import de.jmf.adapters.helper.LoopUntilSuccessful;
 import de.jmf.adapters.helper.Strings;
 import de.jmf.adapters.io.CSVWriter;
@@ -39,7 +39,7 @@ import de.jmf.application.usecases.user.SaveUser;
 
 public class ConsoleAdapter {
 
-    private final InputValidator inputValidator;
+    private final InputReader inputValidator;
     private final PrintMenus printMenus;
     private final PerformMenuOption performMenuOption;
     private final LoopUntilSuccessful loopUntilSuccessful;
@@ -62,7 +62,7 @@ public class ConsoleAdapter {
             RemoveMeal removeMeal,
             GetAllMeals getAllMeals) {
 
-        this.inputValidator = new InputValidator();
+        this.inputValidator = new InputReader();
         this.printMenus = new PrintMenus();
         this.performMenuOption = new PerformMenuOption();
         this.loopUntilSuccessful = new LoopUntilSuccessful();

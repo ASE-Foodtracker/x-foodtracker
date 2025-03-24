@@ -2,10 +2,10 @@ package de.jmf.adapters.helper;
 
 import java.util.Scanner;
 
-public class InputValidator{
+public class InputReader{
     public final Scanner scanner;
 
-    public InputValidator(){
+    public InputReader(){
         this.scanner = new Scanner(System.in);
     }
     

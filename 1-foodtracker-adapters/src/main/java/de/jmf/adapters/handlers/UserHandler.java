@@ -4,7 +4,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import de.jmf.adapters.helper.InputValidator;
+import de.jmf.adapters.helper.InputReader;
 import de.jmf.adapters.helper.Strings;
 import de.jmf.adapters.io.CSVReader;
 import de.jmf.adapters.io.CSVWriter;
@@ -26,7 +26,7 @@ public class UserHandler {
     private final SaveUser saveUser;
     private final LogOutUser logOutUser;
 
-    private final InputValidator inputValidator;
+    private final InputReader inputValidator;
 
     public UserHandler(CreateUser createUser, LoginUser login, GetActiveUser logUser, SaveUser saveUser,
             LogOutUser logOutUser) {
@@ -35,7 +35,7 @@ public class UserHandler {
         this.logUser = logUser;
         this.saveUser = saveUser;
         this.logOutUser = logOutUser;
-        this.inputValidator = new InputValidator();
+        this.inputValidator = new InputReader();
     }
 
     public boolean saveUser() {

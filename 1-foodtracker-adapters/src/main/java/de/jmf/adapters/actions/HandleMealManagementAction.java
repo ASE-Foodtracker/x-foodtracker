@@ -1,15 +1,15 @@
 package de.jmf.adapters.actions;
 
 import de.jmf.adapters.handlers.ProgressHandler;
-import de.jmf.adapters.helper.InputValidator;
+import de.jmf.adapters.helper.InputReader;
 
 public class HandleMealManagementAction implements Action {
     private final ProgressHandler progressHandler;
-    private final InputValidator inputValidator;
+    private final InputReader inputValidator;
 
     public HandleMealManagementAction(ProgressHandler progressHandler) {
         this.progressHandler = progressHandler;
-        this.inputValidator = new InputValidator();
+        this.inputValidator = new InputReader();
     }
 
     @Override
