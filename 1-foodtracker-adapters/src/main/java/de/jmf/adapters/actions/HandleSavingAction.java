@@ -5,7 +5,7 @@ import java.util.Map;
 
 import de.jmf.adapters.handlers.ProgressHandler;
 import de.jmf.adapters.handlers.UserHandler;
-import de.jmf.adapters.helper.InputValidator;
+import de.jmf.adapters.helper.InputReader;
 import de.jmf.adapters.helper.LoopUntilSuccessful;
 import de.jmf.adapters.helper.Strings;
 import de.jmf.adapters.menus.PerformMenuOption;
@@ -15,7 +15,7 @@ import de.jmf.adapters.menus.SaveOption;
 public class HandleSavingAction implements Action {
     private final UserHandler userHandler;
     private final ProgressHandler progressHandler;
-    private final InputValidator inputValidator;
+    private final InputReader inputValidator;
     private final PrintMenus printMenus;
     private final PerformMenuOption performMenuOption;
     private final LoopUntilSuccessful loopUntilSuccessful;
@@ -23,7 +23,7 @@ public class HandleSavingAction implements Action {
     public HandleSavingAction(UserHandler userHandler, ProgressHandler progressHandler) {
         this.userHandler = userHandler;
         this.progressHandler = progressHandler;
-        this.inputValidator = new InputValidator();
+        this.inputValidator = new InputReader();
         this.printMenus = new PrintMenus();
         this.performMenuOption = new PerformMenuOption();
         this.loopUntilSuccessful = new LoopUntilSuccessful();
@@ -43,17 +43,12 @@ public class HandleSavingAction implements Action {
         saveOptions.put(SaveOption.MEALS, () ->  this.loopUntilSuccessful.execute(() -> this.progressHandler.saveMeals()));
 
 
-        boolean repeat = true;
-
-
-        //lol hier ist die Endlosschleife
-        //Und am ende ausgeben, dass erfolgreich gespeichert wurde
         try {
             int option = this.inputValidator.getInt(Strings.ENTER_THE_NUMBER_OF_THE_ACTION);
             SaveOption selected = SaveOption.fromInt(option);
             this.performMenuOption.execute(saveOptions, selected);
         } catch (Exception e) {
-            System.out.println("An error occurred " + e.getMessage());
+            System.out.println(Strings.AN_ERROR_OCCURED + ": " + e.getMessage());
         }
     }
 

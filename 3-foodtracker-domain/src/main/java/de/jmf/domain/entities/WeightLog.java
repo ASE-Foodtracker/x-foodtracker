@@ -13,8 +13,6 @@ public class WeightLog {
         this.weight = weight;
     }
 
-    // Getters and Setters
-
     public LocalDate getDate() {
         return date;
     }

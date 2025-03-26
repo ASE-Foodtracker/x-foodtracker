@@ -11,7 +11,6 @@ public class RemoveMeal {
     }
 
     public void execute(NutritionLog meal) {
-        // Remove Meal
         progressRepository.removeMeal(meal);
     }
 }

@@ -4,6 +4,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import de.jmf.adapters.helper.InputReader;
+import de.jmf.adapters.helper.Strings;
 import de.jmf.adapters.io.CSVReader;
 import de.jmf.adapters.io.CSVWriter;
 import de.jmf.application.exceptions.duplicateException;
@@ -12,8 +14,6 @@ import de.jmf.application.usecases.user.GetActiveUser;
 import de.jmf.application.usecases.user.LogOutUser;
 import de.jmf.application.usecases.user.LoginUser;
 import de.jmf.application.usecases.user.SaveUser;
-import de.jmf.adapters.helper.InputValidator;
-import de.jmf.adapters.helper.Strings;
 import de.jmf.domain.entities.User;
 import de.jmf.domain.valueobjects.FitnessGoal;
 import de.jmf.domain.valueobjects.Weight;
@@ -26,7 +26,7 @@ public class UserHandler {
     private final SaveUser saveUser;
     private final LogOutUser logOutUser;
 
-    private final InputValidator inputValidator;
+    private final InputReader inputValidator;
 
     public UserHandler(CreateUser createUser, LoginUser login, GetActiveUser logUser, SaveUser saveUser,
             LogOutUser logOutUser) {
@@ -35,7 +35,7 @@ public class UserHandler {
         this.logUser = logUser;
         this.saveUser = saveUser;
         this.logOutUser = logOutUser;
-        this.inputValidator = new InputValidator();
+        this.inputValidator = new InputReader();
     }
 
     public boolean saveUser() {
@@ -48,8 +48,7 @@ public class UserHandler {
         head[4] = "targetWeight";
 
         users.add(0, head);
-        // Clear data/output/users
-        // Write Users to data/output/users
+
         Path outputPath = Paths.get("").resolve("data").resolve("output").resolve("users.csv");
         CSVWriter csvWriter = new CSVWriter(outputPath);
         csvWriter.clear();
@@ -98,10 +97,10 @@ public class UserHandler {
             System.out.println();
             System.out.println(Strings.REGISTRATION);
             String mail = this.inputValidator.getString(Strings.PLEASE_ENTER_YOUR_EMAIL);
-            // load users.csv
+            
             Path currentPath = Paths.get("").resolve("data").resolve("output").resolve("users.csv");
             login.setup(new CSVReader(currentPath).readAll());
-            // user login
+            
             boolean success = login.execute(mail);
             if (success) {
                 System.out.println(Strings.YOU_SUCCESSFULLY_LOGGED_INTO_YOUR_ACCOUNT);
@@ -127,10 +126,10 @@ public class UserHandler {
             String goalType = this.inputValidator.getString(Strings.DO_YOU_WANT_TO_GAIN_OR_LOOSE);
             Weight weightF = new Weight(this.inputValidator.getDouble(Strings.PLEASE_ENTER_YOUR_TARGET_WEIGHT));
             FitnessGoal goal = new FitnessGoal(goalType, weightF);
-            // load user.csv
+            
             Path currentPath = Paths.get("").resolve("data").resolve("output").resolve("users.csv");
             createUser.setup(new CSVReader(currentPath).readAll());
-            // create user
+            
             createUser.execute(mail, name, age, goal);
             System.out.println(Strings.YOU_SUCCESSFULLY_CREATED_A_NEW_ACCOUNT);
             return true;

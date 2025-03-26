@@ -50,10 +50,9 @@ public class GymPlanHandler {
     }
 
     public void loadGymPlan(String userMail){
-        // Use the CSVReader to read the gym plan with the specific userMail
         Path inputDir = Paths.get("").resolve("data").resolve("output").resolve(userMail).resolve("gymPlan.csv");
         CSVReader gymReader = new CSVReader(inputDir);
-        //save the read gymplan to the Gymplanrepository and print the it
+        
         this.createGymPlan.setGymPlan(gymReader.readAll());
     }
 
@@ -61,7 +60,7 @@ public class GymPlanHandler {
         ConsoleWriter consoleWriter = new ConsoleWriter();
         List<String[]> gymPlan = this.createGymPlan.getGymPlan(userMail);
         if (gymPlan != null && !gymPlan.isEmpty()) {
-            gymPlan.remove(0); // Remove the first entry
+            gymPlan.remove(0);
         }
         consoleWriter.printGymPlan(gymPlan);
     }

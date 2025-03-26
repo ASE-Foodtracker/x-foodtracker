@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
+import de.jmf.adapters.helper.Strings;
 import de.jmf.adapters.io.CSVReader;
 import de.jmf.adapters.io.CSVWriter;
 import de.jmf.application.usecases.progress.Meals.GetAllMeals;
@@ -16,10 +17,11 @@ import de.jmf.application.usecases.progress.Weight.LoadWeight;
 import de.jmf.application.usecases.progress.Weight.SaveWeight;
 import de.jmf.application.usecases.progress.Weight.TrackWeight;
 import de.jmf.application.usecases.user.GetActiveUser;
+import de.jmf.domain.decorator.CarbsDecorator;
+import de.jmf.domain.decorator.FatDecorator;
 import de.jmf.domain.entities.Meal;
 import de.jmf.domain.entities.NutritionLog;
 import de.jmf.domain.valueobjects.Weight;
-// import java.util.Scanner;
 
 public class ProgressHandler {
     private final Scanner scanner;
@@ -49,8 +51,6 @@ public class ProgressHandler {
     public void loadProgress() {
         String userName = logUser.execute().getEmail();
 
-        // Load Weight
-
         Path outputDir = Paths.get("").resolve("data").resolve("output");
         Path weightPath = outputDir.resolve(userName).resolve("weight.csv");
 
@@ -60,7 +60,6 @@ public class ProgressHandler {
             loadWeight.execute(weightLog);
         }
 
-        // Load Meals
         Path mealPath = outputDir.resolve(userName).resolve("meals.csv");
 
         CSVReader mealReader = new CSVReader(mealPath);
@@ -73,8 +72,6 @@ public class ProgressHandler {
             }
         }
     }
-
-    // WeightHandler
 
     public void newWeightEntry() {
         try {
@@ -99,8 +96,6 @@ public class ProgressHandler {
 
         String email = logUser.execute().getEmail();
 
-        // Clear data/output/users
-        // Write Users to data/output/users
         Path outputPath = Paths.get("").resolve("data").resolve("output").resolve(email);
         CSVWriter csvWriter = new CSVWriter(outputPath.resolve("weight.csv"));
         csvWriter.createDirectory(outputPath);
@@ -110,9 +105,9 @@ public class ProgressHandler {
         return true;
     }
 
-    // MealHandler
 
-    public void newMealEntry() {
+    public boolean newMealEntry() {
+        boolean successful = false;
         try {
             System.out.println();
             System.out.println("New Meal Entry");
@@ -120,15 +115,21 @@ public class ProgressHandler {
             String name = getString("Please enter the name of the meal: ");
             int calories = getInt("Please enter the amount of calories: ");
             int protein = getInt("Please enter the amount of protein: ");
+            int fat = getInt("Please enter the amount of fat: ");
+            int carbs = getInt("Please enter the amount of carbs: ");
 
-            Meal meal = new Meal(name, calories, protein);
+            Meal meal = new Meal(name, protein, calories);
+            meal = new FatDecorator(meal, fat);
+            meal = new CarbsDecorator(meal, carbs);
 
             saveMeal.execute(meal, LocalDate.now());
 
             System.out.println("Successfully entered meal");
+            successful = true;
         } catch (Exception e) {
             System.out.println("Something went wrong: " + e.getMessage());
         }
+        return successful;
     }
 
     public void logTodaysMeals() {
@@ -146,7 +147,8 @@ public class ProgressHandler {
         }
     }
 
-    public void removeMeal() {
+    public boolean removeMeal() {
+        boolean successful = false;
         try {
             System.out.println("Remove Meal");
             List<NutritionLog> meals = logTodaysMeals.execute();
@@ -165,10 +167,12 @@ public class ProgressHandler {
                 NutritionLog meal = meals.get(index - 1);
                 removeMeal.execute(meal);
                 System.out.println("Successfully removed meal");
+                successful = true;
             }
         } catch (Exception e) {
             System.out.println("Something went wrong: " + e.getMessage());
         }
+        return successful;
     }
 
     public boolean saveMeals() {
@@ -191,7 +195,6 @@ public class ProgressHandler {
         return true;
     }
 
-    // Utility
 
     private int getInt(String msg) {
         while (true) {
@@ -199,7 +202,7 @@ public class ProgressHandler {
                 System.out.print(msg);
                 return Integer.parseInt(scanner.nextLine().trim());
             } catch (Exception e) {
-                System.out.println("Wrong input please try again.");
+                System.out.println(Strings.THE_INPUT_WAS_NOT_VALID_TRY_AGAIN);
             }
         }
     }
@@ -210,7 +213,7 @@ public class ProgressHandler {
                 System.out.print(msg);
                 return scanner.nextLine().trim();
             } catch (Exception e) {
-                System.out.println("Wrong input please try again.");
+                System.out.println(Strings.THE_INPUT_WAS_NOT_VALID_TRY_AGAIN);
             }
         }
     }
@@ -221,7 +224,7 @@ public class ProgressHandler {
                 System.out.print(msg);
                 return Double.parseDouble(scanner.nextLine().trim());
             } catch (Exception e) {
-                System.out.println("Wrong input please try again.");
+                System.out.println(Strings.THE_INPUT_WAS_NOT_VALID_TRY_AGAIN);
             }
         }
     }

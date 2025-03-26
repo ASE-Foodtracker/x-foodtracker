@@ -1,5 +1,3 @@
-// VO: Represents a measurement at a specific point in time.  Immutability is key here.
-
 package de.jmf.domain.valueobjects;
 
 public class Weight {

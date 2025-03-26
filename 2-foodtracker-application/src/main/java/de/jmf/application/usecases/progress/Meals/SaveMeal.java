@@ -13,7 +13,6 @@ public class SaveMeal {
     }
 
     public void execute(Meal meal, LocalDate date) {
-        // Save Meal
         progressRepository.saveMeal(meal, date);
     }
 }

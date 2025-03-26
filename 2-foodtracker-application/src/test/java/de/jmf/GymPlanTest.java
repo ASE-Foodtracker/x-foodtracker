@@ -1,11 +1,15 @@
 package de.jmf;
 
-import de.jmf.application.repositories.GymPlanRepository;
-import de.jmf.application.usecases.CreateGymPlan;
-import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.Test;
+
+import de.jmf.application.repositories.GymPlanRepository;
+import de.jmf.application.usecases.CreateGymPlan;
 
 public class GymPlanTest {
 
@@ -24,7 +28,7 @@ public class GymPlanTest {
         List<String[]> gymPlan = createGymPlan.getGymPlan("john.doe@example.com");
         assertNotNull(gymPlan);
         assertFalse(gymPlan.isEmpty());
-        assertEquals(9, gymPlan.size()); // 3 exercises for each of Monday, Wednesday, and Friday
+        assertEquals(9, gymPlan.size()); 
     }
 
     @Test
@@ -42,7 +46,7 @@ public class GymPlanTest {
         List<String[]> gymPlan = createGymPlan.getGymPlan("john.doe@example.com");
         assertNotNull(gymPlan);
         assertFalse(gymPlan.isEmpty());
-        assertEquals(7, gymPlan.size()); // 1 cardio exercise for each day of the week
+        assertEquals(7, gymPlan.size()); 
     }
 
     @Test

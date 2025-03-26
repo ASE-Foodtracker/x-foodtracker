@@ -1,6 +1,6 @@
 package de.jmf.adapters.menus;
 
-public enum SaveOption {
+public enum SaveOption implements MenuOption {
     BACK(0),
     ALL(1),
     USER(2),
@@ -13,16 +13,11 @@ public enum SaveOption {
         this.value = value;
     }
 
-    public int getValue() {
+    public int getCode() {
         return value;
     }
 
     public static SaveOption fromInt(int value) {
-        for (SaveOption option : SaveOption.values()) {
-            if (option.getValue() == value) {
-                return option;
-            }
-        }
-        throw new IllegalArgumentException("Invalid option: " + value);
+        return MenuOption.fromInt(SaveOption.class, value);
     }
 }

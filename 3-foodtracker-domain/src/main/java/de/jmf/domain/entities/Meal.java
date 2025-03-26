@@ -15,8 +15,6 @@ public class Meal {
         return this.calories;
     }
 
-    // Getters and Setters
-
     public String getName() {
         return name;
     }

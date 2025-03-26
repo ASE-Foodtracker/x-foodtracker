@@ -2,15 +2,15 @@ package de.jmf.adapters.actions;
 
 import de.jmf.adapters.handlers.ProgressHandler;
 import de.jmf.adapters.handlers.UserHandler;
-import de.jmf.adapters.helper.InputValidator;
+import de.jmf.adapters.helper.InputReader;
 import de.jmf.adapters.helper.Strings;
 
 public class HandleQuitAction implements Action {
-    private final InputValidator inputValidator;
+    private final InputReader inputValidator;
     private final HandleSavingAction handleSavingAction;
 
     public HandleQuitAction(UserHandler userHandler, ProgressHandler progressHandler) {
-        this.inputValidator = new InputValidator();
+        this.inputValidator = new InputReader();
         this.handleSavingAction = new HandleSavingAction(userHandler, progressHandler);
     }
 

@@ -1,6 +1,6 @@
 package de.jmf.adapters.menus;
 
-public enum HomeScreenOption{
+public enum HomeScreenOption implements MenuOption{
     LOGIN(1), 
     REGISTER(2);
 
@@ -15,11 +15,6 @@ public enum HomeScreenOption{
     }
 
     public static HomeScreenOption fromInt(int value) {
-        for (HomeScreenOption option : HomeScreenOption.values()) {
-            if (option.getCode() == value) {
-                return option;
-            }
-        }
-        return null;
+        return MenuOption.fromInt(HomeScreenOption.class, value);
     }
 }

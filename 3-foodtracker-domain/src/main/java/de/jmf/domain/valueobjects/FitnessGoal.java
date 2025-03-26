@@ -1,7 +1,7 @@
 package de.jmf.domain.valueobjects;
 
 public class FitnessGoal {
-    private final String goalType;  // "gain" or "loose"
+    private final String goalType;
     private final Weight targetWeight;
 
     public FitnessGoal(String goalType, Weight targetWeight) {
@@ -9,7 +9,6 @@ public class FitnessGoal {
         this.targetWeight = targetWeight;
     }
 
-    // Getters and Setters
     public String getGoalType() {
         return goalType;
     }

@@ -1,12 +1,12 @@
 package de.jmf.application.usecases.progress.Weight;
 
-import de.jmf.application.repositories.ProgressRepository;
-import de.jmf.domain.entities.WeightLog;
-import de.jmf.domain.valueobjects.Weight;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import de.jmf.application.repositories.ProgressRepository;
+import de.jmf.domain.entities.WeightLog;
+import de.jmf.domain.valueobjects.Weight;
 
 public class LoadWeight {
     private final ProgressRepository progressRepository;
@@ -21,7 +21,7 @@ public class LoadWeight {
         }
 
         List<WeightLog> log = weightLog.stream()
-                .skip(1) // Skip the headline
+                .skip(1)
                 .map(this::parseWeightLogEntry)
                 .collect(Collectors.toList());
 
