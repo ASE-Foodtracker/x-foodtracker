@@ -1,5 +1,21 @@
 package de.jmf;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import de.jmf.application.repositories.ProgressRepository;
 import de.jmf.application.usecases.progress.Weight.LoadWeight;
 import de.jmf.application.usecases.progress.Weight.SaveWeight;
@@ -7,15 +23,6 @@ import de.jmf.application.usecases.progress.Weight.TrackWeight;
 import de.jmf.domain.entities.WeightLog;
 import de.jmf.domain.valueobjects.ProgressTracker;
 import de.jmf.domain.valueobjects.Weight;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 public class WeightTest {
     private ProgressRepository progressRepository;
@@ -40,7 +47,7 @@ public class WeightTest {
         when(progressRepository.getProgress()).thenReturn(progressTracker);
 
         double difference = trackWeight.execute(newWeight);
-        assertEquals(5.0, difference);
+        assertEquals(5.0, difference, "The weight difference should be 5.0");
         verify(progressRepository, times(1)).addWeight(newWeight);
     }
 
@@ -52,9 +59,9 @@ public class WeightTest {
         when(progressRepository.getProgress()).thenReturn(progressTracker);
 
         List<String[]> savedWeights = saveWeight.execute();
-        assertNotNull(savedWeights);
-        assertEquals(2, savedWeights.size());
-        assertArrayEquals(new String[] { LocalDate.now().toString(), "75.0" }, savedWeights.get(1));
+        assertNotNull(savedWeights, "Saved weights should not be null");
+        assertEquals(2, savedWeights.size(), "There should be 2 weight entries");
+        assertArrayEquals(new String[] { LocalDate.now().toString(), "75.0" }, savedWeights.get(1), "The last weight entry should match the expected values");
     }
 
     @Test
@@ -76,6 +83,6 @@ public class WeightTest {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             loadWeight.execute(weightLog);
         });
-        assertEquals("Invalid weight log entry format", exception.getMessage());
+        assertEquals("Invalid weight log entry format", exception.getMessage(), "The exception message should indicate an invalid format");
     }
 }
