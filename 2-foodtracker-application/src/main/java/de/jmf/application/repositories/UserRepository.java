@@ -30,6 +30,10 @@ public class UserRepository {
         return this.activeUser;
     }
 
+    public List<User> getAllUsers() {
+        return new ArrayList<>(userList);
+    }
+
     public void logOut() {
         this.activeUser = null;
     }
