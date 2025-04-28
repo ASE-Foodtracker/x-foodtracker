@@ -11,8 +11,6 @@ public class NutritionLog {
         this.meal = meal;
     }
 
-    // Getters and Setters
-
     public LocalDate getDate() {
         return date;
     }

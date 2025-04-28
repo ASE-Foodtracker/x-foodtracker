@@ -41,4 +41,6 @@ public class Strings{
     public static final String YOU_SUCCESSFULLY_CREATED_A_NEW_ACCOUNT = "You successfully created a new account";
     public static final String THIS_USER_DOESNT_EXIST_PLEASE_TRY_AGAIN = "This user doesn't exist. Please try again.";
     public static final String PLEASE_ENTER_YOUR_TARGET_WEIGHT = "Please enter your target weight: ";
+
+    public static final String WRONG_INPUT = "Wrong input please try again.";
 }

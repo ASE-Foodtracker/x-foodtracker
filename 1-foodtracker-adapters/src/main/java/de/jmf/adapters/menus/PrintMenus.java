@@ -29,4 +29,13 @@ public class PrintMenus{
         System.out.println("4 - meals");
         System.out.println("0 - back");
     }
+
+    public void printMealManagementMenu(){
+        System.out.println();
+        System.out.println("Meal Management");
+        System.out.println("1 - add meal");
+        System.out.println("2 - remove meal");
+        System.out.println("3 - show meals");
+        System.out.println("0 - back");
+    }
 }

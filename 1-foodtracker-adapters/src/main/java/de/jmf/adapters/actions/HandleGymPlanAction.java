@@ -2,17 +2,17 @@ package de.jmf.adapters.actions;
 
 import de.jmf.adapters.handlers.GymPlanHandler;
 import de.jmf.adapters.handlers.UserHandler;
-import de.jmf.adapters.helper.InputValidator;
+import de.jmf.adapters.helper.InputReader;
 import de.jmf.adapters.helper.Strings;
 
 public class HandleGymPlanAction implements Action {
-    private final InputValidator inputValidator;
+    private final InputReader inputValidator;
     private final UserHandler userHandler;
     private final GymPlanHandler gymPlanHandler;
 
 
     public HandleGymPlanAction(UserHandler userHandler, GymPlanHandler gymPlanHandler) {
-        this.inputValidator = new InputValidator();
+        this.inputValidator = new InputReader();
         this.userHandler = userHandler;
         this.gymPlanHandler = gymPlanHandler;
     }

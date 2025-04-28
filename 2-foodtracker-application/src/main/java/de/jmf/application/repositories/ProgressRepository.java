@@ -16,8 +16,6 @@ public class ProgressRepository {
         this.progressTracker = new ProgressTracker();
     }
 
-    // Weight
-
     public void loadWeight(List<WeightLog> weightLogs) {
         for (WeightLog log : weightLogs) {
             this.progressTracker.addWeightLog(log);
@@ -28,10 +26,7 @@ public class ProgressRepository {
         this.progressTracker.addWeightLog(new WeightLog(LocalDate.now(), weight));
     }
 
-    // Meal
-
     public void saveMeal(Meal meal, LocalDate date) {
-        // Save Meal
         if (date == null) {
             date = LocalDate.now();
         }
@@ -46,8 +41,6 @@ public class ProgressRepository {
     public void removeMeal(NutritionLog meal) {
         this.progressTracker.removeNutritionLog(meal);
     }
-
-    // ProgressTracker
 
     public ProgressTracker getProgress() {
         return this.progressTracker;

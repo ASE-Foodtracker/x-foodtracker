@@ -1,6 +1,6 @@
 package de.jmf.adapters.menus;
 
-public enum MainMenuOption {
+public enum MainMenuOption implements MenuOption {
     QUIT(0), 
     DETAILS(1), 
     GYMPLAN(2), 
@@ -20,11 +20,6 @@ public enum MainMenuOption {
     }
 
     public static MainMenuOption fromInt(int value) {
-        for (MainMenuOption option : MainMenuOption.values()) {
-            if (option.getCode() == value) {
-                return option;
-            }
-        }
-        return null;
+        return MenuOption.fromInt(MainMenuOption.class, value);
     }
 }
