@@ -357,7 +357,7 @@ Die Klasse NutritionLog hat eine hohe Kohäsion, da alle ihre Methoden eng mitei
 
 ## Don’t Repeat Yourself (DRY)
 
-Von Beginn keine Duplizierungen verwendet :o <br>
+Wir haben darauf geachtet, Duplizierungen zu vermeiden.<br>
 Was mir sonst nur einfällt ist der CSVWriter. Dank ihm haben wir diese Logik ausgelagert und können diese immerwieder von egal wo aufrufen, da wir jeweils einen eigenen Path für den Writer definieren. Er kann also alle Daten einer String List[] in ein beliebiges Verzeichnis laden.
 
 # Kapitel 5: Unit Tests
