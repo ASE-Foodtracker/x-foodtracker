@@ -98,8 +98,6 @@ Analyse:
 - Die Klasse 'ProgressRepository' hat ProgressTracker, WeightLog, NutritionLog, Weight, Meal und LocalDate als Abhängigkeiten aus dem Domain Layer.
 - Die Klasse hält sich an die Dependency Rule, da die Abhängigkeiten aus dem Domain Layer stammen und die Klasse selbst im Application Layer liegt.
 
-#### Analyse
-
 ### Negativ-Beispiel: CreateUser
 ```mermaid
 classDiagram
