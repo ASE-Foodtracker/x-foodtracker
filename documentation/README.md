@@ -200,31 +200,32 @@ Erklärung:
 ## Analyse Single-Responsibility-Principle (SRP)
 ### Positiv-Beispiel
 UML:
-
-    _______________________________________
-    | CSVReader                             |
-    | +  List<String[]> readAll()           |
-    ---------------------------------------
+```mermaid
+classDiagram
+    class CSVReader {
+        + List~String[]~ readAll()
+    }
+```
 
 Begründung:<br>
 Unsere Klasse 'CSVReader' hat eine einzige Verantwortlichkeit. Und zwar das Lesen von CSV-Dateien. Sie kümmert sich nur um das Einlesen der Daten und gibt diese dann in geeigneter Form wieder zurück.
 
 ### Negativ-Beispiel
-UML:
-
-    ___________________________________
-    | UserHandler                       |
-    | + boolean saveUser()              |
-    | + User logUser()                  |
-    | + String getUserMail()            |
-    | + String getUserFitnessGoal()     |
-    | + boolean login()                 |
-    | + boolean createUser()            |
-    | + void logOut()                   |
-    | - int getInt(String msg)          |
-    | - String getString(String msg)    |
-    | - double getDouble(String msg)    |
-    -----------------------------------
+```mermaid
+classDiagram
+    class UserHandler {
+        + boolean saveUser()
+        + User logUser()
+        + String getUserMail()
+        + String getUserFitnessGoal()
+        + boolean login()
+        + boolean createUser()
+        + void logOut()
+        - int getInt(String msg)
+        - String getString(String msg)
+        - double getDouble(String msg)
+    }
+```
 Begründung:<br>
 Der 'UserHandler' hingegen hat mehrere Verantwortlichkeiten. Auch wenn der 'Handler' zunächst als Klasse gesehen werden kann, die ja nur für das Handling von Benutzeraktionen dient, verstößt sie dennoch gegen das SRP. Diese Klasse kümmert sich hier nämlich um Benutzereingaben, um die Geschäftslogik und um das Persistieren von Nutzerdaten. 
 
