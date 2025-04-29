@@ -292,16 +292,40 @@ Die Klasse 'UserRepository' kann durch jede andere Implementierung eines Benutze
 UML:
 ```mermaid
 classDiagram
-    class GymPlanRepository {
-        + List~String[]~ getGymPlan(String userMail) throws Exception
-        + void setGymPlan(List~String[]~ gymPlan)
+    class DataReader {
+        <<interface>>
+        + List~String[]~ readAll() throws IOException
     }
+    class DatabaseReader {
+        + List~String[]~ readAll() throws SQLException
+    }
+    DataReader <|.. DatabaseReader
+
 ```
 Begründung:<br>
-Die Klasse 'GymPlanRepository' hingegen kann nicht ohne Weiteres durch eine andere Implementierung ersetzt werden, da die Methode 'getGymPlan' eine Exception wirft, die andere Implementierungen ggf. nicht erwarten.
+Das Interface DataReader erlaubt beim Lesen nur eine IOException. Eine Klasse DatabaseReader kann dagegen eine SQLException werfen, die nicht von IOException erbt. Jeder Client, der nur mit DataReader arbeitet, rechnet nicht mit SQLException und fängt sie nicht ab. Kommt eine SQLException, bricht die Anwendung an dieser Stelle unerwartet ab. Damit lässt sich DatabaseReader nicht ohne Risiko anstelle eines beliebigen DataReader verwenden.
 
-*Lösungsweg:*<br> 
-Die Klasse sollte keine Methoden besizten, die eine Exception wirft. Demnach die Methode 'getGymPlan' umschreiben.
+*Lösungsweg:*<br>
+1.  **Gemeinsame Super-Exception einführen:** 
+    - Neue Basis-Exception RepositoryException im Interface deklarieren.
+    - Sowohl IOException als auch SQLException (bzw. eigene Unterklassen wie DatabaseReadException) erben von dieser.
+    - Clients fangen dann nur noch RepositoryException.
+2.  **SQLException in IOException umwandeln:**
+    ```Java
+        @Override
+        public List<String[]> readAll() throws IOException {
+            try {
+                // Datenbankzugriff…
+            } catch (SQLException e) {
+                throw new IOException("Datenbank-Lese-Fehler", e);
+            }
+        }
+    ```
+    So bleibt die Signatur gleich und Clients müssen nur IOException behandeln.
+3.  **Ergebnisobjekt statt Exception:** 
+    - Rückgabetyp etwa Result<List<String[]>, Error> oder Optional<List<String[]>>.
+    - Im Fehlerfall liefert das Objekt eine Fehlermeldung statt eine Exception.
+    - Checked Exceptions entfallen, der Aufrufer prüft das Ergebnis direkt.
 
 # Kapitel 4: Weitere Prinzipien
 ## Analyse GRASP: Geringe Kopplung
@@ -358,7 +382,7 @@ Die Klasse NutritionLog hat eine hohe Kohäsion, da alle ihre Methoden eng mitei
 ## Don’t Repeat Yourself (DRY)
 
 Wir haben darauf geachtet, Duplizierungen zu vermeiden.<br>
-Was mir sonst nur einfällt ist der CSVWriter. Dank ihm haben wir diese Logik ausgelagert und können diese immerwieder von egal wo aufrufen, da wir jeweils einen eigenen Path für den Writer definieren. Er kann also alle Daten einer String List[] in ein beliebiges Verzeichnis laden.
+Beispielsweise durch den CSVWriter. Dank ihm haben wir diese Logik ausgelagert und können diese immerwieder von egal wo aufrufen, da wir jeweils einen eigenen Path für den Writer definieren. Er kann also alle Daten einer String List[] in ein beliebiges Verzeichnis laden.
 
 # Kapitel 5: Unit Tests
 ## 10 Unit Tests
