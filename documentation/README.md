@@ -239,27 +239,31 @@ https://github.com/ASE-Foodtracker/x-foodtracker/commit/fa13e490e1872d75a89f34bb
 ### Positiv-Beispiel
 UML:
 
-        ___________________________________________________
-        | CreateGymPlan                                     |
-        | + List<String> createPlan(..) throws IOException  |
-        | - List<String> getRandomExercises (..)            |
-        | - List<String> getCardioExercises (..)            |
-        | - List<String> getRandomItems (..)                |
-        | + List<String> getGymPlan(String userMail)        |
-        ---------------------------------------------------
+```mermaid
+classDiagram
+    class CreateGymPlan {
+        + List<String> createPlan(..) throws IOException
+        - List<String> getRandomExercises(..)
+        - List<String> getCardioExercises(..)
+        - List<String> getRandomItems(..)
+        + List<String> getGymPlan(String userMail)
+    }
+```
 Begründung:<br>
 Unsere 'CreateGymPlan' Klasse ist offen für Erweiterungen und zeitgleich geschlossen für Veränderungen. Das heißt, dass wir neue Fitnessziele durch neue Methoden oder Vererbung hinzufügen können, ohne dabei die bestehende Klasse zu verändern.
 
 ### Negativ-Beispiel
 UML:
 
-    _______________________________________________________    
-    | GymPlanHandler                                        |
-    | + createGymPlan(String fitnessGoal, String userMail)  |
-    | + saveGymPlan(String userMail)                        |
-    | + List<String> getGymPlan()                           |
-    | + printGymPlan()                                      |
-    -------------------------------------------------------
+```mermaid
+classDiagram
+    class GymPlanHandler {
+        + createGymPlan(String fitnessGoal, String userMail)
+        + saveGymPlan(String userMail)
+        + List~String~ getGymPlan()
+        + printGymPlan()
+    }
+```
 Begründung:<br>
 Der 'GymPlanHandler' wiederum ist nicht offen für Erweiterungen, da Änderungen an der Art und Weise wie Gym-Pläne erstellt oder gespeichert werden, eine Änderung an der Klasse selbst erfordern.
 
@@ -272,24 +276,27 @@ Sei S ein von T abgeleiteter Typ, dann können Objekte des Typs T durch Objekte 
 ### Positiv-Beispiel
 UML:
 
-    _______________________________________________
-    | UserRepository                                |
-    | + Optional<User> findByEmail(String email)    |
-    | + void save(User user)                        |
-    | + List<User> findAll()                        | 
-    -----------------------------------------------
+```mermaid
+classDiagram
+    class UserRepository {
+        + Optional~User~ findByEmail(String email)
+        + void save(User user)
+        + List~User~ findAll()
+    }
+```
+
 Begründung:<br>
 Die Klasse 'UserRepository' kann durch jede andere Implementierung eines Benutzer-Repositories ersetzt werden, ohne dass das Verhalten des Programms verändert wird.
 
 ### Negativ-Beispiel
 UML:
-
-    _______________________________________________ 
-    | GymPlanRepository                             |
-    | + List<String[]> getGymPlan(String userMail)  |
-    |       throws Exception                        |
-    | + void setGymPlan(List<String[]> gymPlan)     |
-    -----------------------------------------------
+```mermaid
+classDiagram
+    class GymPlanRepository {
+        + List~String[]~ getGymPlan(String userMail) throws Exception
+        + void setGymPlan(List~String[]~ gymPlan)
+    }
+```
 Begründung:<br>
 Die Klasse 'GymPlanRepository' hingegen kann nicht ohne Weiteres durch eine andere Implementierung ersetzt werden, da die Methode 'getGymPlan' eine Exception wirft, die andere Implementierungen ggf. nicht erwarten.
 
@@ -301,31 +308,33 @@ Die Klasse sollte keine Methoden besizten, die eine Exception wirft. Demnach die
 
 ### Positiv-Beispiel
 UML:
-
-    _______________________________________
-    | ConsoleWriter                        |
-    | + void printGymPlan(List<String[]> gp)|
-    ---------------------------------------
-    | CSVReader                            |
-    | + List<String[]> readAll()           |
-    ---------------------------------------
+```mermaid
+classDiagram
+    class ConsoleWriter {
+        + void printGymPlan(List~String[]~ gp)
+    }
+    class CSVReader {
+        + List~String[]~ readAll()
+    }
+```
 Begründung: <br>
 Die Klassen ConsoleWriter und CSVReader sind perfekte Beispiele für die geringe Kupplung. Sie sind unabhänging voneinander aber haben ihre klar definierten Verantwortlichkeiten. ConsoleWriter beschäftigt sich nur um die Ausgabe des GymPlans und CSVReader nur um die Einlesung.
 ### Negativ-Beispiel
 UML:
-
-    ___________________________________
-    | ProgressHandler                   |
-    | + void loadProgress()             |
-    | + void newWeightEntry()           |
-    | + void saveWeight()               |
-    -----------------------------------
-    | CSVReader                         |
-    | + List<String[]> readAll()        |
-    -----------------------------------
-    | CSVWriter                          |
-    | + void saveAll(List<String[]> data)|
-    -----------------------------------
+```mermaid
+classDiagram
+    class ProgressHandler {
+        + void loadProgress()
+        + void newWeightEntry()
+        + void saveWeight()
+    }
+    class CSVReader {
+        + List~String[]~ readAll()
+    }
+    class CSVWriter {
+        + void saveAll(List~String[]~ data)
+    }
+```
 Begründung:<br>
 Die Klasse 'ProgressHandler' hat eine starke Kopplung zu den Klassen CSVReader und CSVWriter. Jede Änderung in den Methoden readAll oder saveAll können zu Fehlern in der ProgressHandler-Klasse führen.
 
@@ -335,12 +344,15 @@ Um die Kopplung zu lösen, sollte der ProgressHanlder von DataReader und DataWri
 ## Analyse GRASP: Hohe Kohäsion
 UML:
 
-    _______________________________________
-    | NutritionLog                         |
-    | + void addMeal(Meal meal)            |
-    | + List<Meal> getMeals()              |
-    | + double getTotalCalories()          |
-    ---------------------------------------
+```mermaid
+classDiagram
+    class NutritionLog {
+        + void addMeal(Meal meal)
+        + List~Meal~ getMeals()
+        + double getTotalCalories()
+    }
+```
+
 Die Klasse NutritionLog hat eine hohe Kohäsion, da alle ihre Methoden eng miteinander verbunden sind und sich auf die Verwaltung von Mahlzeiten und Nährwerten konzentrieren. Jede Methode trägt zur Hauptverantwortung der Klasse bei, was die Kohäsion erhöht und die Klasse leichter verständlich und wartbar macht.
 
 ## Don’t Repeat Yourself (DRY)
@@ -441,12 +453,14 @@ Die Code Coverage im Projekt wird durch die Ausführung der Unit-Tests mit Maven
 Wir haben nur einen Mock erstellt.<br>
 **UML:**
 
-     _________________________________________
-    | ProgressRepository                      |
-    | + ProgressTracker getProgress()         |
-    | + void addWeight(Weight weight)         |
-    | + void loadWeight(List<WeightLog> logs) |
-     -----------------------------------------
+```mermaid
+classDiagram
+    class ProgressRepository {
+        + ProgressTracker getProgress()
+        + void addWeight(Weight weight)
+        + void loadWeight(List~WeightLog~ logs)
+    }
+```
 
 **Begründung:**<br> Der Mock für die Klasse 'ProgressRepository' wird verwendet, um die Methoden *getProgress*, *addWeight* und *loadWeight* zu simulieren. Dadurch wird sichergestellt, dass diese korrekt aufgerufen werden, ohne dabei die tatsächliche Implementierung auszuführen.
 
@@ -476,27 +490,32 @@ Wir haben nur einen Mock erstellt.<br>
 ### Benutzer
 **UML:**
 
-    _______________________________________
-    | Benutzer                             |
-    | + String email                       |
-    | + String name                        |
-    | + int age                            |
-    | + FitnessGoal fitnessGoal            |
-    | + void updateFitnessGoal(FitnessGoal)|
-    ---------------------------------------
+```mermaid
+classDiagram
+    class Benutzer {
+        + String email
+        + String name
+        + int age
+        + FitnessGoal fitnessGoal
+        + void updateFitnessGoal(FitnessGoal fitnessGoal)
+    }
+```
+
 **Beschreibung:** Die Entität "Benutzer" repräsentiert einen Benutzer der Anwendung mit seinen persönlichen Daten und Fitnesszielen.<br>
 **Begründung:** Diese Entität ist notwendig, um die Benutzerinformationen und deren Fitnessziele zu verwalten.
 
 ### GymPlan
 **UML:**
 
-     _______________________________________
-    | GymPlan                               |
-    | + String userMail                     |
-    | + List<String> exercises              |
-    | + void addExercise(String exercise)   |
-    | + void removeExercise(String exercise)|
-     ---------------------------------------
+```mermaid
+classDiagram
+    class GymPlan {
+        + String userMail
+        + List~String~ exercises
+        + void addExercise(String exercise)
+        + void removeExercise(String exercise)
+    }
+```
 
 **Beschreibung:** Die Entität "GymPlan" repräsentiert einen Trainingsplan eines Benutzers.<br>
 **Begründung:** Diese Entität ist notwendig, um die Struktur und den Inhalt der Trainingspläne zu verwalten.
@@ -504,12 +523,14 @@ Wir haben nur einen Mock erstellt.<br>
 ### Mahlzeit
 **UML:**
 
-     ______________________________________
-    | Mahlzeit                             |
-    | + String name                        |
-    | + int calories                       |
-    | + void updateCalories(int calories)  |
-     --------------------------------------
+```mermaid
+classDiagram
+    class Mahlzeit {
+        + String name
+        + int calories
+        + void updateCalories(int calories)
+    }
+```
 
 **Beschreibung:** Die Entität "Mahlzeit" repräsentiert eine protokollierte Mahlzeit eines Benutzers.<br>
 **Begründung:** Diese Entität ist notwendig, um die Nahrungsaufnahme der Benutzer zu verwalten.
@@ -517,12 +538,14 @@ Wir haben nur einen Mock erstellt.<br>
 ### Gewicht
 **UML:**
 
-     ______________________________________
-    | Gewicht                              |
-    | + double value                       |
-    | + Date date                          |
-    | + void updateWeight(double value)    |
-     --------------------------------------
+```mermaid
+classDiagram
+    class Gewicht {
+        + double value
+        + Date date
+        + void updateWeight(double value)
+    }
+```
 
 **Beschreibung:** Die Entität "Gewicht" repräsentiert das Körpergewicht eines Benutzers zu einem bestimmten Zeitpunkt.<br>
 **Begründung:** Diese Entität ist notwendig, um die Gewichtsveränderungen der Benutzer zu verwalten.
@@ -531,12 +554,14 @@ Wir haben nur einen Mock erstellt.<br>
 ### FitnessGoal
 **UML:**
 
-     ______________________________________
-    | FitnessGoal                          |
-    | + String goal                        |
-    | + double targetWeight                |
-    | + void updateTargetWeight(double)    |
-     --------------------------------------
+```mermaid
+classDiagram
+    class FitnessGoal {
+        + String goal
+        + double targetWeight
+        + void updateTargetWeight(double targetWeight)
+    }
+```
 
 **Beschreibung:** Das Value Object "FitnessGoal" repräsentiert das Fitnessziel eines Benutzers.<br>
 **Begründung:** Dieses Value Object ist notwendig, um die Fitnessziele der Benutzer zu verwalten und sicherzustellen, dass sie unveränderlich sind.
@@ -545,12 +570,14 @@ Wir haben nur einen Mock erstellt.<br>
 ### BenutzerRepository
 **UML:**
 
-     ______________________________________
-    | BenutzerRepository                   |
-    | + Optional<Benutzer> findByEmail()   |
-    | + void save(Benutzer benutzer)       |
-    | + List<Benutzer> findAll()           |
-     --------------------------------------
+```mermaid
+classDiagram
+    class BenutzerRepository {
+        + Optional~Benutzer~ findByEmail()
+        + void save(Benutzer benutzer)
+        + List~Benutzer~ findAll()
+    }
+```
      
 **Beschreibung:** Das Repository "BenutzerRepository" verwaltet die Speicherung und den Zugriff auf Benutzerinformationen.<br>
 **Begründung:** Dieses Repository ist notwendig, um die Benutzerinformationen persistent zu speichern und darauf zuzugreifen.
@@ -789,39 +816,40 @@ meal = new FatDecorator(meal, 10);
 meal = new CarbsDecorator(meal, 20);
 ```
 
-    -------------------          -------------------
-    |       Meal        |<------|   MealDecorator   |
-    |-------------------|       |-------------------|
-    | + getName()       |       | - decoratedMeal   |
-    | + getProtein()    |       | + getName()       |
-    | + getCalories()   |       | + getProtein()    |
-    | + getFat()        |       | + getCalories()   |
-    | + getCarbs()      |       | + getFat()        |
-    -------------------         | + getCarbs()      |
-                                 -------------------
-                                    /\
-                                    ||
-                                    ||
-                                    ||
-                                 -------------------
-                                |   FatDecorator    |
-                                |-------------------|
-                                | + getFat()        |
-                                | + getCarbs()      |
-                                |                   |
-                                |                   |
-                                |                   |
-                                 -------------------
-                                    /\
-                                    ||
-                                    ||
-                                    ||
-                                -------------------
-                                |  CarbsDecorator   |
-                                |-------------------|
-                                | + getCarbs()      |
-                                | + getFat()        |
-                                -------------------
+
+```mermaid
+classDiagram
+    class Meal {
+        + getName()
+        + getProtein()
+        + getCalories()
+        + getFat()
+        + getCarbs()
+    }
+
+    class MealDecorator {
+        - decoratedMeal
+        + getName()
+        + getProtein()
+        + getCalories()
+        + getFat()
+        + getCarbs()
+    }
+
+    class FatDecorator {
+        + getFat()
+        + getCarbs()
+    }
+
+    class CarbsDecorator {
+        + getCarbs()
+        + getFat()
+    }
+
+    Meal <-- MealDecorator
+    MealDecorator <-- FatDecorator
+    MealDecorator <-- CarbsDecorator
+```
 
 **Begründung:**<br>
 Das Dekorator-Muster ermöglicht es uns, zusätzliche Nährwertinformationen wie Fett und Kohlenhydrate hinzuzufügen, ohne die grundlegende Mahlzeitenklasse zu ändern. Dies erhöht die Flexibilität und Erweiterbarkeit des Codes.
@@ -893,31 +921,30 @@ public class User {
     }
 }
 ```
-     -------------------
-    |       User        |
-    |-------------------|
-    | - email           |
-    | - name            |
-    | - age             |
-    | - goal            |
-     -------------------
-            /\
-            ||
-            ||
-            ||
-     ------------------- 
-    |   UserBuilder     |
-    |-------------------|
-    | - email           |
-    | - name            |
-    | - age             |
-    | - goal            |
-     -------------------
-    | + setEmail()      |
-    | + setName()       |
-    | + setAge()        |
-    | + setGoal()       |
-    | + build()         |
-     -------------------
+
+
+```mermaid
+classDiagram
+    class User {
+        - email
+        - name
+        - age
+        - goal
+    }
+
+    class UserBuilder {
+        - email
+        - name
+        - age
+        - goal
+        + setEmail()
+        + setName()
+        + setAge()
+        + setGoal()
+        + build()
+    }
+
+    User <-- UserBuilder
+```
 **Begründung:**<br>
 Das Erbauer-Muster ermöglicht es uns, komplexe Benutzerobjekte schrittweise und kontrolliert zu erstellen. Dies erhöht die Lesbarkeit und Wartbarkeit des Codes, da die Konstruktion von Benutzerobjekten klar und strukturiert ist.
