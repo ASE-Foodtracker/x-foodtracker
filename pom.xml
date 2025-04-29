@@ -15,4 +15,13 @@
         <module>1-foodtracker-adapters</module>
         <module>0-foodtracker-plugin-main</module>
     </modules>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.12</version>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>
