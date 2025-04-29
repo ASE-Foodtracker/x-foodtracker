@@ -447,7 +447,14 @@ Die Tests werden automatisch mit Maven ausgeführt, indem der Befehl mvn test ve
     }
 **Begründung:**<br> Dieser Test ist nicht professionell, da weder überprüft ob die Methode aufgerufen wurde, noch die Verifikation des Verhaltens überprüft.
 ## Code Coverage
-Die Code Coverage im Projekt wird durch die Ausführung der Unit-Tests mit Maven gemessen. Eine hohe Code Coverage stellt sicher, dass der größte Teil des Codes durch Tests abgedeckt ist, was die Wahrscheinlichkeit von Fehlern reduziert und die Wartbarkeit des Codes erhöht. Bei uns läuft jeder Test grün durch :)
+Die Code Coverage in diesem Projekt wird mit dem Tool JaCoCo gemessen. Eine hohe Code Coverage zeigt, dass ein signifikanter Teil des Codes durch automatisierte Tests abgedeckt ist, was potenziell die Fehlerwahrscheinlichkeit reduziert. Dennoch ist eine hohe Testabdeckung allein keine Garantie für fehlerfreien Code. Fehlerhaft formulierte Assertions können dazu führen, dass bestehende Fehler unentdeckt bleiben. Um die Qualität des Codes sicherzustellen, ist es entscheidend, sowohl positive Tests (zur Verifizierung des erwarteten Verhaltens) als auch negative Tests (zur Prüfung der Fehlerbehandlung) zu implementieren.
+
+**Analyse und Begründung**: Der Fokus der Testaktivitäten lag auf der Applikations-Schicht, da diese die zentrale Geschäftslogik des Systems enthält. Die Testsuite umfasst sowohl Unit-Tests als auch Integrationstests. In der Domain-Schicht wurden hauptsächlich die Value Objects getestet, da die übrigen Klassen dieser Schicht überwiegend aus Entitäten mit einfachen Getter- und Setter-Methoden bestehen, die kein zusätzliches Testen erfordern. 
+
+**Report**
+![](img/test_1.png)
+
+![](img/test_2.png)
 
 ## Fakes und Mocks
 Wir haben nur einen Mock erstellt.<br>
