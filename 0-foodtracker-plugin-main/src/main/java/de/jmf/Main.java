@@ -1,6 +1,7 @@
 package de.jmf;
 
 import de.jmf.adapters.ConsoleAdapter;
+import de.jmf.adapters.io.CheckExistingCsvFiles;
 import de.jmf.application.repositories.GymPlanRepository;
 import de.jmf.application.repositories.ProgressRepository;
 import de.jmf.application.repositories.UserRepository;
@@ -43,6 +44,10 @@ public class Main {
         ConsoleAdapter console = new ConsoleAdapter(createUser, login, logUser, saveUser, createGymplan, trackWeight, saveWeight,
                 loadWeight, logoutUser, saveMeal, getTodaysMeals, removeMeal, getAllMeals);
         
+        
+        CheckExistingCsvFiles checkExistingCsvFiles = new CheckExistingCsvFiles();
+        checkExistingCsvFiles.check();
+
         console.run();
     }
 }
