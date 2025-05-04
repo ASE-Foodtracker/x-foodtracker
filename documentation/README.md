@@ -28,6 +28,7 @@ cd 0-foodtracker-plugin-main
 ```shell
 mvn exec:java -Dexec.mainClass="de.jmf.Main"
 ```
+<img width="599" alt="Screenshot 2025-05-04 at 11 47 24 AM" src="https://github.com/user-attachments/assets/124e90c8-a7e1-41f7-80a2-11f3b7878a1a" />
 
 ## Wie testet man die Applikation?
 Voraussetzungen:
@@ -44,6 +45,8 @@ mvn clean install
 ```shell
 mvn test
 ```
+
+<img width="613" alt="Screenshot 2025-05-04 at 11 43 37 AM" src="https://github.com/user-attachments/assets/99991f58-0b02-4a38-8384-1658e470fd13" />
 
 # Kapitel 2: Clean Architecture
 
