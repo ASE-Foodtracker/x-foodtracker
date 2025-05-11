@@ -28,6 +28,9 @@ cd 0-foodtracker-plugin-main
 ```shell
 mvn exec:java -Dexec.mainClass="de.jmf.Main"
 ```
+Dieser Ansatz erzeugt einen Fehler, der nicht gefixed werden konnte.
+Die App funktioniert einwandfrei, wenn sie über IntelliJ oder das VSCode Java Addon gestartet wird.
+
 <img width="599" alt="Screenshot 2025-05-04 at 11 47 24 AM" src="https://github.com/user-attachments/assets/124e90c8-a7e1-41f7-80a2-11f3b7878a1a" />
 
 ## Wie testet man die Applikation?
