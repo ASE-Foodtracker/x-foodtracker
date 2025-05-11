@@ -477,9 +477,9 @@ Die Code Coverage in diesem Projekt wird mit dem Tool JaCoCo gemessen. Eine hohe
 **Analyse und Begründung**: Der Fokus der Testaktivitäten lag auf der Applikations-Schicht, da diese die zentrale Geschäftslogik des Systems enthält. Die Testsuite umfasst sowohl Unit-Tests als auch Integrationstests. In der Domain-Schicht wurden hauptsächlich die Value Objects getestet, da die übrigen Klassen dieser Schicht überwiegend aus Entitäten mit einfachen Getter- und Setter-Methoden bestehen, die kein zusätzliches Testen erfordern. 
 
 **Report**
-![](img/test_1.png)
+![](documentation/img/test_1.png)
 
-![](img/test_2.png)
+![](documentation/img/test_2.png)
 
 ## Fakes und Mocks
 Wir haben nur einen Mock erstellt.<br>
